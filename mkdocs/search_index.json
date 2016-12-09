@@ -1,0 +1,294 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "LBRY Documentation\n\n\nAPI Documentation", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#lbry-documentation", 
+            "text": "", 
+            "title": "LBRY Documentation"
+        }, 
+        {
+            "location": "/#api-documentation", 
+            "text": "", 
+            "title": "API Documentation"
+        }, 
+        {
+            "location": "/api/", 
+            "text": "LBRY JSON-RPC API Documentation\n\n\nabandon_claim\n\n\nAbandon a name and reclaim credits from the claim\n\nArgs:\n    'txid': txid of claim, string\n    'nout': nout of claim, integer\nReturn:\n    success : True if succesful , False otherwise\n    reason : if not succesful, give reason\n    txid : txid of resulting transaction if succesful\n    fee : fee paid for the transaction if succesful\n\n\n\n\nabandon_name\n\n\nDEPRECIATED, use abandon_claim\n\nArgs:\n    'txid': txid of claim, string\nReturn:\n    txid\n\n\n\n\naddress_is_mine\n\n\nChecks if an address is associated with the current wallet.\n\nArgs:\n    address: string\nReturns:\n    is_mine: bool\n\n\n\n\nannounce_all_blobs_to_dht\n\n\nAnnounce all blobs to the dht\n\nArgs:\n    None\nReturns:\n\n\n\n\nconfigure_ui\n\n\nConfigure the UI being hosted\n\nArgs, optional:\n    'branch': a branch name on lbryio/lbry-web-ui\n    'path': path to a ui folder\n\n\n\n\ndaemon_status\n\n\nGet lbrynet daemon status information\n\nArgs:\n    None\nReturns:\n    'message': startup status message\n    'code': status_code\n    'progress': progress, only used in loading_wallet\n    'is_lagging': flag set to indicate lag, if set message will contain relevant message\n\n\n\n\ndelete_lbry_file\n\n\nDelete a lbry file\n\nArgs:\n    'file_name': downloaded file name, string\nReturns:\n    confirmation message\n\n\n\n\ndownload_descriptor\n\n\nDownload and return a sd blob\n\nArgs:\n    sd_hash\nReturns\n    sd blob, dict\n\n\n\n\nget\n\n\nDownload stream from a LBRY uri.\n\nArgs:\n    'name': name to download, string\n    'download_directory': optional, path to directory where file will be saved, string\n    'file_name': optional, a user specified name for the downloaded file\n    'stream_info': optional, specified stream info overrides name\n    'timeout': optional\n    'wait_for_write': optional, defaults to True\nReturns:\n    'stream_hash': hex string\n    'path': path of download\n\n\n\n\nget_availability\n\n\nGet stream availability for a winning claim\n\nArg:\n    name (str): lbry uri\n\nReturns:\n     peers per blob / total blobs\n\n\n\n\nget_balance\n\n\nGet balance\n\nArgs:\n    None\nReturns:\n    balance, float\n\n\n\n\nget_best_blockhash\n\n\nGet hash of most recent block\n\nArgs:\n    None\nReturns:\n    Hash of most recent block\n\n\n\n\nget_blob_hashes\n\n\nReturns all blob hashes\n\nArgs:\n    None\nReturns:\n    list of blob hashes\n\n\n\n\nget_block\n\n\nGet contents of a block\n\nArgs:\n    blockhash: hash of the block to look up\nReturns:\n    requested block\n\n\n\n\nget_claim_info\n\n\nResolve claim info from a LBRY uri\n\nArgs:\n    'name': name to look up, string, do not include lbry:// prefix\n    'txid': optional, if specified, look for claim with this txid\n    'nout': optional, if specified, look for claim with this nout\n\nReturns:\n    txid, amount, value, n, height\n\n\n\n\nget_claims_for_name\n\n\nGet claims for a name\n\nArgs:\n    'name': name\nReturns\n    list of name claims\n\n\n\n\nget_claims_for_tx\n\n\nGet claims for tx\n\nArgs:\n    txid: txid of a name claim transaction\nReturns:\n    any claims contained in the requested tx\n\n\n\n\nget_est_cost\n\n\nGet estimated cost for a lbry stream\n\nArgs:\n    'name': lbry uri\n    'size': stream size, in bytes. if provided an sd blob won't be downloaded.\nReturns:\n    estimated cost\n\n\n\n\nget_lbry_file\n\n\nGet lbry file\n\nArgs:\n    'name': get file by lbry uri,\n    'sd_hash': get file by the hash in the name claim,\n    'file_name': get file by its name in the downloads folder,\nReturns:\n    'completed': bool\n    'file_name': string\n    'key': hex string\n    'points_paid': float\n    'stopped': bool\n    'stream_hash': base 58 string\n    'stream_name': string\n    'suggested_file_name': string\n    'upload_allowed': bool\n    'sd_hash': string\n\n\n\n\nget_lbry_files\n\n\nGet LBRY files\n\nArgs:\n    None\nReturns:\n    List of lbry files:\n    'completed': bool\n    'file_name': string\n    'key': hex string\n    'points_paid': float\n    'stopped': bool\n    'stream_hash': base 58 string\n    'stream_name': string\n    'suggested_file_name': string\n    'upload_allowed': bool\n    'sd_hash': string\n\n\n\n\nget_lbry_session_info\n\n\nGet information about the current lbrynet session\n\nArgs:\n    None\nReturns:\n    'lbry_id': string,\n    'managed_blobs': int, number of completed blobs in the blob manager,\n    'managed_streams': int, number of lbry files in the file manager\n\n\n\n\nget_mean_availability\n\n\nGet mean blob availability\n\nArgs:\n    None\nReturns:\n    Mean peers for a blob\n\n\n\n\nget_miner_status\n\n\nGet status of miner\n\nArgs:\n    None\nReturns:\n    True/False\n\n\n\n\nget_my_claim\n\n\nReturn existing claim for a given name\n\nArgs:\n    'name': name to look up\nReturns:\n    claim info, False if no such claim exists\n\n\n\n\nget_name_claims\n\n\nGet my name claims\n\nArgs:\n    None\nReturns\n    list of name claims\n\n\n\n\nget_nametrie\n\n\nGet the nametrie\n\nArgs:\n    None\nReturns:\n    Name claim trie\n\n\n\n\nget_new_address\n\n\nGenerate a new wallet address\n\nArgs:\n    None\nReturns:\n    new wallet address, base 58 string\n\n\n\n\nget_peers_for_hash\n\n\nGet peers for blob hash\n\nArgs:\n    'blob_hash': blob hash\nReturns:\n    List of contacts\n\n\n\n\nget_public_key_from_wallet\n\n\nGet public key from wallet address\n\nArgs:\n    wallet: wallet address, base58\nReturns:\n    public key\n\n\n\n\nget_settings\n\n\nGet lbrynet daemon settings\n\nArgs:\n    None\nReturns:\n    'run_on_startup': bool,\n    'data_rate': float,\n    'max_key_fee': float,\n    'download_directory': string,\n    'max_upload': float, 0.0 for unlimited\n    'max_download': float, 0.0 for unlimited\n    'upload_log': bool,\n    'search_timeout': float,\n    'download_timeout': int\n    'max_search_results': int,\n    'wallet_type': string,\n    'delete_blobs_on_remove': bool,\n    'peer_port': int,\n    'dht_node_port': int,\n    'use_upnp': bool,\n\n\n\n\nget_start_notice\n\n\nGet special message to be displayed at startup\n\nArgs:\n    None\nReturns:\n    Startup message, such as first run notification\n\n\n\n\nget_time_behind_blockchain\n\n\nGet number of blocks behind the blockchain\n\nArgs:\n    None\nReturns:\n    number of blocks behind blockchain, int\n\n\n\n\nget_transaction\n\n\nGet a decoded transaction from a txid\n\nArgs:\n    txid: txid hex string\nReturns:\n    JSON formatted transaction\n\n\n\n\nget_transaction_history\n\n\nGet transaction history\n\nArgs:\n    None\nReturns:\n    list of transactions\n\n\n\n\nhelp\n\n\nFunction to retrieve docstring for API function\n\nArgs:\n    optional 'function': function to retrieve documentation for\n    optional 'callable_during_startup':\nReturns:\n    if given a function, returns given documentation\n    if given callable_during_startup flag, returns list of\n    functions callable during the startup sequence\n    if no params are given, returns the list of callable functions\n\n\n\n\nis_first_run\n\n\nCheck if this is the first time lbrynet daemon has been run\n\nArgs:\n    None\nReturns:\n    True if first run, otherwise False\n\n\n\n\nis_running\n\n\nCheck if lbrynet daemon is running\n\nArgs:\n    None\nReturns: true if daemon completed startup, otherwise false\n\n\n\n\nlog\n\n\nLog message\n\nArgs:\n    'message': message to be logged\nReturns:\n     True\n\n\n\n\npublish\n\n\nMake a new name claim and publish associated data to lbrynet\n\nArgs:\n    'name': name to be claimed, string\n    'file_path': path to file to be associated with name, string\n    'bid': amount of credits to commit in this claim, float\n    'metadata': metadata dictionary\n    optional 'fee'\nReturns:\n    'success' : True if claim was succesful , False otherwise\n    'reason' : if not succesful, give reason\n    'txid' : txid of resulting transaction if succesful\n    'nout' : nout of the resulting support claim if succesful\n    'fee' : fee paid for the claim transaction if succesful\n    'claimid' : claimid of the resulting transaction\n\n\n\n\nreflect\n\n\nReflect a stream\n\nArgs:\n    sd_hash: sd_hash of lbry file\nReturns:\n    True or traceback\n\n\n\n\nreflect_all_blobs\n\n\nReflects all saved blobs\n\nArgs:\n    None\nReturns:\n    True\n\n\n\n\nresolve_name\n\n\nResolve stream info from a LBRY uri\n\nArgs:\n    'name': name to look up, string, do not include lbry:// prefix\nReturns:\n    metadata from name claim\n\n\n\n\nreveal\n\n\nReveal a file or directory in file browser\n\nArgs:\n    'path': path to be selected in file browser\nReturns:\n    True, opens file browser\n\n\n\n\nsend_amount_to_address\n\n\nSend credits to an address\n\nArgs:\n    amount: the amount to send\n    address: the address of the recipient\nReturns:\n    True if payment successfully scheduled\n\n\n\n\nset_miner\n\n\nStart of stop the miner, function only available when lbrycrd is set as the wallet\n\nArgs:\n    run: True/False\nReturns:\n    miner status, True/False\n\n\n\n\nset_settings\n\n\nSet lbrynet daemon settings\n\nArgs:\n    'run_on_startup': bool,\n    'data_rate': float,\n    'max_key_fee': float,\n    'download_directory': string,\n    'max_upload': float, 0.0 for unlimited\n    'max_download': float, 0.0 for unlimited\n    'upload_log': bool,\n    'download_timeout': int\nReturns:\n    settings dict\n\n\n\n\nstart_lbry_file\n\n\nStop lbry file\n\nArgs:\n    'name': stop file by lbry uri,\n    'sd_hash': stop file by the hash in the name claim,\n    'file_name': stop file by its name in the downloads folder,\nReturns:\n    confirmation message\n\n\n\n\nstop\n\n\nStop lbrynet-daemon\n\nArgs:\n    None\nReturns:\n    shutdown message\n\n\n\n\nstop_lbry_file\n\n\nStop lbry file\n\nArgs:\n    'name': stop file by lbry uri,\n    'sd_hash': stop file by the hash in the name claim,\n    'file_name': stop file by its name in the downloads folder,\nReturns:\n    confirmation message\n\n\n\n\nsupport_claim\n\n\nSupport a name claim\n\nArgs:\n    'name': name\n    'claim_id': claim id of claim to support\n    'amount': amount to support by\nReturn:\n    success : True if succesful , False otherwise\n    reason : if not succesful, give reason\n    txid : txid of resulting transaction if succesful\n    nout : nout of the resulting support claim if succesful\n    fee : fee paid for the transaction if succesful\n\n\n\n\ntest_api_authentication\n\n\n\n\n\n\n\nupload_log\n\n\nUpload log\n\nArgs, optional:\n    'name_prefix': prefix to indicate what is requesting the log upload\n    'exclude_previous': true/false, whether or not to exclude\n        previous sessions from upload, defaults on true\n\nReturns:\n    True\n\n\n\n\nversion\n\n\nGet lbry version information\n\nArgs:\n    None\nReturns:\n    \nplatform\n: platform string\n    \nos_release\n: os release string\n    \nos_system\n: os name\n    \nlbrynet_version: \n: lbrynet_version,\n    \nlbryum_version: \n: lbryum_version,\n    \nui_version\n: commit hash of ui version being used\n    \nremote_lbrynet\n: most recent lbrynet version available from github\n    \nremote_lbryum\n: most recent lbryum version available from github", 
+            "title": "JSON-RPC API"
+        }, 
+        {
+            "location": "/api/#lbry-json-rpc-api-documentation", 
+            "text": "", 
+            "title": "LBRY JSON-RPC API Documentation"
+        }, 
+        {
+            "location": "/api/#abandon_claim", 
+            "text": "Abandon a name and reclaim credits from the claim\n\nArgs:\n    'txid': txid of claim, string\n    'nout': nout of claim, integer\nReturn:\n    success : True if succesful , False otherwise\n    reason : if not succesful, give reason\n    txid : txid of resulting transaction if succesful\n    fee : fee paid for the transaction if succesful", 
+            "title": "abandon_claim"
+        }, 
+        {
+            "location": "/api/#abandon_name", 
+            "text": "DEPRECIATED, use abandon_claim\n\nArgs:\n    'txid': txid of claim, string\nReturn:\n    txid", 
+            "title": "abandon_name"
+        }, 
+        {
+            "location": "/api/#address_is_mine", 
+            "text": "Checks if an address is associated with the current wallet.\n\nArgs:\n    address: string\nReturns:\n    is_mine: bool", 
+            "title": "address_is_mine"
+        }, 
+        {
+            "location": "/api/#announce_all_blobs_to_dht", 
+            "text": "Announce all blobs to the dht\n\nArgs:\n    None\nReturns:", 
+            "title": "announce_all_blobs_to_dht"
+        }, 
+        {
+            "location": "/api/#configure_ui", 
+            "text": "Configure the UI being hosted\n\nArgs, optional:\n    'branch': a branch name on lbryio/lbry-web-ui\n    'path': path to a ui folder", 
+            "title": "configure_ui"
+        }, 
+        {
+            "location": "/api/#daemon_status", 
+            "text": "Get lbrynet daemon status information\n\nArgs:\n    None\nReturns:\n    'message': startup status message\n    'code': status_code\n    'progress': progress, only used in loading_wallet\n    'is_lagging': flag set to indicate lag, if set message will contain relevant message", 
+            "title": "daemon_status"
+        }, 
+        {
+            "location": "/api/#delete_lbry_file", 
+            "text": "Delete a lbry file\n\nArgs:\n    'file_name': downloaded file name, string\nReturns:\n    confirmation message", 
+            "title": "delete_lbry_file"
+        }, 
+        {
+            "location": "/api/#download_descriptor", 
+            "text": "Download and return a sd blob\n\nArgs:\n    sd_hash\nReturns\n    sd blob, dict", 
+            "title": "download_descriptor"
+        }, 
+        {
+            "location": "/api/#get", 
+            "text": "Download stream from a LBRY uri.\n\nArgs:\n    'name': name to download, string\n    'download_directory': optional, path to directory where file will be saved, string\n    'file_name': optional, a user specified name for the downloaded file\n    'stream_info': optional, specified stream info overrides name\n    'timeout': optional\n    'wait_for_write': optional, defaults to True\nReturns:\n    'stream_hash': hex string\n    'path': path of download", 
+            "title": "get"
+        }, 
+        {
+            "location": "/api/#get_availability", 
+            "text": "Get stream availability for a winning claim\n\nArg:\n    name (str): lbry uri\n\nReturns:\n     peers per blob / total blobs", 
+            "title": "get_availability"
+        }, 
+        {
+            "location": "/api/#get_balance", 
+            "text": "Get balance\n\nArgs:\n    None\nReturns:\n    balance, float", 
+            "title": "get_balance"
+        }, 
+        {
+            "location": "/api/#get_best_blockhash", 
+            "text": "Get hash of most recent block\n\nArgs:\n    None\nReturns:\n    Hash of most recent block", 
+            "title": "get_best_blockhash"
+        }, 
+        {
+            "location": "/api/#get_blob_hashes", 
+            "text": "Returns all blob hashes\n\nArgs:\n    None\nReturns:\n    list of blob hashes", 
+            "title": "get_blob_hashes"
+        }, 
+        {
+            "location": "/api/#get_block", 
+            "text": "Get contents of a block\n\nArgs:\n    blockhash: hash of the block to look up\nReturns:\n    requested block", 
+            "title": "get_block"
+        }, 
+        {
+            "location": "/api/#get_claim_info", 
+            "text": "Resolve claim info from a LBRY uri\n\nArgs:\n    'name': name to look up, string, do not include lbry:// prefix\n    'txid': optional, if specified, look for claim with this txid\n    'nout': optional, if specified, look for claim with this nout\n\nReturns:\n    txid, amount, value, n, height", 
+            "title": "get_claim_info"
+        }, 
+        {
+            "location": "/api/#get_claims_for_name", 
+            "text": "Get claims for a name\n\nArgs:\n    'name': name\nReturns\n    list of name claims", 
+            "title": "get_claims_for_name"
+        }, 
+        {
+            "location": "/api/#get_claims_for_tx", 
+            "text": "Get claims for tx\n\nArgs:\n    txid: txid of a name claim transaction\nReturns:\n    any claims contained in the requested tx", 
+            "title": "get_claims_for_tx"
+        }, 
+        {
+            "location": "/api/#get_est_cost", 
+            "text": "Get estimated cost for a lbry stream\n\nArgs:\n    'name': lbry uri\n    'size': stream size, in bytes. if provided an sd blob won't be downloaded.\nReturns:\n    estimated cost", 
+            "title": "get_est_cost"
+        }, 
+        {
+            "location": "/api/#get_lbry_file", 
+            "text": "Get lbry file\n\nArgs:\n    'name': get file by lbry uri,\n    'sd_hash': get file by the hash in the name claim,\n    'file_name': get file by its name in the downloads folder,\nReturns:\n    'completed': bool\n    'file_name': string\n    'key': hex string\n    'points_paid': float\n    'stopped': bool\n    'stream_hash': base 58 string\n    'stream_name': string\n    'suggested_file_name': string\n    'upload_allowed': bool\n    'sd_hash': string", 
+            "title": "get_lbry_file"
+        }, 
+        {
+            "location": "/api/#get_lbry_files", 
+            "text": "Get LBRY files\n\nArgs:\n    None\nReturns:\n    List of lbry files:\n    'completed': bool\n    'file_name': string\n    'key': hex string\n    'points_paid': float\n    'stopped': bool\n    'stream_hash': base 58 string\n    'stream_name': string\n    'suggested_file_name': string\n    'upload_allowed': bool\n    'sd_hash': string", 
+            "title": "get_lbry_files"
+        }, 
+        {
+            "location": "/api/#get_lbry_session_info", 
+            "text": "Get information about the current lbrynet session\n\nArgs:\n    None\nReturns:\n    'lbry_id': string,\n    'managed_blobs': int, number of completed blobs in the blob manager,\n    'managed_streams': int, number of lbry files in the file manager", 
+            "title": "get_lbry_session_info"
+        }, 
+        {
+            "location": "/api/#get_mean_availability", 
+            "text": "Get mean blob availability\n\nArgs:\n    None\nReturns:\n    Mean peers for a blob", 
+            "title": "get_mean_availability"
+        }, 
+        {
+            "location": "/api/#get_miner_status", 
+            "text": "Get status of miner\n\nArgs:\n    None\nReturns:\n    True/False", 
+            "title": "get_miner_status"
+        }, 
+        {
+            "location": "/api/#get_my_claim", 
+            "text": "Return existing claim for a given name\n\nArgs:\n    'name': name to look up\nReturns:\n    claim info, False if no such claim exists", 
+            "title": "get_my_claim"
+        }, 
+        {
+            "location": "/api/#get_name_claims", 
+            "text": "Get my name claims\n\nArgs:\n    None\nReturns\n    list of name claims", 
+            "title": "get_name_claims"
+        }, 
+        {
+            "location": "/api/#get_nametrie", 
+            "text": "Get the nametrie\n\nArgs:\n    None\nReturns:\n    Name claim trie", 
+            "title": "get_nametrie"
+        }, 
+        {
+            "location": "/api/#get_new_address", 
+            "text": "Generate a new wallet address\n\nArgs:\n    None\nReturns:\n    new wallet address, base 58 string", 
+            "title": "get_new_address"
+        }, 
+        {
+            "location": "/api/#get_peers_for_hash", 
+            "text": "Get peers for blob hash\n\nArgs:\n    'blob_hash': blob hash\nReturns:\n    List of contacts", 
+            "title": "get_peers_for_hash"
+        }, 
+        {
+            "location": "/api/#get_public_key_from_wallet", 
+            "text": "Get public key from wallet address\n\nArgs:\n    wallet: wallet address, base58\nReturns:\n    public key", 
+            "title": "get_public_key_from_wallet"
+        }, 
+        {
+            "location": "/api/#get_settings", 
+            "text": "Get lbrynet daemon settings\n\nArgs:\n    None\nReturns:\n    'run_on_startup': bool,\n    'data_rate': float,\n    'max_key_fee': float,\n    'download_directory': string,\n    'max_upload': float, 0.0 for unlimited\n    'max_download': float, 0.0 for unlimited\n    'upload_log': bool,\n    'search_timeout': float,\n    'download_timeout': int\n    'max_search_results': int,\n    'wallet_type': string,\n    'delete_blobs_on_remove': bool,\n    'peer_port': int,\n    'dht_node_port': int,\n    'use_upnp': bool,", 
+            "title": "get_settings"
+        }, 
+        {
+            "location": "/api/#get_start_notice", 
+            "text": "Get special message to be displayed at startup\n\nArgs:\n    None\nReturns:\n    Startup message, such as first run notification", 
+            "title": "get_start_notice"
+        }, 
+        {
+            "location": "/api/#get_time_behind_blockchain", 
+            "text": "Get number of blocks behind the blockchain\n\nArgs:\n    None\nReturns:\n    number of blocks behind blockchain, int", 
+            "title": "get_time_behind_blockchain"
+        }, 
+        {
+            "location": "/api/#get_transaction", 
+            "text": "Get a decoded transaction from a txid\n\nArgs:\n    txid: txid hex string\nReturns:\n    JSON formatted transaction", 
+            "title": "get_transaction"
+        }, 
+        {
+            "location": "/api/#get_transaction_history", 
+            "text": "Get transaction history\n\nArgs:\n    None\nReturns:\n    list of transactions", 
+            "title": "get_transaction_history"
+        }, 
+        {
+            "location": "/api/#help", 
+            "text": "Function to retrieve docstring for API function\n\nArgs:\n    optional 'function': function to retrieve documentation for\n    optional 'callable_during_startup':\nReturns:\n    if given a function, returns given documentation\n    if given callable_during_startup flag, returns list of\n    functions callable during the startup sequence\n    if no params are given, returns the list of callable functions", 
+            "title": "help"
+        }, 
+        {
+            "location": "/api/#is_first_run", 
+            "text": "Check if this is the first time lbrynet daemon has been run\n\nArgs:\n    None\nReturns:\n    True if first run, otherwise False", 
+            "title": "is_first_run"
+        }, 
+        {
+            "location": "/api/#is_running", 
+            "text": "Check if lbrynet daemon is running\n\nArgs:\n    None\nReturns: true if daemon completed startup, otherwise false", 
+            "title": "is_running"
+        }, 
+        {
+            "location": "/api/#log", 
+            "text": "Log message\n\nArgs:\n    'message': message to be logged\nReturns:\n     True", 
+            "title": "log"
+        }, 
+        {
+            "location": "/api/#publish", 
+            "text": "Make a new name claim and publish associated data to lbrynet\n\nArgs:\n    'name': name to be claimed, string\n    'file_path': path to file to be associated with name, string\n    'bid': amount of credits to commit in this claim, float\n    'metadata': metadata dictionary\n    optional 'fee'\nReturns:\n    'success' : True if claim was succesful , False otherwise\n    'reason' : if not succesful, give reason\n    'txid' : txid of resulting transaction if succesful\n    'nout' : nout of the resulting support claim if succesful\n    'fee' : fee paid for the claim transaction if succesful\n    'claimid' : claimid of the resulting transaction", 
+            "title": "publish"
+        }, 
+        {
+            "location": "/api/#reflect", 
+            "text": "Reflect a stream\n\nArgs:\n    sd_hash: sd_hash of lbry file\nReturns:\n    True or traceback", 
+            "title": "reflect"
+        }, 
+        {
+            "location": "/api/#reflect_all_blobs", 
+            "text": "Reflects all saved blobs\n\nArgs:\n    None\nReturns:\n    True", 
+            "title": "reflect_all_blobs"
+        }, 
+        {
+            "location": "/api/#resolve_name", 
+            "text": "Resolve stream info from a LBRY uri\n\nArgs:\n    'name': name to look up, string, do not include lbry:// prefix\nReturns:\n    metadata from name claim", 
+            "title": "resolve_name"
+        }, 
+        {
+            "location": "/api/#reveal", 
+            "text": "Reveal a file or directory in file browser\n\nArgs:\n    'path': path to be selected in file browser\nReturns:\n    True, opens file browser", 
+            "title": "reveal"
+        }, 
+        {
+            "location": "/api/#send_amount_to_address", 
+            "text": "Send credits to an address\n\nArgs:\n    amount: the amount to send\n    address: the address of the recipient\nReturns:\n    True if payment successfully scheduled", 
+            "title": "send_amount_to_address"
+        }, 
+        {
+            "location": "/api/#set_miner", 
+            "text": "Start of stop the miner, function only available when lbrycrd is set as the wallet\n\nArgs:\n    run: True/False\nReturns:\n    miner status, True/False", 
+            "title": "set_miner"
+        }, 
+        {
+            "location": "/api/#set_settings", 
+            "text": "Set lbrynet daemon settings\n\nArgs:\n    'run_on_startup': bool,\n    'data_rate': float,\n    'max_key_fee': float,\n    'download_directory': string,\n    'max_upload': float, 0.0 for unlimited\n    'max_download': float, 0.0 for unlimited\n    'upload_log': bool,\n    'download_timeout': int\nReturns:\n    settings dict", 
+            "title": "set_settings"
+        }, 
+        {
+            "location": "/api/#start_lbry_file", 
+            "text": "Stop lbry file\n\nArgs:\n    'name': stop file by lbry uri,\n    'sd_hash': stop file by the hash in the name claim,\n    'file_name': stop file by its name in the downloads folder,\nReturns:\n    confirmation message", 
+            "title": "start_lbry_file"
+        }, 
+        {
+            "location": "/api/#stop", 
+            "text": "Stop lbrynet-daemon\n\nArgs:\n    None\nReturns:\n    shutdown message", 
+            "title": "stop"
+        }, 
+        {
+            "location": "/api/#stop_lbry_file", 
+            "text": "Stop lbry file\n\nArgs:\n    'name': stop file by lbry uri,\n    'sd_hash': stop file by the hash in the name claim,\n    'file_name': stop file by its name in the downloads folder,\nReturns:\n    confirmation message", 
+            "title": "stop_lbry_file"
+        }, 
+        {
+            "location": "/api/#support_claim", 
+            "text": "Support a name claim\n\nArgs:\n    'name': name\n    'claim_id': claim id of claim to support\n    'amount': amount to support by\nReturn:\n    success : True if succesful , False otherwise\n    reason : if not succesful, give reason\n    txid : txid of resulting transaction if succesful\n    nout : nout of the resulting support claim if succesful\n    fee : fee paid for the transaction if succesful", 
+            "title": "support_claim"
+        }, 
+        {
+            "location": "/api/#test_api_authentication", 
+            "text": "", 
+            "title": "test_api_authentication"
+        }, 
+        {
+            "location": "/api/#upload_log", 
+            "text": "Upload log\n\nArgs, optional:\n    'name_prefix': prefix to indicate what is requesting the log upload\n    'exclude_previous': true/false, whether or not to exclude\n        previous sessions from upload, defaults on true\n\nReturns:\n    True", 
+            "title": "upload_log"
+        }, 
+        {
+            "location": "/api/#version", 
+            "text": "Get lbry version information\n\nArgs:\n    None\nReturns:\n     platform : platform string\n     os_release : os release string\n     os_system : os name\n     lbrynet_version:  : lbrynet_version,\n     lbryum_version:  : lbryum_version,\n     ui_version : commit hash of ui version being used\n     remote_lbrynet : most recent lbrynet version available from github\n     remote_lbryum : most recent lbryum version available from github", 
+            "title": "version"
+        }
+    ]
+}
