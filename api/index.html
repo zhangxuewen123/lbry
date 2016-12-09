@@ -142,7 +142,7 @@
 
 <h1 id="lbry-json-rpc-api-documentation">LBRY JSON-RPC API Documentation</h1>
 <h2 id="abandon_claim">abandon_claim</h2>
-<pre><code>Abandon a name and reclaim credits from the claim
+<pre><code class="text">Abandon a name and reclaim credits from the claim
 
 Args:
     'txid': txid of claim, string
@@ -155,7 +155,7 @@ Return:
 </code></pre>
 
 <h2 id="abandon_name">abandon_name</h2>
-<pre><code>DEPRECIATED, use abandon_claim
+<pre><code class="text">DEPRECIATED, use abandon_claim
 
 Args:
     'txid': txid of claim, string
@@ -164,7 +164,7 @@ Return:
 </code></pre>
 
 <h2 id="address_is_mine">address_is_mine</h2>
-<pre><code>Checks if an address is associated with the current wallet.
+<pre><code class="text">Checks if an address is associated with the current wallet.
 
 Args:
     address: string
@@ -173,7 +173,7 @@ Returns:
 </code></pre>
 
 <h2 id="announce_all_blobs_to_dht">announce_all_blobs_to_dht</h2>
-<pre><code>Announce all blobs to the dht
+<pre><code class="text">Announce all blobs to the dht
 
 Args:
     None
@@ -181,7 +181,7 @@ Returns:
 </code></pre>
 
 <h2 id="configure_ui">configure_ui</h2>
-<pre><code>Configure the UI being hosted
+<pre><code class="text">Configure the UI being hosted
 
 Args, optional:
     'branch': a branch name on lbryio/lbry-web-ui
@@ -189,7 +189,7 @@ Args, optional:
 </code></pre>
 
 <h2 id="daemon_status">daemon_status</h2>
-<pre><code>Get lbrynet daemon status information
+<pre><code class="text">Get lbrynet daemon status information
 
 Args:
     None
@@ -201,7 +201,7 @@ Returns:
 </code></pre>
 
 <h2 id="delete_lbry_file">delete_lbry_file</h2>
-<pre><code>Delete a lbry file
+<pre><code class="text">Delete a lbry file
 
 Args:
     'file_name': downloaded file name, string
@@ -210,7 +210,7 @@ Returns:
 </code></pre>
 
 <h2 id="download_descriptor">download_descriptor</h2>
-<pre><code>Download and return a sd blob
+<pre><code class="text">Download and return a sd blob
 
 Args:
     sd_hash
@@ -219,7 +219,7 @@ Returns
 </code></pre>
 
 <h2 id="get">get</h2>
-<pre><code>Download stream from a LBRY uri.
+<pre><code class="text">Download stream from a LBRY uri.
 
 Args:
     'name': name to download, string
@@ -234,7 +234,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_availability">get_availability</h2>
-<pre><code>Get stream availability for a winning claim
+<pre><code class="text">Get stream availability for a winning claim
 
 Arg:
     name (str): lbry uri
@@ -244,7 +244,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_balance">get_balance</h2>
-<pre><code>Get balance
+<pre><code class="text">Get balance
 
 Args:
     None
@@ -253,7 +253,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_best_blockhash">get_best_blockhash</h2>
-<pre><code>Get hash of most recent block
+<pre><code class="text">Get hash of most recent block
 
 Args:
     None
@@ -262,7 +262,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_blob_hashes">get_blob_hashes</h2>
-<pre><code>Returns all blob hashes
+<pre><code class="text">Returns all blob hashes
 
 Args:
     None
@@ -271,7 +271,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_block">get_block</h2>
-<pre><code>Get contents of a block
+<pre><code class="text">Get contents of a block
 
 Args:
     blockhash: hash of the block to look up
@@ -280,7 +280,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_claim_info">get_claim_info</h2>
-<pre><code>Resolve claim info from a LBRY uri
+<pre><code class="text">Resolve claim info from a LBRY uri
 
 Args:
     'name': name to look up, string, do not include lbry:// prefix
@@ -292,7 +292,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_claims_for_name">get_claims_for_name</h2>
-<pre><code>Get claims for a name
+<pre><code class="text">Get claims for a name
 
 Args:
     'name': name
@@ -301,7 +301,7 @@ Returns
 </code></pre>
 
 <h2 id="get_claims_for_tx">get_claims_for_tx</h2>
-<pre><code>Get claims for tx
+<pre><code class="text">Get claims for tx
 
 Args:
     txid: txid of a name claim transaction
@@ -310,7 +310,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_est_cost">get_est_cost</h2>
-<pre><code>Get estimated cost for a lbry stream
+<pre><code class="text">Get estimated cost for a lbry stream
 
 Args:
     'name': lbry uri
@@ -320,7 +320,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_lbry_file">get_lbry_file</h2>
-<pre><code>Get lbry file
+<pre><code class="text">Get lbry file
 
 Args:
     'name': get file by lbry uri,
@@ -340,7 +340,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_lbry_files">get_lbry_files</h2>
-<pre><code>Get LBRY files
+<pre><code class="text">Get LBRY files
 
 Args:
     None
@@ -359,7 +359,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_lbry_session_info">get_lbry_session_info</h2>
-<pre><code>Get information about the current lbrynet session
+<pre><code class="text">Get information about the current lbrynet session
 
 Args:
     None
@@ -370,7 +370,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_mean_availability">get_mean_availability</h2>
-<pre><code>Get mean blob availability
+<pre><code class="text">Get mean blob availability
 
 Args:
     None
@@ -379,7 +379,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_miner_status">get_miner_status</h2>
-<pre><code>Get status of miner
+<pre><code class="text">Get status of miner
 
 Args:
     None
@@ -388,7 +388,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_my_claim">get_my_claim</h2>
-<pre><code>Return existing claim for a given name
+<pre><code class="text">Return existing claim for a given name
 
 Args:
     'name': name to look up
@@ -397,7 +397,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_name_claims">get_name_claims</h2>
-<pre><code>Get my name claims
+<pre><code class="text">Get my name claims
 
 Args:
     None
@@ -406,7 +406,7 @@ Returns
 </code></pre>
 
 <h2 id="get_nametrie">get_nametrie</h2>
-<pre><code>Get the nametrie
+<pre><code class="text">Get the nametrie
 
 Args:
     None
@@ -415,7 +415,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_new_address">get_new_address</h2>
-<pre><code>Generate a new wallet address
+<pre><code class="text">Generate a new wallet address
 
 Args:
     None
@@ -424,7 +424,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_peers_for_hash">get_peers_for_hash</h2>
-<pre><code>Get peers for blob hash
+<pre><code class="text">Get peers for blob hash
 
 Args:
     'blob_hash': blob hash
@@ -433,7 +433,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_public_key_from_wallet">get_public_key_from_wallet</h2>
-<pre><code>Get public key from wallet address
+<pre><code class="text">Get public key from wallet address
 
 Args:
     wallet: wallet address, base58
@@ -442,7 +442,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_settings">get_settings</h2>
-<pre><code>Get lbrynet daemon settings
+<pre><code class="text">Get lbrynet daemon settings
 
 Args:
     None
@@ -465,7 +465,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_start_notice">get_start_notice</h2>
-<pre><code>Get special message to be displayed at startup
+<pre><code class="text">Get special message to be displayed at startup
 
 Args:
     None
@@ -474,7 +474,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_time_behind_blockchain">get_time_behind_blockchain</h2>
-<pre><code>Get number of blocks behind the blockchain
+<pre><code class="text">Get number of blocks behind the blockchain
 
 Args:
     None
@@ -483,7 +483,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_transaction">get_transaction</h2>
-<pre><code>Get a decoded transaction from a txid
+<pre><code class="text">Get a decoded transaction from a txid
 
 Args:
     txid: txid hex string
@@ -492,7 +492,7 @@ Returns:
 </code></pre>
 
 <h2 id="get_transaction_history">get_transaction_history</h2>
-<pre><code>Get transaction history
+<pre><code class="text">Get transaction history
 
 Args:
     None
@@ -501,7 +501,7 @@ Returns:
 </code></pre>
 
 <h2 id="help">help</h2>
-<pre><code>Function to retrieve docstring for API function
+<pre><code class="text">Function to retrieve docstring for API function
 
 Args:
     optional 'function': function to retrieve documentation for
@@ -514,7 +514,7 @@ Returns:
 </code></pre>
 
 <h2 id="is_first_run">is_first_run</h2>
-<pre><code>Check if this is the first time lbrynet daemon has been run
+<pre><code class="text">Check if this is the first time lbrynet daemon has been run
 
 Args:
     None
@@ -523,7 +523,7 @@ Returns:
 </code></pre>
 
 <h2 id="is_running">is_running</h2>
-<pre><code>Check if lbrynet daemon is running
+<pre><code class="text">Check if lbrynet daemon is running
 
 Args:
     None
@@ -531,7 +531,7 @@ Returns: true if daemon completed startup, otherwise false
 </code></pre>
 
 <h2 id="log">log</h2>
-<pre><code>Log message
+<pre><code class="text">Log message
 
 Args:
     'message': message to be logged
@@ -540,7 +540,7 @@ Returns:
 </code></pre>
 
 <h2 id="publish">publish</h2>
-<pre><code>Make a new name claim and publish associated data to lbrynet
+<pre><code class="text">Make a new name claim and publish associated data to lbrynet
 
 Args:
     'name': name to be claimed, string
@@ -558,7 +558,7 @@ Returns:
 </code></pre>
 
 <h2 id="reflect">reflect</h2>
-<pre><code>Reflect a stream
+<pre><code class="text">Reflect a stream
 
 Args:
     sd_hash: sd_hash of lbry file
@@ -567,7 +567,7 @@ Returns:
 </code></pre>
 
 <h2 id="reflect_all_blobs">reflect_all_blobs</h2>
-<pre><code>Reflects all saved blobs
+<pre><code class="text">Reflects all saved blobs
 
 Args:
     None
@@ -576,7 +576,7 @@ Returns:
 </code></pre>
 
 <h2 id="resolve_name">resolve_name</h2>
-<pre><code>Resolve stream info from a LBRY uri
+<pre><code class="text">Resolve stream info from a LBRY uri
 
 Args:
     'name': name to look up, string, do not include lbry:// prefix
@@ -585,7 +585,7 @@ Returns:
 </code></pre>
 
 <h2 id="reveal">reveal</h2>
-<pre><code>Reveal a file or directory in file browser
+<pre><code class="text">Reveal a file or directory in file browser
 
 Args:
     'path': path to be selected in file browser
@@ -594,7 +594,7 @@ Returns:
 </code></pre>
 
 <h2 id="send_amount_to_address">send_amount_to_address</h2>
-<pre><code>Send credits to an address
+<pre><code class="text">Send credits to an address
 
 Args:
     amount: the amount to send
@@ -604,7 +604,7 @@ Returns:
 </code></pre>
 
 <h2 id="set_miner">set_miner</h2>
-<pre><code>Start of stop the miner, function only available when lbrycrd is set as the wallet
+<pre><code class="text">Start of stop the miner, function only available when lbrycrd is set as the wallet
 
 Args:
     run: True/False
@@ -613,7 +613,7 @@ Returns:
 </code></pre>
 
 <h2 id="set_settings">set_settings</h2>
-<pre><code>Set lbrynet daemon settings
+<pre><code class="text">Set lbrynet daemon settings
 
 Args:
     'run_on_startup': bool,
@@ -629,7 +629,7 @@ Returns:
 </code></pre>
 
 <h2 id="start_lbry_file">start_lbry_file</h2>
-<pre><code>Stop lbry file
+<pre><code class="text">Stop lbry file
 
 Args:
     'name': stop file by lbry uri,
@@ -640,7 +640,7 @@ Returns:
 </code></pre>
 
 <h2 id="stop">stop</h2>
-<pre><code>Stop lbrynet-daemon
+<pre><code class="text">Stop lbrynet-daemon
 
 Args:
     None
@@ -649,7 +649,7 @@ Returns:
 </code></pre>
 
 <h2 id="stop_lbry_file">stop_lbry_file</h2>
-<pre><code>Stop lbry file
+<pre><code class="text">Stop lbry file
 
 Args:
     'name': stop file by lbry uri,
@@ -660,7 +660,7 @@ Returns:
 </code></pre>
 
 <h2 id="support_claim">support_claim</h2>
-<pre><code>Support a name claim
+<pre><code class="text">Support a name claim
 
 Args:
     'name': name
@@ -675,11 +675,11 @@ Return:
 </code></pre>
 
 <h2 id="test_api_authentication">test_api_authentication</h2>
-<pre><code>
+<pre><code class="text">
 </code></pre>
 
 <h2 id="upload_log">upload_log</h2>
-<pre><code>Upload log
+<pre><code class="text">Upload log
 
 Args, optional:
     'name_prefix': prefix to indicate what is requesting the log upload
@@ -691,7 +691,7 @@ Returns:
 </code></pre>
 
 <h2 id="version">version</h2>
-<pre><code>Get lbry version information
+<pre><code class="text">Get lbry version information
 
 Args:
     None
