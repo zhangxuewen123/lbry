@@ -83,77 +83,52 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#lbry-json-rpc-api-documentation">LBRY JSON-RPC API Documentation</a></li>
-            <li><a href="#abandon_claim">abandon_claim</a></li>
             <li><a href="#abandon_name">abandon_name</a></li>
-            <li><a href="#address_is_mine">address_is_mine</a></li>
-            <li><a href="#announce_all_blobs_to_dht">announce_all_blobs_to_dht</a></li>
+            <li><a href="#blob_announce_all">blob_announce_all</a></li>
+            <li><a href="#blob_get">blob_get</a></li>
+            <li><a href="#blob_list">blob_list</a></li>
+            <li><a href="#blob_reflect_all">blob_reflect_all</a></li>
+            <li><a href="#block_show">block_show</a></li>
+            <li><a href="#claim_abandon">claim_abandon</a></li>
+            <li><a href="#claim_list">claim_list</a></li>
+            <li><a href="#claim_list_mine">claim_list_mine</a></li>
+            <li><a href="#claim_new_support">claim_new_support</a></li>
+            <li><a href="#claim_show">claim_show</a></li>
+            <li><a href="#commands">commands</a></li>
             <li><a href="#configure_ui">configure_ui</a></li>
-            <li><a href="#daemon_status">daemon_status</a></li>
-            <li><a href="#delete_lbry_file">delete_lbry_file</a></li>
-            <li><a href="#download_descriptor">download_descriptor</a></li>
+            <li><a href="#daemon_stop">daemon_stop</a></li>
+            <li><a href="#file_delete">file_delete</a></li>
+            <li><a href="#file_get">file_get</a></li>
+            <li><a href="#file_list">file_list</a></li>
+            <li><a href="#file_seed">file_seed</a></li>
             <li><a href="#get">get</a></li>
             <li><a href="#get_availability">get_availability</a></li>
-            <li><a href="#get_balance">get_balance</a></li>
-            <li><a href="#get_best_blockhash">get_best_blockhash</a></li>
-            <li><a href="#get_blob_hashes">get_blob_hashes</a></li>
-            <li><a href="#get_block">get_block</a></li>
-            <li><a href="#get_claim_info">get_claim_info</a></li>
-            <li><a href="#get_claims_for_name">get_claims_for_name</a></li>
-            <li><a href="#get_claims_for_tx">get_claims_for_tx</a></li>
-            <li><a href="#get_est_cost">get_est_cost</a></li>
-            <li><a href="#get_lbry_file">get_lbry_file</a></li>
-            <li><a href="#get_lbry_files">get_lbry_files</a></li>
-            <li><a href="#get_lbry_session_info">get_lbry_session_info</a></li>
             <li><a href="#get_mean_availability">get_mean_availability</a></li>
-            <li><a href="#get_miner_status">get_miner_status</a></li>
-            <li><a href="#get_my_claim">get_my_claim</a></li>
-            <li><a href="#get_name_claims">get_name_claims</a></li>
             <li><a href="#get_nametrie">get_nametrie</a></li>
-            <li><a href="#get_new_address">get_new_address</a></li>
-            <li><a href="#get_peers_for_hash">get_peers_for_hash</a></li>
-            <li><a href="#get_public_key_from_wallet">get_public_key_from_wallet</a></li>
-            <li><a href="#get_settings">get_settings</a></li>
-            <li><a href="#get_start_notice">get_start_notice</a></li>
-            <li><a href="#get_time_behind_blockchain">get_time_behind_blockchain</a></li>
-            <li><a href="#get_transaction">get_transaction</a></li>
-            <li><a href="#get_transaction_history">get_transaction_history</a></li>
             <li><a href="#help">help</a></li>
-            <li><a href="#is_first_run">is_first_run</a></li>
-            <li><a href="#is_running">is_running</a></li>
-            <li><a href="#log">log</a></li>
+            <li><a href="#peer_list">peer_list</a></li>
             <li><a href="#publish">publish</a></li>
             <li><a href="#reflect">reflect</a></li>
-            <li><a href="#reflect_all_blobs">reflect_all_blobs</a></li>
+            <li><a href="#report_bug">report_bug</a></li>
             <li><a href="#resolve_name">resolve_name</a></li>
             <li><a href="#reveal">reveal</a></li>
             <li><a href="#send_amount_to_address">send_amount_to_address</a></li>
-            <li><a href="#set_miner">set_miner</a></li>
-            <li><a href="#set_settings">set_settings</a></li>
-            <li><a href="#start_lbry_file">start_lbry_file</a></li>
-            <li><a href="#stop">stop</a></li>
-            <li><a href="#stop_lbry_file">stop_lbry_file</a></li>
-            <li><a href="#support_claim">support_claim</a></li>
-            <li><a href="#test_api_authentication">test_api_authentication</a></li>
-            <li><a href="#upload_log">upload_log</a></li>
+            <li><a href="#settings_get">settings_get</a></li>
+            <li><a href="#settings_set">settings_set</a></li>
+            <li><a href="#status">status</a></li>
+            <li><a href="#stream_cost_estimate">stream_cost_estimate</a></li>
+            <li><a href="#transaction_list">transaction_list</a></li>
+            <li><a href="#transaction_show">transaction_show</a></li>
             <li><a href="#version">version</a></li>
+            <li><a href="#wallet_balance">wallet_balance</a></li>
+            <li><a href="#wallet_is_address_mine">wallet_is_address_mine</a></li>
+            <li><a href="#wallet_new_address">wallet_new_address</a></li>
+            <li><a href="#wallet_public_key">wallet_public_key</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
 <h1 id="lbry-json-rpc-api-documentation">LBRY JSON-RPC API Documentation</h1>
-<h2 id="abandon_claim">abandon_claim</h2>
-<pre><code class="text">Abandon a name and reclaim credits from the claim
-
-Args:
-    'txid': txid of claim, string
-    'nout': nout of claim, integer
-Return:
-    success : True if succesful , False otherwise
-    reason : if not succesful, give reason
-    txid : txid of resulting transaction if succesful
-    fee : fee paid for the transaction if succesful
-</code></pre>
-
 <h2 id="abandon_name">abandon_name</h2>
 <pre><code class="text">DEPRECIATED, use abandon_claim
 
@@ -163,53 +138,15 @@ Return:
     txid
 </code></pre>
 
-<h2 id="address_is_mine">address_is_mine</h2>
-<pre><code class="text">Checks if an address is associated with the current wallet.
-
-Args:
-    address: string
-Returns:
-    is_mine: bool
-</code></pre>
-
-<h2 id="announce_all_blobs_to_dht">announce_all_blobs_to_dht</h2>
-<pre><code class="text">Announce all blobs to the dht
+<h2 id="blob_announce_all">blob_announce_all</h2>
+<pre><code class="text">Announce all blobs to the DHT
 
 Args:
     None
 Returns:
 </code></pre>
 
-<h2 id="configure_ui">configure_ui</h2>
-<pre><code class="text">Configure the UI being hosted
-
-Args, optional:
-    'branch': a branch name on lbryio/lbry-web-ui
-    'path': path to a ui folder
-</code></pre>
-
-<h2 id="daemon_status">daemon_status</h2>
-<pre><code class="text">Get lbrynet daemon status information
-
-Args:
-    None
-Returns:
-    'message': startup status message
-    'code': status_code
-    'progress': progress, only used in loading_wallet
-    'is_lagging': flag set to indicate lag, if set message will contain relevant message
-</code></pre>
-
-<h2 id="delete_lbry_file">delete_lbry_file</h2>
-<pre><code class="text">Delete a lbry file
-
-Args:
-    'file_name': downloaded file name, string
-Returns:
-    confirmation message
-</code></pre>
-
-<h2 id="download_descriptor">download_descriptor</h2>
+<h2 id="blob_get">blob_get</h2>
 <pre><code class="text">Download and return a sd blob
 
 Args:
@@ -218,50 +155,7 @@ Returns
     sd blob, dict
 </code></pre>
 
-<h2 id="get">get</h2>
-<pre><code class="text">Download stream from a LBRY uri.
-
-Args:
-    'name': name to download, string
-    'download_directory': optional, path to directory where file will be saved, string
-    'file_name': optional, a user specified name for the downloaded file
-    'stream_info': optional, specified stream info overrides name
-    'timeout': optional
-    'wait_for_write': optional, defaults to True
-Returns:
-    'stream_hash': hex string
-    'path': path of download
-</code></pre>
-
-<h2 id="get_availability">get_availability</h2>
-<pre><code class="text">Get stream availability for a winning claim
-
-Arg:
-    name (str): lbry uri
-
-Returns:
-     peers per blob / total blobs
-</code></pre>
-
-<h2 id="get_balance">get_balance</h2>
-<pre><code class="text">Get balance
-
-Args:
-    None
-Returns:
-    balance, float
-</code></pre>
-
-<h2 id="get_best_blockhash">get_best_blockhash</h2>
-<pre><code class="text">Get hash of most recent block
-
-Args:
-    None
-Returns:
-    Hash of most recent block
-</code></pre>
-
-<h2 id="get_blob_hashes">get_blob_hashes</h2>
+<h2 id="blob_list">blob_list</h2>
 <pre><code class="text">Returns all blob hashes
 
 Args:
@@ -270,7 +164,16 @@ Returns:
     list of blob hashes
 </code></pre>
 
-<h2 id="get_block">get_block</h2>
+<h2 id="blob_reflect_all">blob_reflect_all</h2>
+<pre><code class="text">Reflects all saved blobs
+
+Args:
+    None
+Returns:
+    True
+</code></pre>
+
+<h2 id="block_show">block_show</h2>
 <pre><code class="text">Get contents of a block
 
 Args:
@@ -279,7 +182,50 @@ Returns:
     requested block
 </code></pre>
 
-<h2 id="get_claim_info">get_claim_info</h2>
+<h2 id="claim_abandon">claim_abandon</h2>
+<pre><code class="text">Abandon a name and reclaim credits from the claim
+
+Args:
+    'txid': txid of claim, string
+    'nout': nout of claim, integer
+Return:
+    txid : txid of resulting transaction if succesful
+    fee : fee paid for the transaction if succesful
+</code></pre>
+
+<h2 id="claim_list">claim_list</h2>
+<pre><code class="text">Get claims for a name
+
+Args:
+    name: file name
+    txid: transaction id of a name claim transaction
+Returns
+    list of name claims
+</code></pre>
+
+<h2 id="claim_list_mine">claim_list_mine</h2>
+<pre><code class="text">List my name claims
+
+Args:
+    None
+Returns
+    list of name claims
+</code></pre>
+
+<h2 id="claim_new_support">claim_new_support</h2>
+<pre><code class="text">Support a name claim
+
+Args:
+    'name': name
+    'claim_id': claim id of claim to support
+    'amount': amount to support by
+Return:
+    txid : txid of resulting transaction if succesful
+    nout : nout of the resulting support claim if succesful
+    fee : fee paid for the transaction if succesful
+</code></pre>
+
+<h2 id="claim_show">claim_show</h2>
 <pre><code class="text">Resolve claim info from a LBRY uri
 
 Args:
@@ -291,36 +237,39 @@ Returns:
     txid, amount, value, n, height
 </code></pre>
 
-<h2 id="get_claims_for_name">get_claims_for_name</h2>
-<pre><code class="text">Get claims for a name
+<h2 id="commands">commands</h2>
+<pre><code class="text">Return a list of available commands
 
-Args:
-    'name': name
-Returns
-    list of name claims
-</code></pre>
-
-<h2 id="get_claims_for_tx">get_claims_for_tx</h2>
-<pre><code class="text">Get claims for tx
-
-Args:
-    txid: txid of a name claim transaction
 Returns:
-    any claims contained in the requested tx
+    list
 </code></pre>
 
-<h2 id="get_est_cost">get_est_cost</h2>
-<pre><code class="text">Get estimated cost for a lbry stream
+<h2 id="configure_ui">configure_ui</h2>
+<pre><code class="text">Configure the UI being hosted
+
+Args, optional:
+    'branch': a branch name on lbryio/lbry-web-ui
+    'path': path to a ui folder
+</code></pre>
+
+<h2 id="daemon_stop">daemon_stop</h2>
+<pre><code class="text">Stop lbrynet-daemon
+
+Returns:
+    shutdown message
+</code></pre>
+
+<h2 id="file_delete">file_delete</h2>
+<pre><code class="text">Delete a lbry file
 
 Args:
-    'name': lbry uri
-    'size': stream size, in bytes. if provided an sd blob won't be downloaded.
+    'file_name': downloaded file name, string
 Returns:
-    estimated cost
+    confirmation message
 </code></pre>
 
-<h2 id="get_lbry_file">get_lbry_file</h2>
-<pre><code class="text">Get lbry file
+<h2 id="file_get">file_get</h2>
+<pre><code class="text">Get a file
 
 Args:
     'name': get file by lbry uri,
@@ -339,13 +288,13 @@ Returns:
     'sd_hash': string
 </code></pre>
 
-<h2 id="get_lbry_files">get_lbry_files</h2>
-<pre><code class="text">Get LBRY files
+<h2 id="file_list">file_list</h2>
+<pre><code class="text">List files
 
 Args:
     None
 Returns:
-    List of lbry files:
+    List of files, with the following keys:
     'completed': bool
     'file_name': string
     'key': hex string
@@ -358,15 +307,42 @@ Returns:
     'sd_hash': string
 </code></pre>
 
-<h2 id="get_lbry_session_info">get_lbry_session_info</h2>
-<pre><code class="text">Get information about the current lbrynet session
+<h2 id="file_seed">file_seed</h2>
+<pre><code class="text">Start or stop seeding a file
 
 Args:
-    None
+    'status': &quot;start&quot; or &quot;stop&quot;
+    'name': start file by lbry uri,
+    'sd_hash': start file by the hash in the name claim,
+    'file_name': start file by its name in the downloads folder,
 Returns:
-    'lbry_id': string,
-    'managed_blobs': int, number of completed blobs in the blob manager,
-    'managed_streams': int, number of lbry files in the file manager
+    confirmation message
+</code></pre>
+
+<h2 id="get">get</h2>
+<pre><code class="text">Download stream from a LBRY uri.
+
+Args:
+    'name': name to download, string
+    'download_directory': optional, path to directory where file will be saved, string
+    'file_name': optional, a user specified name for the downloaded file
+    'stream_info': optional, specified stream info overrides name
+    'timeout': optional
+    'wait_for_write': optional, defaults to True. When set, waits for the file to
+        only start to be written before returning any results.
+Returns:
+    'stream_hash': hex string
+    'path': path of download
+</code></pre>
+
+<h2 id="get_availability">get_availability</h2>
+<pre><code class="text">Get stream availability for a winning claim
+
+Arg:
+    name (str): lbry uri
+
+Returns:
+     peers per blob / total blobs
 </code></pre>
 
 <h2 id="get_mean_availability">get_mean_availability</h2>
@@ -378,33 +354,6 @@ Returns:
     Mean peers for a blob
 </code></pre>
 
-<h2 id="get_miner_status">get_miner_status</h2>
-<pre><code class="text">Get status of miner
-
-Args:
-    None
-Returns:
-    True/False
-</code></pre>
-
-<h2 id="get_my_claim">get_my_claim</h2>
-<pre><code class="text">Return existing claim for a given name
-
-Args:
-    'name': name to look up
-Returns:
-    claim info, False if no such claim exists
-</code></pre>
-
-<h2 id="get_name_claims">get_name_claims</h2>
-<pre><code class="text">Get my name claims
-
-Args:
-    None
-Returns
-    list of name claims
-</code></pre>
-
 <h2 id="get_nametrie">get_nametrie</h2>
 <pre><code class="text">Get the nametrie
 
@@ -414,129 +363,23 @@ Returns:
     Name claim trie
 </code></pre>
 
-<h2 id="get_new_address">get_new_address</h2>
-<pre><code class="text">Generate a new wallet address
+<h2 id="help">help</h2>
+<pre><code class="text">Return a useful message for an API command
 
 Args:
-    None
+    'command': optional, command to retrieve documentation for
 Returns:
-    new wallet address, base 58 string
+    if given a command, returns documentation about that command
+    otherwise returns general help message
 </code></pre>
 
-<h2 id="get_peers_for_hash">get_peers_for_hash</h2>
+<h2 id="peer_list">peer_list</h2>
 <pre><code class="text">Get peers for blob hash
 
 Args:
     'blob_hash': blob hash
 Returns:
     List of contacts
-</code></pre>
-
-<h2 id="get_public_key_from_wallet">get_public_key_from_wallet</h2>
-<pre><code class="text">Get public key from wallet address
-
-Args:
-    wallet: wallet address, base58
-Returns:
-    public key
-</code></pre>
-
-<h2 id="get_settings">get_settings</h2>
-<pre><code class="text">Get lbrynet daemon settings
-
-Args:
-    None
-Returns:
-    'run_on_startup': bool,
-    'data_rate': float,
-    'max_key_fee': float,
-    'download_directory': string,
-    'max_upload': float, 0.0 for unlimited
-    'max_download': float, 0.0 for unlimited
-    'upload_log': bool,
-    'search_timeout': float,
-    'download_timeout': int
-    'max_search_results': int,
-    'wallet_type': string,
-    'delete_blobs_on_remove': bool,
-    'peer_port': int,
-    'dht_node_port': int,
-    'use_upnp': bool,
-</code></pre>
-
-<h2 id="get_start_notice">get_start_notice</h2>
-<pre><code class="text">Get special message to be displayed at startup
-
-Args:
-    None
-Returns:
-    Startup message, such as first run notification
-</code></pre>
-
-<h2 id="get_time_behind_blockchain">get_time_behind_blockchain</h2>
-<pre><code class="text">Get number of blocks behind the blockchain
-
-Args:
-    None
-Returns:
-    number of blocks behind blockchain, int
-</code></pre>
-
-<h2 id="get_transaction">get_transaction</h2>
-<pre><code class="text">Get a decoded transaction from a txid
-
-Args:
-    txid: txid hex string
-Returns:
-    JSON formatted transaction
-</code></pre>
-
-<h2 id="get_transaction_history">get_transaction_history</h2>
-<pre><code class="text">Get transaction history
-
-Args:
-    None
-Returns:
-    list of transactions
-</code></pre>
-
-<h2 id="help">help</h2>
-<pre><code class="text">Function to retrieve docstring for API function
-
-Args:
-    optional 'function': function to retrieve documentation for
-    optional 'callable_during_startup':
-Returns:
-    if given a function, returns given documentation
-    if given callable_during_startup flag, returns list of
-    functions callable during the startup sequence
-    if no params are given, returns the list of callable functions
-</code></pre>
-
-<h2 id="is_first_run">is_first_run</h2>
-<pre><code class="text">Check if this is the first time lbrynet daemon has been run
-
-Args:
-    None
-Returns:
-    True if first run, otherwise False
-</code></pre>
-
-<h2 id="is_running">is_running</h2>
-<pre><code class="text">Check if lbrynet daemon is running
-
-Args:
-    None
-Returns: true if daemon completed startup, otherwise false
-</code></pre>
-
-<h2 id="log">log</h2>
-<pre><code class="text">Log message
-
-Args:
-    'message': message to be logged
-Returns:
-     True
 </code></pre>
 
 <h2 id="publish">publish</h2>
@@ -566,13 +409,13 @@ Returns:
     True or traceback
 </code></pre>
 
-<h2 id="reflect_all_blobs">reflect_all_blobs</h2>
-<pre><code class="text">Reflects all saved blobs
+<h2 id="report_bug">report_bug</h2>
+<pre><code class="text">Report a bug to slack
 
 Args:
-    None
+    'message': string, message to send
 Returns:
-    True
+    True if successful
 </code></pre>
 
 <h2 id="resolve_name">resolve_name</h2>
@@ -603,16 +446,30 @@ Returns:
     True if payment successfully scheduled
 </code></pre>
 
-<h2 id="set_miner">set_miner</h2>
-<pre><code class="text">Start of stop the miner, function only available when lbrycrd is set as the wallet
+<h2 id="settings_get">settings_get</h2>
+<pre><code class="text">Get lbrynet daemon settings
 
 Args:
-    run: True/False
+    None
 Returns:
-    miner status, True/False
+    'run_on_startup': bool,
+    'data_rate': float,
+    'max_key_fee': float,
+    'download_directory': string,
+    'max_upload': float, 0.0 for unlimited
+    'max_download': float, 0.0 for unlimited
+    'upload_log': bool,
+    'search_timeout': float,
+    'download_timeout': int
+    'max_search_results': int,
+    'wallet_type': string,
+    'delete_blobs_on_remove': bool,
+    'peer_port': int,
+    'dht_node_port': int,
+    'use_upnp': bool,
 </code></pre>
 
-<h2 id="set_settings">set_settings</h2>
+<h2 id="settings_set">settings_set</h2>
 <pre><code class="text">Set lbrynet daemon settings
 
 Args:
@@ -628,66 +485,42 @@ Returns:
     settings dict
 </code></pre>
 
-<h2 id="start_lbry_file">start_lbry_file</h2>
-<pre><code class="text">Stop lbry file
+<h2 id="status">status</h2>
+<pre><code class="text">Return daemon status
 
 Args:
-    'name': stop file by lbry uri,
-    'sd_hash': stop file by the hash in the name claim,
-    'file_name': stop file by its name in the downloads folder,
+    session_status: bool
+    blockchain_status: bool
 Returns:
-    confirmation message
+    daemon status
 </code></pre>
 
-<h2 id="stop">stop</h2>
-<pre><code class="text">Stop lbrynet-daemon
+<h2 id="stream_cost_estimate">stream_cost_estimate</h2>
+<pre><code class="text">Get estimated cost for a lbry stream
+
+Args:
+    'name': lbry uri
+    'size': stream size, in bytes. if provided an sd blob won't be downloaded.
+Returns:
+    estimated cost
+</code></pre>
+
+<h2 id="transaction_list">transaction_list</h2>
+<pre><code class="text">List transactions
 
 Args:
     None
 Returns:
-    shutdown message
+    list of transactions
 </code></pre>
 
-<h2 id="stop_lbry_file">stop_lbry_file</h2>
-<pre><code class="text">Stop lbry file
+<h2 id="transaction_show">transaction_show</h2>
+<pre><code class="text">Get a decoded transaction from a txid
 
 Args:
-    'name': stop file by lbry uri,
-    'sd_hash': stop file by the hash in the name claim,
-    'file_name': stop file by its name in the downloads folder,
+    txid: txid hex string
 Returns:
-    confirmation message
-</code></pre>
-
-<h2 id="support_claim">support_claim</h2>
-<pre><code class="text">Support a name claim
-
-Args:
-    'name': name
-    'claim_id': claim id of claim to support
-    'amount': amount to support by
-Return:
-    success : True if succesful , False otherwise
-    reason : if not succesful, give reason
-    txid : txid of resulting transaction if succesful
-    nout : nout of the resulting support claim if succesful
-    fee : fee paid for the transaction if succesful
-</code></pre>
-
-<h2 id="test_api_authentication">test_api_authentication</h2>
-<pre><code class="text">
-</code></pre>
-
-<h2 id="upload_log">upload_log</h2>
-<pre><code class="text">Upload log
-
-Args, optional:
-    'name_prefix': prefix to indicate what is requesting the log upload
-    'exclude_previous': true/false, whether or not to exclude
-        previous sessions from upload, defaults on true
-
-Returns:
-    True
+    JSON formatted transaction
 </code></pre>
 
 <h2 id="version">version</h2>
@@ -704,6 +537,40 @@ Returns:
     &quot;ui_version&quot;: commit hash of ui version being used
     &quot;remote_lbrynet&quot;: most recent lbrynet version available from github
     &quot;remote_lbryum&quot;: most recent lbryum version available from github
+</code></pre>
+
+<h2 id="wallet_balance">wallet_balance</h2>
+<pre><code class="text">Return the balance of the wallet
+
+Returns:
+    balance, float
+</code></pre>
+
+<h2 id="wallet_is_address_mine">wallet_is_address_mine</h2>
+<pre><code class="text">Checks if an address is associated with the current wallet.
+
+Args:
+    address: string
+Returns:
+    is_mine: bool
+</code></pre>
+
+<h2 id="wallet_new_address">wallet_new_address</h2>
+<pre><code class="text">Generate a new wallet address
+
+Args:
+    None
+Returns:
+    new wallet address, base 58 string
+</code></pre>
+
+<h2 id="wallet_public_key">wallet_public_key</h2>
+<pre><code class="text">Get public key from wallet address
+
+Args:
+    wallet: wallet address, base58
+Returns:
+    public key
 </code></pre></div>
         </div>
 
