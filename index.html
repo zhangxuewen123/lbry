@@ -207,15 +207,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#abandon_name" title="abandon_name" class="md-nav__link">
-    abandon_name
+  <a href="#blob_announce_all" title="blob_announce_all" class="md-nav__link">
+    blob_announce_all
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#blob_announce_all" title="blob_announce_all" class="md-nav__link">
-    blob_announce_all
+  <a href="#blob_delete" title="blob_delete" class="md-nav__link">
+    blob_delete
   </a>
   
 </li>
@@ -291,15 +291,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configure_ui" title="configure_ui" class="md-nav__link">
-    configure_ui
+  <a href="#daemon_stop" title="daemon_stop" class="md-nav__link">
+    daemon_stop
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#daemon_stop" title="daemon_stop" class="md-nav__link">
-    daemon_stop
+  <a href="#descriptor_get" title="descriptor_get" class="md-nav__link">
+    descriptor_get
   </a>
   
 </li>
@@ -363,6 +363,13 @@
         <li class="md-nav__item">
   <a href="#help" title="help" class="md-nav__link">
     help
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open" title="open" class="md-nav__link">
+    open
   </a>
   
 </li>
@@ -521,15 +528,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#abandon_name" title="abandon_name" class="md-nav__link">
-    abandon_name
+  <a href="#blob_announce_all" title="blob_announce_all" class="md-nav__link">
+    blob_announce_all
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#blob_announce_all" title="blob_announce_all" class="md-nav__link">
-    blob_announce_all
+  <a href="#blob_delete" title="blob_delete" class="md-nav__link">
+    blob_delete
   </a>
   
 </li>
@@ -605,15 +612,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#configure_ui" title="configure_ui" class="md-nav__link">
-    configure_ui
+  <a href="#daemon_stop" title="daemon_stop" class="md-nav__link">
+    daemon_stop
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#daemon_stop" title="daemon_stop" class="md-nav__link">
-    daemon_stop
+  <a href="#descriptor_get" title="descriptor_get" class="md-nav__link">
+    descriptor_get
   </a>
   
 </li>
@@ -677,6 +684,13 @@
         <li class="md-nav__item">
   <a href="#help" title="help" class="md-nav__link">
     help
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open" title="open" class="md-nav__link">
+    open
   </a>
   
 </li>
@@ -823,15 +837,6 @@
               
                 
                 <h1 id="lbry-json-rpc-api-documentation">LBRY JSON-RPC API Documentation</h1>
-<h2 id="abandon_name">abandon_name</h2>
-<pre><code class="text">DEPRECIATED, use abandon_claim
-
-Args:
-    'txid': txid of claim, string
-Return:
-    txid
-</code></pre>
-
 <h2 id="blob_announce_all">blob_announce_all</h2>
 <pre><code class="text">Announce all blobs to the DHT
 
@@ -840,20 +845,43 @@ Args:
 Returns:
 </code></pre>
 
-<h2 id="blob_get">blob_get</h2>
-<pre><code class="text">Download and return a sd blob
+<h2 id="blob_delete">blob_delete</h2>
+<pre><code class="text">Delete a blob
 
 Args:
-    sd_hash
+    blob_hash
+Returns:
+    Success/fail message
+</code></pre>
+
+<h2 id="blob_get">blob_get</h2>
+<pre><code class="text">Download and return a blob
+
+Args:
+    blob_hash
+    timeout (optional)
+    encoding (optional): by default no attempt at decoding is made
+                         can be set to one of the following decoders:
+                         json
+    payment_rate_manager (optional): if not given the default payment rate manager
+                                     will be used. supported alternative rate managers:
+                                     only-free
+
 Returns
-    sd blob, dict
+    Success/Fail message or decoded data
 </code></pre>
 
 <h2 id="blob_list">blob_list</h2>
-<pre><code class="text">Returns all blob hashes
+<pre><code class="text">Returns blob hashes, if not given filters returns all blobs known by the blob manager
 
 Args:
-    None
+    uri (str, optional): filter by blobs in stream for winning claim
+    stream_hash (str, optional): filter by blobs in given stream hash
+    sd_hash (str, optional): filter by blobs in given sd hash
+    needed (bool, optional): only return needed blobs
+    finished (bool, optional): only return finished blobs
+    page_size (int, optional): limit number of results returned
+    page (int, optional): filter to page x of [page_size] results
 Returns:
     list of blob hashes
 </code></pre>
@@ -938,19 +966,25 @@ Returns:
     list
 </code></pre>
 
-<h2 id="configure_ui">configure_ui</h2>
-<pre><code class="text">Configure the UI being hosted
-
-Args, optional:
-    'branch': a branch name on lbryio/lbry-web-ui
-    'path': path to a ui folder
-</code></pre>
-
 <h2 id="daemon_stop">daemon_stop</h2>
 <pre><code class="text">Stop lbrynet-daemon
 
 Returns:
     shutdown message
+</code></pre>
+
+<h2 id="descriptor_get">descriptor_get</h2>
+<pre><code class="text">Download and return a sd blob
+
+Args:
+    sd_hash
+    timeout (optional)
+    payment_rate_manager (optional): if not given the default payment rate manager
+                                     will be used. supported alternative rate managers:
+                                     only-free
+
+Returns
+    Success/Fail message or decoded data
 </code></pre>
 
 <h2 id="file_delete">file_delete</h2>
@@ -963,23 +997,35 @@ Returns:
 </code></pre>
 
 <h2 id="file_get">file_get</h2>
-<pre><code class="text">Get a file
+<pre><code class="text">Get a file, if no matching file exists returns False
 
 Args:
     'name': get file by lbry uri,
     'sd_hash': get file by the hash in the name claim,
     'file_name': get file by its name in the downloads folder,
+    'stream_hash': get file by its stream hash
 Returns:
-    'completed': bool
-    'file_name': string
-    'key': hex string
-    'points_paid': float
-    'stopped': bool
-    'stream_hash': base 58 string
-    'stream_name': string
-    'suggested_file_name': string
-    'upload_allowed': bool
-    'sd_hash': string
+    'completed': bool,
+    'file_name': str,
+    'download_directory': str,
+    'points_paid': float,
+    'stopped': bool,
+    'stream_hash': str (hex),
+    'stream_name': str,
+    'suggested_file_name': str,
+    'sd_hash': str (hex),
+    'lbry_uri': str,
+    'txid': str (b58),
+    'claim_id': str (b58),
+    'download_path': str,
+    'mime_type': str,
+    'key': str (hex),
+    'total_bytes': int,
+    'written_bytes': int,
+    'code': str,
+    'message': str
+    'metadata': Metadata dict if claim is valid, otherwise status str
+}
 </code></pre>
 
 <h2 id="file_list">file_list</h2>
@@ -997,7 +1043,6 @@ Returns:
     'stream_hash': base 58 string
     'stream_name': string
     'suggested_file_name': string
-    'upload_allowed': bool
     'sd_hash': string
 </code></pre>
 
@@ -1018,10 +1063,10 @@ Returns:
 
 Args:
     'name': name to download, string
-    'download_directory': optional, path to directory where file will be saved, string
     'file_name': optional, a user specified name for the downloaded file
     'stream_info': optional, specified stream info overrides name
     'timeout': optional
+    'download_directory': optional, path to directory where file will be saved, string
     'wait_for_write': optional, defaults to True. When set, waits for the file to
         only start to be written before returning any results.
 Returns:
@@ -1034,6 +1079,8 @@ Returns:
 
 Arg:
     name (str): lbry uri
+    sd_timeout (int, optional): sd blob download timeout
+    peer_timeout (int, optional): how long to look for peers
 
 Returns:
      peers per blob / total blobs
@@ -1067,11 +1114,21 @@ Returns:
     otherwise returns general help message
 </code></pre>
 
+<h2 id="open">open</h2>
+<pre><code class="text">Instruct the OS to open a file with its default program.
+
+Args:
+    'sd_hash': SD hash of file to be opened
+Returns:
+    True, opens file
+</code></pre>
+
 <h2 id="peer_list">peer_list</h2>
 <pre><code class="text">Get peers for blob hash
 
 Args:
     'blob_hash': blob hash
+    'timeout' (int, optional): peer search timeout
 Returns:
     List of contacts
 </code></pre>
@@ -1080,18 +1137,19 @@ Returns:
 <pre><code class="text">Make a new name claim and publish associated data to lbrynet
 
 Args:
-    'name': name to be claimed, string
-    'file_path': path to file to be associated with name, string
-    'bid': amount of credits to commit in this claim, float
-    'metadata': metadata dictionary
-    optional 'fee'
+    'name': str, name to be claimed, string
+    'bid': float, amount of credits to commit in this claim,
+    'metadata': dict, Metadata compliant (can be missing sources if a file is provided)
+    'file_path' (optional): str, path to file to be associated with name, if not given
+                            the stream from your existing claim for the name will be used
+    'fee' (optional): dict, FeeValidator compliant
 Returns:
     'success' : True if claim was succesful , False otherwise
     'reason' : if not succesful, give reason
     'txid' : txid of resulting transaction if succesful
     'nout' : nout of the resulting support claim if succesful
     'fee' : fee paid for the claim transaction if succesful
-    'claimid' : claimid of the resulting transaction
+    'claim_id' : claim id of the resulting transaction
 </code></pre>
 
 <h2 id="reflect">reflect</h2>
@@ -1118,14 +1176,14 @@ Returns:
 Args:
     'name': name to look up, string, do not include lbry:// prefix
 Returns:
-    metadata from name claim
+    metadata from name claim or None if the name is not known
 </code></pre>
 
 <h2 id="reveal">reveal</h2>
 <pre><code class="text">Reveal a file or directory in file browser
 
 Args:
-    'path': path to be selected in file browser
+    'path': path to be revealed in file browser
 Returns:
     True, opens file browser
 </code></pre>
@@ -1141,10 +1199,8 @@ Returns:
 </code></pre>
 
 <h2 id="settings_get">settings_get</h2>
-<pre><code class="text">Get lbrynet daemon settings
+<pre><code class="text">Get daemon settings
 
-Args:
-    None
 Returns:
     'run_on_startup': bool,
     'data_rate': float,
@@ -1164,7 +1220,7 @@ Returns:
 </code></pre>
 
 <h2 id="settings_set">settings_set</h2>
-<pre><code class="text">Set lbrynet daemon settings
+<pre><code class="text">Set daemon settings
 
 Args:
     'run_on_startup': bool,
