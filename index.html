@@ -818,7 +818,7 @@ Args:
     'page_size' (optional): (int) limit number of results returned
     'page' (optional): (int) filter to page x of [page_size] results
 Returns:
-    (list) list of blob hashes
+    (list) List of blob hashes
 </code></pre>
 
 <h2 id="blob_reflect_all">blob_reflect_all</h2>
@@ -836,7 +836,7 @@ Returns:
 Args:
     'blockhash': (str) hash of the block to look up
 Returns:
-    (dict) requested block
+    (dict) Requested block
 </code></pre>
 
 <h2 id="claim_abandon">claim_abandon</h2>
@@ -846,7 +846,7 @@ Args:
     'txid': (str) txid of claim
     'nout': (int) nout of claim
 Return:
-    (dict) dictionary containing result of the claim
+    (dict) Dictionary containing result of the claim
     {
         txid : (str) txid of resulting transaction
         fee : (float) fee paid for the transaction
@@ -859,7 +859,7 @@ Return:
 Args:
     'name': (str) search for claims on this name
 Returns
-    (dict) state of claims assigned for the name
+    (dict) State of claims assigned for the name
     {
         'claims': (list) list of claims for the name
         [
@@ -886,7 +886,7 @@ Returns
 Args:
     None
 Returns
-    (list) list of name claims owned by user
+    (list) List of name claims owned by user
     [
         {
             'address': (str) address that owns the claim
@@ -915,7 +915,7 @@ Args:
     'claim_id': (str) claim ID of claim to support
     'amount': (float) amount to support by
 Return:
-    (dict) dictionary containing result of the claim
+    (dict) Dictionary containing result of the claim
     {
         txid : (str) txid of resulting support claim
         nout : (int) nout of the resulting support claim
@@ -932,7 +932,7 @@ Args:
     'nout'(optional): (int) if specified, look for claim with this nout
 
 Returns:
-    (dict) dictionary contaning claim info, (bool) false if claim is not
+    (dict) Dictionary contaning claim info, (bool) false if claim is not
         resolvable
 
     {
@@ -957,7 +957,7 @@ Returns:
 <pre><code class="text">Stop lbrynet-daemon
 
 Returns:
-    (string) shutdown message
+    (string) Shutdown message
 </code></pre>
 
 <h2 id="descriptor_get">descriptor_get</h2>
@@ -986,10 +986,10 @@ Args:
     'outpoint' (optional): (str) delete file by claim outpoint,
     'rowid': (optional): (int) delete file by rowid in the file manager
     'delete_target_file' (optional): (bool) delete file from downloads folder,
-                                    defaults to True if False only the blobs and
+                                    defaults to true if false only the blobs and
                                     db entries will be deleted
 Returns:
-    (bool) True if deletion was successful
+    (bool) true if deletion was successful
 </code></pre>
 
 <h2 id="file_list">file_list</h2>
@@ -1006,7 +1006,7 @@ Args:
     'full_status': (optional): (bool) if true populate the 'message' and 'size' fields
 
 Returns:
-    (list) list of files
+    (list) List of files
 
     [
         {
@@ -1042,7 +1042,7 @@ Args:
     'sd_hash' (optional): (str) start file by the hash in the name claim,
     'file_name' (optional): (str) start file by its name in the downloads folder,
 Returns:
-    (str) confirmation message
+    (str) Confirmation message
 </code></pre>
 
 <h2 id="get">get</h2>
@@ -1057,7 +1057,7 @@ Args:
     'wait_for_write'(optional): (bool)  defaults to True. When set, waits for the file to
         only start to be written before returning any results.
 Returns:
-    (dict) dictionary contaning information about the stream
+    (dict) Dictionary contaning information about the stream
 
     {
         'completed': (bool) true if download is completed,
@@ -1091,7 +1091,7 @@ Arg:
     'peer_timeout' (optional): (int) how long to look for peers
 
 Returns:
-    (float) peers per blob / total blobs
+    (float) Peers per blob / total blobs
 </code></pre>
 
 <h2 id="help">help</h2>
@@ -1125,7 +1125,7 @@ Args:
                             the stream from your existing claim for the name will be used
     'fee' (optional): (dict) FeeValidator compliant (i.e. {'LBC':{'amount':10}} )
 Returns:
-    (dict) dictionary containing result of the claim
+    (dict) Dictionary containing result of the claim
     {
         'tx' : (str) hex encoded transaction
         'txid' : (str) txid of resulting claim
@@ -1148,9 +1148,9 @@ Returns:
 <pre><code class="text">Report a bug to slack
 
 Args:
-    'message': string, message to send
+    'message': (str) message to send
 Returns:
-    True if successful
+    (bool) true if successful
 </code></pre>
 
 <h2 id="resolve_name">resolve_name</h2>
@@ -1177,20 +1177,22 @@ Returns:
 <pre><code class="text">Get daemon settings
 
 Returns:
-    'run_on_startup': bool,
-    'data_rate': float,
-    'max_key_fee': float,
-    'download_directory': string,
-    'max_upload': float, 0.0 for unlimited
-    'max_download': float, 0.0 for unlimited
-    'search_timeout': float,
-    'download_timeout': int
-    'max_search_results': int,
-    'wallet_type': string,
-    'delete_blobs_on_remove': bool,
-    'peer_port': int,
-    'dht_node_port': int,
-    'use_upnp': bool,
+    (dict) Dictionary of daemon settings
+    {
+        'run_on_startup': (bool) currently not supported
+        'data_rate': (float) data rate
+        'max_key_fee': (float) maximum key fee
+        'download_directory': (str) path of where files are downloaded
+        'max_upload': (float), currently not supported
+        'max_download': (float), currently not supported
+        'download_timeout': (int) download timeout in seconds
+        'max_search_results': (int) max search results
+        'wallet_type': (str) wallet type
+        'delete_blobs_on_remove': (bool) delete blobs on removal
+        'peer_port': (int) peer port
+        'dht_node_port': (int) dht node port
+        'use_upnp': (bool) use upnp if true
+    }
 </code></pre>
 
 <h2 id="settings_set">settings_set</h2>
@@ -1215,7 +1217,7 @@ Args:
     'session_status' (optional): (bool) true to return session status,
         default is false
 Returns:
-    daemon status dictionary
+    (dict) Daemon status dictionary
 </code></pre>
 
 <h2 id="stream_cost_estimate">stream_cost_estimate</h2>
@@ -1226,16 +1228,16 @@ Args:
     'size' (optional): (int) stream size, in bytes. if provided an sd blob
                         won't be downloaded.
 Returns:
-    (float) estimated cost in lbry credits
+    (float) Estimated cost in lbry credits
 </code></pre>
 
 <h2 id="transaction_list">transaction_list</h2>
-<pre><code class="text">List transactions
+<pre><code class="text">List transactions belonging to wallet
 
 Args:
     None
 Returns:
-    (list) list of transactions
+    (list) List of transactions
 </code></pre>
 
 <h2 id="transaction_show">transaction_show</h2>
@@ -1253,15 +1255,16 @@ Returns:
 Args:
     None
 Returns:
+    (dict) Dictionary of lbry version information
     {
-        &quot;platform&quot;: platform string
-        &quot;os_release&quot;: os release string
-        &quot;os_system&quot;: os name
-        &quot;lbrynet_version: &quot;: lbrynet_version,
-        &quot;lbryum_version: &quot;: lbryum_version,
-        &quot;ui_version&quot;: commit hash of ui version being used
-        &quot;remote_lbrynet&quot;: most recent lbrynet version available from github
-        &quot;remote_lbryum&quot;: most recent lbryum version available from github
+        'platform': (str) platform string
+        'os_release': (str) os release string
+        'os_system': (str) os name
+        'lbrynet_version': (str) lbrynet_version,
+        'lbryum_version': (str) lbryum_version,
+        'ui_version': (str) commit hash of ui version being used
+        'remote_lbrynet': (str) most recent lbrynet version available from github
+        'remote_lbryum': (str) most recent lbryum version available from github
     }
 </code></pre>
 
@@ -1287,7 +1290,7 @@ Returns:
 Args:
     None
 Returns:
-    (str) new wallet address in base58
+    (str) New wallet address in base58
 </code></pre>
 
 <h2 id="wallet_public_key">wallet_public_key</h2>
@@ -1296,7 +1299,7 @@ Returns:
 Args:
     'wallet': (str) wallet address in base58
 Returns:
-    (str) public key
+    (str) Public key in hex encoding
 </code></pre>
                 
                   
