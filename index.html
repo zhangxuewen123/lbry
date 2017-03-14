@@ -930,7 +930,6 @@ Args:
     'name': (str) name to look up, do not include lbry:// prefix
     'txid'(optional): (str) if specified, look for claim with this txid
     'nout'(optional): (int) if specified, look for claim with this nout
-
 Returns:
     (dict) Dictionary contaning claim info, (bool) false if claim is not
         resolvable
@@ -1085,7 +1084,7 @@ Returns:
 <h2 id="get_availability">get_availability</h2>
 <pre><code class="text">Get stream availability for a winning claim
 
-Arg:
+Args:
     'name' : (str) lbry name
     'sd_timeout' (optional): (int) sd blob download timeout
     'peer_timeout' (optional): (int) how long to look for peers
@@ -1176,6 +1175,8 @@ Returns:
 <h2 id="settings_get">settings_get</h2>
 <pre><code class="text">Get daemon settings
 
+Args:
+    None
 Returns:
     (dict) Dictionary of daemon settings
     {
