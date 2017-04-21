@@ -11,7 +11,7 @@
       
         <link rel="shortcut icon" href="./assets/images/favicon.png">
       
-      <meta name="generator" content="mkdocs-0.16.1, mkdocs-material-1.3.0">
+      <meta name="generator" content="mkdocs-0.16.1, mkdocs-material-1.1.1">
     
     
       
@@ -22,9 +22,9 @@
       <script src="./assets/javascripts/modernizr-56ade86843.js"></script>
     
     
-      <link rel="stylesheet" href="./assets/stylesheets/application-1d1da4857d.css">
+      <link rel="stylesheet" href="./assets/stylesheets/application-4ebe3f1d68.css">
       
-        <link rel="stylesheet" href="./assets/stylesheets/application-66fa0d9bba.palette.css">
+        <link rel="stylesheet" href="./assets/stylesheets/application-f6789307ff.palette.css">
       
     
     
@@ -58,7 +58,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
     <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
     
-      <header class="md-header" data-md-component="header">
+      <header class="md-header">
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
@@ -249,6 +249,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#channel_list_mine" title="channel_list_mine" class="md-nav__link">
+    channel_list_mine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel_new" title="channel_new" class="md-nav__link">
+    channel_new
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#claim_abandon" title="claim_abandon" class="md-nav__link">
     claim_abandon
   </a>
@@ -319,8 +333,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#file_seed" title="file_seed" class="md-nav__link">
-    file_seed
+  <a href="#file_set_status" title="file_set_status" class="md-nav__link">
+    file_set_status
   </a>
   
 </li>
@@ -370,6 +384,13 @@
         <li class="md-nav__item">
   <a href="#report_bug" title="report_bug" class="md-nav__link">
     report_bug
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolve" title="resolve" class="md-nav__link">
+    resolve
   </a>
   
 </li>
@@ -452,6 +473,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wallet_list" title="wallet_list" class="md-nav__link">
+    wallet_list
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wallet_new_address" title="wallet_new_address" class="md-nav__link">
     wallet_new_address
   </a>
@@ -465,7 +493,12 @@
   
 </li>
       
-      
+        <li class="md-nav__item">
+  <a href="#wallet_unused_address" title="wallet_unused_address" class="md-nav__link">
+    wallet_unused_address
+  </a>
+  
+</li>
       
     </ul>
   
@@ -537,6 +570,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#channel_list_mine" title="channel_list_mine" class="md-nav__link">
+    channel_list_mine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel_new" title="channel_new" class="md-nav__link">
+    channel_new
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#claim_abandon" title="claim_abandon" class="md-nav__link">
     claim_abandon
   </a>
@@ -607,8 +654,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#file_seed" title="file_seed" class="md-nav__link">
-    file_seed
+  <a href="#file_set_status" title="file_set_status" class="md-nav__link">
+    file_set_status
   </a>
   
 </li>
@@ -658,6 +705,13 @@
         <li class="md-nav__item">
   <a href="#report_bug" title="report_bug" class="md-nav__link">
     report_bug
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolve" title="resolve" class="md-nav__link">
+    resolve
   </a>
   
 </li>
@@ -740,6 +794,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wallet_list" title="wallet_list" class="md-nav__link">
+    wallet_list
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wallet_new_address" title="wallet_new_address" class="md-nav__link">
     wallet_new_address
   </a>
@@ -753,7 +814,12 @@
   
 </li>
       
-      
+        <li class="md-nav__item">
+  <a href="#wallet_unused_address" title="wallet_unused_address" class="md-nav__link">
+    wallet_unused_address
+  </a>
+  
+</li>
       
     </ul>
   
@@ -765,10 +831,10 @@
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
+               
+                 <a href="https://github.com/lbryio/lbry/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__edit">edit</a>
+               
               
-                
-                  <a href="https://github.com/lbryio/lbry/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
-                
                 
                 <h1 id="lbry-json-rpc-api-documentation">LBRY JSON-RPC API Documentation</h1>
 <h2 id="blob_announce_all">blob_announce_all</h2>
@@ -839,12 +905,36 @@ Returns:
     (dict) Requested block
 </code></pre>
 
+<h2 id="channel_list_mine">channel_list_mine</h2>
+<pre><code class="text">Get my channels
+
+Returns:
+    (list) ClaimDict
+</code></pre>
+
+<h2 id="channel_new">channel_new</h2>
+<pre><code class="text">Generate a publisher key and create a new certificate claim
+
+Args:
+    'channel_name': (str) '@' prefixed name
+    'amount': (float) amount to claim name
+
+Returns:
+    (dict) Dictionary containing result of the claim
+    {
+        'tx' : (str) hex encoded transaction
+        'txid' : (str) txid of resulting claim
+        'nout' : (int) nout of the resulting claim
+        'fee' : (float) fee paid for the claim transaction
+        'claim_id' : (str) claim ID of the resulting claim
+    }
+</code></pre>
+
 <h2 id="claim_abandon">claim_abandon</h2>
 <pre><code class="text">Abandon a name and reclaim credits from the claim
 
 Args:
-    'txid': (str) txid of claim
-    'nout': (int) nout of claim
+    'claim_id': (str) claim_id of claim
 Return:
     (dict) Dictionary containing result of the claim
     {
@@ -930,6 +1020,7 @@ Args:
     'name': (str) name to look up, do not include lbry:// prefix
     'txid'(optional): (str) if specified, look for claim with this txid
     'nout'(optional): (int) if specified, look for claim with this nout
+    'claim_id'(optional): (str) if specified, look for claim with this claim_id
 Returns:
     (dict) Dictionary contaning claim info, (bool) false if claim is not
         resolvable
@@ -1032,8 +1123,8 @@ Returns:
     ]
 </code></pre>
 
-<h2 id="file_seed">file_seed</h2>
-<pre><code class="text">Start or stop seeding a file
+<h2 id="file_set_status">file_set_status</h2>
+<pre><code class="text">Start or stop downloading a file
 
 Args:
     'status': (str) &quot;start&quot; or &quot;stop&quot;
@@ -1048,16 +1139,12 @@ Returns:
 <pre><code class="text">Download stream from a LBRY name.
 
 Args:
-    'name': (str) name to download
+    'uri': (str) lbry uri to download
     'file_name'(optional): (str) a user specified name for the downloaded file
-    'stream_info'(optional): (str) specified stream info overrides name
     'timeout'(optional): (int) download timeout in number of seconds
     'download_directory'(optional): (str) path to directory where file will be saved
-    'wait_for_write'(optional): (bool)  defaults to True. When set, waits for the file to
-        only start to be written before returning any results.
 Returns:
     (dict) Dictionary contaning information about the stream
-
     {
         'completed': (bool) true if download is completed,
         'file_name': (str) name of file,
@@ -1065,7 +1152,7 @@ Returns:
         'points_paid': (float) credit paid to download file,
         'stopped': (bool) true if download is stopped,
         'stream_hash': (str) stream hash of file,
-        'stream_name': (str) stream name ,
+        'stream_name': (str) stream name,
         'suggested_file_name': (str) suggested file name,
         'sd_hash': (str) sd hash of file,
         'name': (str) name claim attached to file
@@ -1082,10 +1169,10 @@ Returns:
 </code></pre>
 
 <h2 id="get_availability">get_availability</h2>
-<pre><code class="text">Get stream availability for a winning claim
+<pre><code class="text">Get stream availability for lbry uri
 
 Args:
-    'name' : (str) lbry name
+    'uri' : (str) lbry uri
     'sd_timeout' (optional): (int) sd blob download timeout
     'peer_timeout' (optional): (int) how long to look for peers
 
@@ -1114,15 +1201,46 @@ Returns:
 </code></pre>
 
 <h2 id="publish">publish</h2>
-<pre><code class="text">Make a new name claim and publish associated data to lbrynet
+<pre><code class="text">Make a new name claim and publish associated data to lbrynet,
+update over existing claim if user already has a claim for name.
+
+Fields required in the final Metadata are:
+    'title'
+    'description'
+    'author'
+    'language'
+    'license',
+    'nsfw'
+
+Metadata can be set by either using the metadata argument or by setting individual arguments
+fee, title, description, author, language, license, license_url, thumbnail, preview, nsfw,
+or sources. Individual arguments will overwrite the fields specified in metadata argument.
 
 Args:
-    'name': (str) name to be claimed, string
+    'name': (str) name to be claimed
     'bid': (float) amount of credits to commit in this claim,
-    'metadata': (dict) Metadata compliant (can be missing sources if a file is provided)
-    'file_path' (optional): (str) path to file to be associated with name, if not given
-                            the stream from your existing claim for the name will be used
-    'fee' (optional): (dict) FeeValidator compliant (i.e. {'LBC':{'amount':10}} )
+    'metadata'(optional): (dict) Metadata to associate with the claim.
+    'file_path'(optional): (str) path to file to be associated with name. If provided,
+                            a lbry stream of this file will be used in 'sources'.
+                            If no path is given but a metadata dict is provided, the source
+                            from the given metadata will be used.
+    'fee'(optional): (dict) Dictionary representing key fee to download content:
+                      {currency_symbol: {'amount': float, 'address': str, optional}}
+                      supported currencies: LBC, USD, BTC
+                      If an address is not provided a new one will be automatically
+                      generated. Default fee is zero.
+    'title'(optional): (str) title of the file
+    'description'(optional): (str) description of the file
+    'author'(optional): (str) author of the file
+    'language'(optional): (str), language code
+    'license'(optional): (str) license for the file
+    'license_url'(optional): (str) URL to license
+    'thumbnail'(optional): (str) thumbnail URL for the file
+    'preview'(optional): (str) preview URL for the file
+    'nsfw'(optional): (bool) True if not safe for work
+    'sources'(optional): (dict){'lbry_sd_hash':sd_hash} specifies sd hash of file
+    'channel_name' (optional): (str) name of the publisher channel
+
 Returns:
     (dict) Dictionary containing result of the claim
     {
@@ -1152,6 +1270,79 @@ Returns:
     (bool) true if successful
 </code></pre>
 
+<h2 id="resolve">resolve</h2>
+<pre><code class="text">Resolve a LBRY URI
+
+Args:
+    'uri': (str) uri to download
+Returns:
+    None if nothing can be resolved, otherwise:
+    If uri resolves to a channel or a claim in a channel:
+        'certificate': {
+            'address': (str) claim address,
+            'amount': (float) claim amount,
+            'effective_amount': (float) claim amount including supports,
+            'claim_id': (str) claim id,
+            'claim_sequence': (int) claim sequence number,
+            'decoded_claim': (bool) whether or not the claim value was decoded,
+            'height': (int) claim height,
+            'depth': (int) claim depth,
+            'has_signature': (bool) included if decoded_claim
+            'name': (str) claim name,
+            'supports: (list) list of supports [{'txid': txid,
+                                                 'nout': nout,
+                                                 'amount': amount}],
+            'txid': (str) claim txid,
+            'nout': (str) claim nout,
+            'signature_is_valid': (bool), included if has_signature,
+            'value': ClaimDict if decoded, otherwise hex string
+        }
+    If uri resolves to a channel:
+        'claims_in_channel': [
+            {
+                'address': (str) claim address,
+                'amount': (float) claim amount,
+                'effective_amount': (float) claim amount including supports,
+                'claim_id': (str) claim id,
+                'claim_sequence': (int) claim sequence number,
+                'decoded_claim': (bool) whether or not the claim value was decoded,
+                'height': (int) claim height,
+                'depth': (int) claim depth,
+                'has_signature': (bool) included if decoded_claim
+                'name': (str) claim name,
+                'supports: (list) list of supports [{'txid': txid,
+                                                     'nout': nout,
+                                                     'amount': amount}],
+                'txid': (str) claim txid,
+                'nout': (str) claim nout,
+                'signature_is_valid': (bool), included if has_signature,
+                'value': ClaimDict if decoded, otherwise hex string
+            }
+        ]
+    If uri resolves to a claim:
+        'claim': {
+            'address': (str) claim address,
+            'amount': (float) claim amount,
+            'effective_amount': (float) claim amount including supports,
+            'claim_id': (str) claim id,
+            'claim_sequence': (int) claim sequence number,
+            'decoded_claim': (bool) whether or not the claim value was decoded,
+            'height': (int) claim height,
+            'depth': (int) claim depth,
+            'has_signature': (bool) included if decoded_claim
+            'name': (str) claim name,
+            'channel_name': (str) channel name if claim is in a channel
+            'supports: (list) list of supports [{'txid': txid,
+                                                 'nout': nout,
+                                                 'amount': amount}]
+            'txid': (str) claim txid,
+            'nout': (str) claim nout,
+            'signature_is_valid': (bool), included if has_signature,
+            'value': ClaimDict if decoded, otherwise hex string
+        }
+    }
+</code></pre>
+
 <h2 id="resolve_name">resolve_name</h2>
 <pre><code class="text">Resolve stream info from a LBRY name
 
@@ -1175,25 +1366,9 @@ Returns:
 <h2 id="settings_get">settings_get</h2>
 <pre><code class="text">Get daemon settings
 
-Args:
-    None
 Returns:
     (dict) Dictionary of daemon settings
-    {
-        'run_on_startup': (bool) currently not supported
-        'data_rate': (float) data rate
-        'max_key_fee': (float) maximum key fee
-        'download_directory': (str) path of where files are downloaded
-        'max_upload': (float), currently not supported
-        'max_download': (float), currently not supported
-        'download_timeout': (int) download timeout in seconds
-        'max_search_results': (int) max search results
-        'wallet_type': (str) wallet type
-        'delete_blobs_on_remove': (bool) delete blobs on removal
-        'peer_port': (int) peer port
-        'dht_node_port': (int) dht node port
-        'use_upnp': (bool) use upnp if true
-    }
+    See ADJUSTABLE_SETTINGS in lbrynet/conf.py for full list of settings
 </code></pre>
 
 <h2 id="settings_set">settings_set</h2>
@@ -1207,8 +1382,10 @@ Args:
     'max_upload': (float), currently not supported
     'max_download': (float), currently not supported
     'download_timeout': (int) download timeout in seconds
+    'search_timeout': (float) search timeout in seconds
+    'cache_time': (int) cache timeout in seconds
 Returns:
-    (dict) settings dict
+    (dict) Updated dictionary of daemon settings
 </code></pre>
 
 <h2 id="status">status</h2>
@@ -1229,7 +1406,8 @@ Args:
     'size' (optional): (int) stream size, in bytes. if provided an sd blob
                         won't be downloaded.
 Returns:
-    (float) Estimated cost in lbry credits
+    (float) Estimated cost in lbry credits, returns None if uri is not
+        resolveable
 </code></pre>
 
 <h2 id="transaction_list">transaction_list</h2>
@@ -1258,14 +1436,18 @@ Args:
 Returns:
     (dict) Dictionary of lbry version information
     {
-        'platform': (str) platform string
-        'os_release': (str) os release string
-        'os_system': (str) os name
+        'build': (str) build type (e.g. &quot;dev&quot;, &quot;rc&quot;, &quot;release&quot;),
+        'ip': (str) remote ip, if available,
+        'lbrynet_update_available': (bool) whether there's an update available,
         'lbrynet_version': (str) lbrynet_version,
         'lbryum_version': (str) lbryum_version,
-        'ui_version': (str) commit hash of ui version being used
+        'lbryschema_version': (str) lbryschema_version,
+        'os_release': (str) os release string
+        'os_system': (str) os name
+        'platform': (str) platform string
+        'processor': (str) processor type,
+        'python_version': (str) python version,
         'remote_lbrynet': (str) most recent lbrynet version available from github
-        'remote_lbryum': (str) most recent lbryum version available from github
     }
 </code></pre>
 
@@ -1285,6 +1467,15 @@ Returns:
     (bool) true, if address is associated with current wallet
 </code></pre>
 
+<h2 id="wallet_list">wallet_list</h2>
+<pre><code class="text">List wallet addresses
+
+Args:
+    None
+Returns:
+    List of wallet addresses
+</code></pre>
+
 <h2 id="wallet_new_address">wallet_new_address</h2>
 <pre><code class="text">Generate a new wallet address
 
@@ -1298,16 +1489,22 @@ Returns:
 <pre><code class="text">Get public key from wallet address
 
 Args:
-    'wallet': (str) wallet address in base58
+    'address': (str) wallet address in base58
 Returns:
-    (str) Public key in hex encoding
+    (list) list of public keys associated with address.
+        Could contain more than one public key if multisig.
 </code></pre>
-                
-                  
-                
+
+<h2 id="wallet_unused_address">wallet_unused_address</h2>
+<pre><code class="text">Return an address containing no balance, will create
+a new address if there is none.
+
+Args:
+    None
+Returns:
+    (str) Unused wallet address in base58
+</code></pre>
               
-              
-                
               
             </article>
           </div>
@@ -1348,7 +1545,7 @@ Returns:
       
     </div>
     
-      <script src="./assets/javascripts/application-7aa26ad9ec.js"></script>
+      <script src="./assets/javascripts/application-30ac6a1727.js"></script>
       <script>app.initialize({url:{base:"."}})</script>
       
     
