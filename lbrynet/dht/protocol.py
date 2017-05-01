@@ -13,10 +13,8 @@ import time
 import socket
 import errno
 
-from twisted.internet import protocol, defer
+from twisted.internet import protocol, defer, error, reactor, udp
 from twisted.python import failure
-from twisted.internet import error
-import twisted.internet.reactor
 
 import constants
 import encoding
@@ -24,7 +22,6 @@ import msgtypes
 import msgformat
 from contact import Contact
 
-reactor = twisted.internet.reactor
 log = logging.getLogger(__name__)
 
 
@@ -62,20 +59,23 @@ class Delay(object):
 
 class KademliaProtocol(protocol.DatagramProtocol):
     """ Implements all low-level network-related functions of a Kademlia node """
+
     msgSizeLimit = constants.udpDatagramMaxSize - 26
 
-    def __init__(self, node, msgEncoder=encoding.Bencode(),
-                 msgTranslator=msgformat.DefaultFormat()):
+    def __init__(self, node):
         self._node = node
-        self._encoder = msgEncoder
-        self._translator = msgTranslator
+        self._encoder = encoding.Bencode()
+        self._translator = msgformat.DefaultFormat()
         self._sentMessages = {}
         self._partialMessages = {}
         self._partialMessagesProgress = {}
         self._delay = Delay()
+        self._reading = True
         # keep track of outstanding writes so that they
         # can be cancelled on shutdown
         self._call_later_list = {}
+        self._bytes_tx = 0
+        self._bytes_rx = 0
 
     def sendRPC(self, contact, method, args, rawResponse=False):
         """ Sends an RPC to the specified contact
@@ -108,7 +108,7 @@ class KademliaProtocol(protocol.DatagramProtocol):
         msgPrimitive = self._translator.toPrimitive(msg)
         encodedMsg = self._encoder.encode(msgPrimitive)
 
-        log.debug("DHT SEND: %s(%s)", method, args)
+        log.debug("DHT SEND CALL %s(%s)", method, args[0].encode('hex'))
 
         df = defer.Deferred()
         if rawResponse:
@@ -121,6 +121,20 @@ class KademliaProtocol(protocol.DatagramProtocol):
         self._send(encodedMsg, msg.id, (contact.address, contact.port))
         self._sentMessages[msg.id] = (contact.id, df, timeoutCall)
         return df
+
+    def startProtocol(self):
+        log.info("DHT listening on UDP %i", self._node.port)
+        self._reading = True
+
+    def stopReading(self):
+        if self.transport and self._reading:
+            self._reading = False
+            self.transport.stopReading()
+
+    def startReading(self):
+        if self.transport and not self._reading:
+            self._reading = True
+            self.transport.startReading()
 
     def datagramReceived(self, datagram, address):
         """ Handles and parses incoming RPC messages (and responses)
@@ -159,10 +173,10 @@ class KademliaProtocol(protocol.DatagramProtocol):
 
         # Refresh the remote node's details in the local node's k-buckets
         self._node.addContact(remoteContact)
-
         if isinstance(message, msgtypes.RequestMessage):
             # This is an RPC method request
             self._handleRPC(remoteContact, message.id, message.request, message.args)
+
         elif isinstance(message, msgtypes.ResponseMessage):
             # Find the message that triggered this response
             if message.id in self._sentMessages:
@@ -190,6 +204,7 @@ class KademliaProtocol(protocol.DatagramProtocol):
                         exceptionClassName = '.'.join(remoteHierarchy)
                     remoteException = None
                     try:
+                        log.warning("%s(\"%s\")", exceptionClassName, message.response)
                         exec 'remoteException = %s("%s")' % (exceptionClassName, message.response)
                     except Exception:
                         # We could not recreate the exception; create a generic one
@@ -220,6 +235,9 @@ class KademliaProtocol(protocol.DatagramProtocol):
                future, into something similar to a message translator/encoder
                class (see C{kademlia.msgformat} and C{kademlia.encoding}).
         """
+
+        self._bytes_rx += len(data)
+
         if len(data) > self.msgSizeLimit:
             # We have to spread the data over multiple UDP datagrams,
             # and provide sequencing information
@@ -298,7 +316,8 @@ class KademliaProtocol(protocol.DatagramProtocol):
         func = getattr(self._node, method, None)
         if callable(func) and hasattr(func, 'rpcmethod'):
             # Call the exposed Node method and return the result to the deferred callback chain
-            log.debug("DHT RECV CALL %s with args %s", method, args)
+            log.debug("DHT RECV CALL %s(%s) %s:%i", method, args[0].encode('hex'),
+                      senderContact.address, senderContact.port)
             try:
                 kwargs = {'_rpcNodeID': senderContact.id, '_rpcNodeContact': senderContact}
                 result = func(*args, **kwargs)
