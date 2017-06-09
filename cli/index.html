@@ -9,22 +9,22 @@
       
       
       
-        <link rel="shortcut icon" href="./assets/images/favicon.png">
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
       
       <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.7.3">
     
     
       
-        <title>LBRY</title>
+        <title>CLI - LBRY</title>
       
     
     
-      <script src="./assets/javascripts/modernizr-1df76c4e58.js"></script>
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
     
     
-      <link rel="stylesheet" href="./assets/stylesheets/application-acc56dad49.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-acc56dad49.css">
       
-        <link rel="stylesheet" href="./assets/stylesheets/application-8817cfa535.palette.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-8817cfa535.palette.css">
       
     
     
@@ -63,8 +63,8 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="." title="LBRY" class="md-logo md-header-nav__button">
-            <img src="./images/lbry-white.svg" width="24" height="24">
+          <a href=".." title="LBRY" class="md-logo md-header-nav__button">
+            <img src="../images/lbry-white.svg" width="24" height="24">
           </a>
         
       </div>
@@ -77,7 +77,7 @@
             
               
             
-            API
+            CLI
           
         </span>
       </div>
@@ -150,7 +150,7 @@
   <label class="md-nav__title md-nav__title--site" for="drawer">
     
       <i class="md-logo md-nav__button">
-        <img src="./images/lbry-white.svg">
+        <img src="../images/lbry-white.svg">
       </i>
     
     LBRY
@@ -184,6 +184,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href=".." title="API" class="md-nav__link">
+      API
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -195,11 +207,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        API
+        CLI
       </label>
     
-    <a href="." title="API" class="md-nav__link md-nav__link--active">
-      API
+    <a href="./" title="CLI" class="md-nav__link md-nav__link--active">
+      CLI
     </a>
     
       
@@ -304,6 +316,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cli_test_command" title="cli_test_command" class="md-nav__link">
+    cli_test_command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#commands" title="commands" class="md-nav__link">
     commands
   </a>
@@ -313,13 +332,6 @@
         <li class="md-nav__item">
   <a href="#daemon_stop" title="daemon_stop" class="md-nav__link">
     daemon_stop
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#descriptor_get" title="descriptor_get" class="md-nav__link">
-    descriptor_get
   </a>
   
 </li>
@@ -515,18 +527,6 @@
   </li>
 
     
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="cli/" title="CLI" class="md-nav__link">
-      CLI
-    </a>
-  </li>
-
-    
   </ul>
 </nav>
                   </div>
@@ -639,6 +639,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cli_test_command" title="cli_test_command" class="md-nav__link">
+    cli_test_command
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#commands" title="commands" class="md-nav__link">
     commands
   </a>
@@ -648,13 +655,6 @@
         <li class="md-nav__item">
   <a href="#daemon_stop" title="daemon_stop" class="md-nav__link">
     daemon_stop
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#descriptor_get" title="descriptor_get" class="md-nav__link">
-    descriptor_get
   </a>
   
 </li>
@@ -855,15 +855,16 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/lbryio/lbry/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/lbryio/lbry/edit/master/docs/cli.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                <h1 id="lbry-json-rpc-api-documentation">LBRY JSON-RPC API Documentation</h1>
+                <h1 id="lbry-command-line-documentation">LBRY Command Line Documentation</h1>
 <h2 id="blob_announce_all">blob_announce_all</h2>
 <pre><code class="text">Announce all blobs to the DHT
 
-Args:
-    None
+Usage:
+    blob_announce_all
+
 Returns:
     (str) Success/fail message
 </code></pre>
@@ -871,8 +872,9 @@ Returns:
 <h2 id="blob_delete">blob_delete</h2>
 <pre><code class="text">Delete a blob
 
-Args:
-    'blob_hash': (str) hash of blob to get
+Usage:
+    blob_delete (&lt;blob_hash&gt; | --blob_hash=&lt;blob_hash)
+
 Returns:
     (str) Success/fail message
 </code></pre>
@@ -880,15 +882,20 @@ Returns:
 <h2 id="blob_get">blob_get</h2>
 <pre><code class="text">Download and return a blob
 
-Args:
-    'blob_hash': (str) blob hash of blob to get
-    'timeout'(optional): (int) timeout in number of seconds
-    'encoding'(optional): (str) by default no attempt at decoding is made,
-                         can be set to one of the following decoders:
-                         'json'
-    'payment_rate_manager'(optional): if not given the default payment rate manager
-                                     will be used. supported alternative rate managers:
-                                     'only-free'
+Usage:
+    blob_get (&lt;blob_hash&gt; | --blob_hash=&lt;blob_hash&gt;) [--timeout=&lt;timeout&gt;]
+             [--encoding=&lt;encoding&gt;] [--payment_rate_manager=&lt;payment_rate_manager&gt;]
+
+Options:
+--timeout=&lt;timeout&gt;                            : timeout in number of seconds
+--encoding=&lt;encoding&gt;                          : by default no attempt at decoding is made,
+                                                 can be set to one of the
+                                                 following decoders:
+                                                    'json'
+--payment_rate_manager=&lt;payment_rate_manager&gt;  : if not given the default payment rate
+                                                 manager will be used.
+                                                 supported alternative rate managers:
+                                                    'only-free'
 
 Returns
     (str) Success/Fail message or (dict) decoded data
@@ -912,8 +919,9 @@ Returns:
 <h2 id="blob_reflect_all">blob_reflect_all</h2>
 <pre><code class="text">Reflects all saved blobs
 
-Args:
-    None
+Usage:
+    blob_reflect_all
+
 Returns:
     (bool) true if successful
 </code></pre>
@@ -921,8 +929,13 @@ Returns:
 <h2 id="block_show">block_show</h2>
 <pre><code class="text">Get contents of a block
 
-Args:
-    'blockhash': (str) hash of the block to look up
+Usage:
+    block_show (&lt;blockhash&gt; | --blockhash=&lt;blockhash&gt;) | (&lt;height&gt; | --height=&lt;height&gt;)
+
+Options:
+    &lt;blockhash&gt;, --blockhash=&lt;blockhash&gt;  : hash of the block to look up
+    &lt;height&gt;, --height=&lt;height&gt;           : height of the block to look up
+
 Returns:
     (dict) Requested block
 </code></pre>
@@ -930,16 +943,19 @@ Returns:
 <h2 id="channel_list_mine">channel_list_mine</h2>
 <pre><code class="text">Get my channels
 
+Usage:
+    channel_list_mine
+
 Returns:
     (list) ClaimDict
 </code></pre>
 
 <h2 id="channel_new">channel_new</h2>
-<pre><code class="text">Generate a publisher key and create a new certificate claim
+<pre><code class="text">Generate a publisher key and create a new '@' prefixed certificate claim
 
-Args:
-    'channel_name': (str) '@' prefixed name
-    'amount': (float) amount to claim name
+Usage:
+    channel_new (&lt;channel_name&gt; | --channel_name=&lt;channel_name&gt;)
+                (&lt;amount&gt; | --amount=&lt;amount&gt;)
 
 Returns:
     (dict) Dictionary containing result of the claim
@@ -955,8 +971,9 @@ Returns:
 <h2 id="claim_abandon">claim_abandon</h2>
 <pre><code class="text">Abandon a name and reclaim credits from the claim
 
-Args:
-    'claim_id': (str) claim_id of claim
+Usage:
+    claim_abandon (&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;)
+
 Return:
     (dict) Dictionary containing result of the claim
     {
@@ -968,8 +985,9 @@ Return:
 <h2 id="claim_list">claim_list</h2>
 <pre><code class="text">Get claims for a name
 
-Args:
-    'name': (str) search for claims on this name
+Usage:
+    claim_list (&lt;name&gt; | --name=&lt;name&gt;)
+
 Returns
     (dict) State of claims assigned for the name
     {
@@ -995,8 +1013,9 @@ Returns
 <h2 id="claim_list_mine">claim_list_mine</h2>
 <pre><code class="text">List my name claims
 
-Args:
-    None
+Usage:
+    claim_list_mine
+
 Returns
     (list) List of name claims owned by user
     [
@@ -1022,10 +1041,10 @@ Returns
 <h2 id="claim_new_support">claim_new_support</h2>
 <pre><code class="text">Support a name claim
 
-Args:
-    'name': (str) name
-    'claim_id': (str) claim ID of claim to support
-    'amount': (float) amount to support by
+Usage:
+    claim_new_support (&lt;name&gt; | --name=&lt;name&gt;) (&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;)
+                      (&lt;amount&gt; | --amount&lt;amount&gt;)
+
 Return:
     (dict) Dictionary containing result of the claim
     {
@@ -1038,11 +1057,15 @@ Return:
 <h2 id="claim_show">claim_show</h2>
 <pre><code class="text">Resolve claim info from a LBRY name
 
-Args:
-    'name': (str) name to look up, do not include lbry:// prefix
-    'txid'(optional): (str) if specified, look for claim with this txid
-    'nout'(optional): (int) if specified, look for claim with this nout
-    'claim_id'(optional): (str) if specified, look for claim with this claim_id
+Usage:
+    claim_show &lt;name&gt; [&lt;txid&gt; | --txid=&lt;txid&gt;] [&lt;nout&gt; | --nout=&lt;nout&gt;]
+                      [&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;]
+
+Options:
+    &lt;txid&gt;, --txid=&lt;txid&gt;              : look for claim with this txid
+    &lt;nout&gt;, --nout=&lt;nout&gt;              : look for claim with this nout
+    &lt;claim_id&gt;, --claim_id=&lt;claim_id&gt;  : look for claim with this claim id
+
 Returns:
     (dict) Dictionary contaning claim info, (bool) false if claim is not
         resolvable
@@ -1058,8 +1081,26 @@ Returns:
     }
 </code></pre>
 
+<h2 id="cli_test_command">cli_test_command</h2>
+<pre><code class="text">This command is only for testing the CLI argument parsing
+Usage:
+    cli_test_command (&lt;pos_arg&gt; | --pos_arg=&lt;pos_arg&gt;)
+                     [&lt;pos_args&gt;...] [--pos_arg2=&lt;pos_arg2&gt;]
+                     [--pos_arg3=&lt;pos_arg3&gt;]
+
+Options:
+    &lt;pos_arg2&gt;, --pos_arg2=&lt;pos_arg2&gt;  : pos arg 2
+    &lt;pos_arg3&gt;, --pos_arg3=&lt;pos_arg3&gt;  : pos arg 3
+
+Returns:
+    pos args
+</code></pre>
+
 <h2 id="commands">commands</h2>
 <pre><code class="text">Return a list of available commands
+
+Usage:
+    commands
 
 Returns:
     (list) list of available commands
@@ -1068,38 +1109,33 @@ Returns:
 <h2 id="daemon_stop">daemon_stop</h2>
 <pre><code class="text">Stop lbrynet-daemon
 
+Usage:
+    daemon_stop
+
 Returns:
     (string) Shutdown message
 </code></pre>
 
-<h2 id="descriptor_get">descriptor_get</h2>
-<pre><code class="text">Download and return a sd blob
-
-Args:
-    'sd_hash': (str) hash of sd blob
-    'timeout'(optional): (int) timeout in number of seconds
-    'payment_rate_manager'(optional): (str) if not given the default payment rate manager
-                                     will be used. supported alternative rate managers:
-                                     only-free
-
-Returns
-    (str) Success/Fail message or (dict) decoded data
-</code></pre>
-
 <h2 id="file_delete">file_delete</h2>
-<pre><code class="text">Delete a lbry file
+<pre><code class="text">Delete a LBRY file
 
-Args:
-    'name' (optional): (str) delete file by lbry name,
-    'sd_hash' (optional): (str) delete file by sd hash,
-    'file_name' (optional): (str) delete file by the name in the downloads folder,
-    'stream_hash' (optional): (str) delete file by stream hash,
-    'claim_id' (optional): (str) delete file by claim ID,
-    'outpoint' (optional): (str) delete file by claim outpoint,
-    'rowid': (optional): (int) delete file by rowid in the file manager
-    'delete_target_file' (optional): (bool) delete file from downloads folder,
-                                    defaults to true if false only the blobs and
-                                    db entries will be deleted
+Usage:
+    file_delete [-a | -f] [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;]
+                [--stream_hash=&lt;stream_hash&gt;] [--claim_id=&lt;claim_id&gt;]
+                [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;]
+                [--name=&lt;name&gt;]
+
+Options:
+    -a                          : delete file from downloads and delete stored blobs
+    -f                          : delete only from downloads, do not delete blobs
+    --sd_hash=&lt;sd_hash&gt;         : delete by file sd hash
+    --file_name&lt;file_name&gt;      : delete by file name in downloads folder
+    --stream_hash=&lt;stream_hash&gt; : delete by file stream hash
+    --claim_id=&lt;claim_id&gt;       : delete by file claim id
+    --outpoint=&lt;outpoint&gt;       : delete by file claim outpoint
+    --rowid=&lt;rowid&gt;             : delete by file row id
+    --name=&lt;name&gt;               : delete by associated name claim of file
+
 Returns:
     (bool) true if deletion was successful
 </code></pre>
@@ -1107,15 +1143,22 @@ Returns:
 <h2 id="file_list">file_list</h2>
 <pre><code class="text">List files limited by optional filters
 
-Args:
-    'name' (optional): (str) filter files by lbry name,
-    'sd_hash' (optional): (str) filter files by sd hash,
-    'file_name' (optional): (str) filter files by the name in the downloads folder,
-    'stream_hash' (optional): (str) filter files by stream hash,
-    'claim_id' (optional): (str) filter files by claim id,
-    'outpoint' (optional): (str) filter files by claim outpoint,
-    'rowid' (optional): (int) filter files by internal row id,
-    'full_status': (optional): (bool) if true populate the 'message' and 'size' fields
+Usage:
+    file_list [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;] [--stream_hash=&lt;stream_hash&gt;]
+              [--claim_id=&lt;claim_id&gt;] [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;]
+              [--name=&lt;name&gt;]
+              [-f]
+
+Options:
+    --sd_hash=&lt;sd_hash&gt;          : get file with matching sd hash
+    --file_name=&lt;file_name&gt;      : get file with matching file name in the
+                                   downloads folder
+    --stream_hash=&lt;stream_hash&gt;  : get file with matching stream hash
+    --claim_id=&lt;claim_id&gt;        : get file with matching claim id
+    --outpoint=&lt;outpoint&gt;        : get file with matching claim outpoint
+    --rowid=&lt;rowid&gt;              : get file with matching row id
+    --name=&lt;name&gt;                : get file with matching associated name claim
+    -f                           : full status, populate the 'message' and 'size' fields
 
 Returns:
     (list) List of files
@@ -1148,11 +1191,22 @@ Returns:
 <h2 id="file_set_status">file_set_status</h2>
 <pre><code class="text">Start or stop downloading a file
 
-Args:
-    'status': (str) &quot;start&quot; or &quot;stop&quot;
-    'name' (optional): (str) start file by lbry name,
-    'sd_hash' (optional): (str) start file by the hash in the name claim,
-    'file_name' (optional): (str) start file by its name in the downloads folder,
+Usage:
+    file_set_status &lt;status&gt; [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;]
+              [--stream_hash=&lt;stream_hash&gt;] [--claim_id=&lt;claim_id&gt;]
+              [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;]
+              [--name=&lt;name&gt;]
+
+Options:
+    --sd_hash=&lt;sd_hash&gt;          : set status of file with matching sd hash
+    --file_name=&lt;file_name&gt;      : set status of file with matching file name in the
+                                   downloads folder
+    --stream_hash=&lt;stream_hash&gt;  : set status of file with matching stream hash
+    --claim_id=&lt;claim_id&gt;        : set status of file with matching claim id
+    --outpoint=&lt;outpoint&gt;        : set status of file with matching claim outpoint
+    --rowid=&lt;rowid&gt;              : set status of file with matching row id
+    --name=&lt;name&gt;                : set status of file with matching associated name claim
+
 Returns:
     (str) Confirmation message
 </code></pre>
@@ -1160,11 +1214,15 @@ Returns:
 <h2 id="get">get</h2>
 <pre><code class="text">Download stream from a LBRY name.
 
-Args:
-    'uri': (str) lbry uri to download
-    'file_name'(optional): (str) a user specified name for the downloaded file
-    'timeout'(optional): (int) download timeout in number of seconds
-    'download_directory'(optional): (str) path to directory where file will be saved
+Usage:
+    get &lt;uri&gt; [&lt;file_name&gt; | --file_name=&lt;file_name&gt;] [&lt;timeout&gt; | --timeout=&lt;timeout&gt;]
+              [&lt;download_directory&gt; | --download_directory=&lt;download_directory&gt;]
+
+Options:
+    &lt;file_name&gt;           : specified name for the downloaded file
+    &lt;timeout&gt;             : download timeout in number of seconds
+    &lt;download_directory&gt;  : path to directory where file will be saved
+
 Returns:
     (dict) Dictionary contaning information about the stream
     {
@@ -1193,10 +1251,13 @@ Returns:
 <h2 id="get_availability">get_availability</h2>
 <pre><code class="text">Get stream availability for lbry uri
 
-Args:
-    'uri' : (str) lbry uri
-    'sd_timeout' (optional): (int) sd blob download timeout
-    'peer_timeout' (optional): (int) how long to look for peers
+Usage:
+    get_availability (&lt;uri&gt; | --uri=&lt;uri&gt;) [&lt;sd_timeout&gt; | --sd_timeout=&lt;sd_timeout&gt;]
+                     [&lt;peer_timeout&gt; | --peer_timeout=&lt;peer_timeout&gt;]
+
+Options:
+    &lt;sd_timeout&gt;, --sd_timeout=&lt;sd_timeout&gt;        : sd blob download timeout
+    &lt;peer_timeout&gt;, --peer_timeout=&lt;peer_timeout&gt;  : how long to look for peers
 
 Returns:
     (float) Peers per blob / total blobs
@@ -1205,19 +1266,22 @@ Returns:
 <h2 id="help">help</h2>
 <pre><code class="text">Return a useful message for an API command
 
-Args:
-    'command'(optional): (str) command to retrieve documentation for
-Returns:
-    (str) if given a command, returns documentation about that command
-    otherwise returns general help message
+Usage:
+    help [&lt;command&gt; | --command=&lt;command&gt;]
+
+Options:
+    &lt;command&gt;, --command=&lt;command&gt;  : command to retrieve documentation for
 </code></pre>
 
 <h2 id="peer_list">peer_list</h2>
 <pre><code class="text">Get peers for blob hash
 
-Args:
-    'blob_hash': (str) blob hash
-    'timeout'(optional): (int) peer search timeout in seconds
+Usage:
+    peer_list (&lt;blob_hash&gt; | --blob_hash=&lt;blob_hash&gt;) [&lt;timeout&gt; | --timeout=&lt;timeout&gt;]
+
+Options:
+    &lt;timeout&gt;, --timeout=&lt;timeout&gt;  : peer search timeout in seconds
+
 Returns:
     (list) List of contacts
 </code></pre>
@@ -1231,37 +1295,54 @@ Fields required in the final Metadata are:
     'description'
     'author'
     'language'
-    'license',
+    'license'
     'nsfw'
 
 Metadata can be set by either using the metadata argument or by setting individual arguments
 fee, title, description, author, language, license, license_url, thumbnail, preview, nsfw,
 or sources. Individual arguments will overwrite the fields specified in metadata argument.
 
-Args:
-    'name': (str) name to be claimed
-    'bid': (float) amount of credits to commit in this claim,
-    'metadata'(optional): (dict) Metadata to associate with the claim.
-    'file_path'(optional): (str) path to file to be associated with name. If provided,
-                            a lbry stream of this file will be used in 'sources'.
-                            If no path is given but a metadata dict is provided, the source
-                            from the given metadata will be used.
-    'fee'(optional): (dict) Dictionary representing key fee to download content:
-                      {currency_symbol: {'amount': float, 'address': str, optional}}
-                      supported currencies: LBC, USD, BTC
-                      If an address is not provided a new one will be automatically
-                      generated. Default fee is zero.
-    'title'(optional): (str) title of the file
-    'description'(optional): (str) description of the file
-    'author'(optional): (str) author of the file
-    'language'(optional): (str), language code
-    'license'(optional): (str) license for the file
-    'license_url'(optional): (str) URL to license
-    'thumbnail'(optional): (str) thumbnail URL for the file
-    'preview'(optional): (str) preview URL for the file
-    'nsfw'(optional): (bool) True if not safe for work
-    'sources'(optional): (dict){'lbry_sd_hash':sd_hash} specifies sd hash of file
-    'channel_name' (optional): (str) name of the publisher channel
+Usage:
+    publish (&lt;name&gt; | --name=&lt;name&gt;) (&lt;bid&gt; | --bid=&lt;bid&gt;) [--metadata=&lt;metadata&gt;]
+            [--file_path=&lt;file_path&gt;] [--fee=&lt;fee&gt;] [--title=&lt;title&gt;]
+            [--description=&lt;description&gt;] [--author=&lt;author&gt;] [--language=&lt;language&gt;]
+            [--license=&lt;license&gt;] [--license_url=&lt;license_url&gt;] [--thumbnail=&lt;thumbnail&gt;]
+            [--preview=&lt;preview&gt;] [--nsfw=&lt;nsfw&gt;] [--sources=&lt;sources&gt;]
+            [--channel_name=&lt;channel_name&gt;] [--channel_id=&lt;channel_id&gt;]
+            [--claim_address=&lt;claim_address&gt;]
+
+Options:
+    --metadata=&lt;metadata&gt;          : ClaimDict to associate with the claim.
+    --file_path=&lt;file_path&gt;        : path to file to be associated with name. If provided,
+                                     a lbry stream of this file will be used in 'sources'.
+                                     If no path is given but a metadata dict is provided,
+                                     the source from the given metadata will be used.
+    --fee=&lt;fee&gt;                    : Dictionary representing key fee to download content:
+                                      {
+                                        'currency': currency_symbol,
+                                        'amount': float,
+                                        'address': str, optional
+                                      }
+                                      supported currencies: LBC, USD, BTC
+                                      If an address is not provided a new one will be
+                                      automatically generated. Default fee is zero.
+    --title=&lt;title&gt;                : title of the publication
+    --description=&lt;description&gt;    : description of the publication
+    --author=&lt;author&gt;              : author of the publication
+    --language=&lt;language&gt;          : language of the publication
+    --license=&lt;license&gt;            : publication license
+    --license_url=&lt;license_url&gt;    : publication license url
+    --thumbnail=&lt;thumbnail&gt;        : thumbnail url
+    --preview=&lt;preview&gt;            : preview url
+    --nsfw=&lt;nsfw&gt;                  : title of the publication
+    --sources=&lt;sources&gt;            : {'lbry_sd_hash':sd_hash} specifies sd hash of file
+    --channel_name=&lt;channel_name&gt;  : name of the publisher channel name in the wallet
+    --channel_id=&lt;channel_id&gt;      : claim id of the publisher channel, does not check
+                                     for channel claim being in the wallet. This allows
+                                     publishing to a channel where only the certificate
+                                     private key is in the wallet.
+   --claim_address=&lt;claim_address&gt; : address where the claim is sent to, if not specified
+                                     new address wil automatically be created
 
 Returns:
     (dict) Dictionary containing result of the claim
@@ -1277,8 +1358,9 @@ Returns:
 <h2 id="reflect">reflect</h2>
 <pre><code class="text">Reflect a stream
 
-Args:
-    'sd_hash': (str) sd_hash of lbry file
+Usage:
+    reflect (&lt;sd_hash&gt; | --sd_hash=&lt;sd_hash&gt;)
+
 Returns:
     (bool) true if successful
 </code></pre>
@@ -1286,8 +1368,9 @@ Returns:
 <h2 id="report_bug">report_bug</h2>
 <pre><code class="text">Report a bug to slack
 
-Args:
-    'message': (str) message to send
+Usage:
+    report_bug (&lt;message&gt; | --message=&lt;message&gt;)
+
 Returns:
     (bool) true if successful
 </code></pre>
@@ -1295,8 +1378,12 @@ Returns:
 <h2 id="resolve">resolve</h2>
 <pre><code class="text">Resolve a LBRY URI
 
-Args:
-    'uri': (str) uri to download
+Usage:
+    resolve &lt;uri&gt; [-f]
+
+Options:
+    -f  : force refresh and ignore cache
+
 Returns:
     None if nothing can be resolved, otherwise:
     If uri resolves to a channel or a claim in a channel:
@@ -1368,25 +1455,32 @@ Returns:
 <h2 id="resolve_name">resolve_name</h2>
 <pre><code class="text">Resolve stream info from a LBRY name
 
-Args:
-    'name': (str) name to look up, do not include lbry:// prefix
+Usage:
+    resolve_name &lt;name&gt; [-f]
+
+Options:
+    -f  : force refresh and do not check cache
+
 Returns:
     (dict) Metadata dictionary from name claim, None if the name is not
             resolvable
 </code></pre>
 
 <h2 id="send_amount_to_address">send_amount_to_address</h2>
-<pre><code class="text">Send credits to an address
+<pre><code class="text">Queue a payment of credits to an address
 
-Args:
-    'amount': (float) the amount to send
-    'address': (str) the address of the recipient in base58
+Usage:
+    send_amount_to_address (&lt;amount&gt; | --amount=&lt;amount&gt;) (&lt;address&gt; | --address=&lt;address&gt;)
+
 Returns:
     (bool) true if payment successfully scheduled
 </code></pre>
 
 <h2 id="settings_get">settings_get</h2>
 <pre><code class="text">Get daemon settings
+
+Usage:
+    settings_get
 
 Returns:
     (dict) Dictionary of daemon settings
@@ -1411,22 +1505,26 @@ Returns:
 </code></pre>
 
 <h2 id="status">status</h2>
-<pre><code class="text">Return daemon status
+<pre><code class="text">Get daemon status
 
-Args:
-    'session_status' (optional): (bool) true to return session status,
-        default is false
-Returns:
-    (dict) Daemon status dictionary
+Usage:
+    status [-s] [-d]
+
+Options:
+    -s  : include session status in results
+    -d  : include dht network and peer status
 </code></pre>
 
 <h2 id="stream_cost_estimate">stream_cost_estimate</h2>
 <pre><code class="text">Get estimated cost for a lbry stream
 
-Args:
-    'name': (str) lbry name
-    'size' (optional): (int) stream size, in bytes. if provided an sd blob
-                        won't be downloaded.
+Usage:
+    stream_cost_estimate &lt;uri&gt; [&lt;size&gt; | --size=&lt;size&gt;]
+
+Options:
+    &lt;size&gt;, --size=&lt;size&gt;  : stream size in bytes. if provided an sd blob won't be
+                             downloaded.
+
 Returns:
     (float) Estimated cost in lbry credits, returns None if uri is not
         resolveable
@@ -1435,8 +1533,9 @@ Returns:
 <h2 id="transaction_list">transaction_list</h2>
 <pre><code class="text">List transactions belonging to wallet
 
-Args:
-    None
+Usage:
+    transaction_list
+
 Returns:
     (list) List of transactions
 </code></pre>
@@ -1444,8 +1543,9 @@ Returns:
 <h2 id="transaction_show">transaction_show</h2>
 <pre><code class="text">Get a decoded transaction from a txid
 
-Args:
-    'txid': (str) txid of transaction
+Usage:
+    transaction_show (&lt;txid&gt; | --txid=&lt;txid&gt;)
+
 Returns:
     (dict) JSON formatted transaction
 </code></pre>
@@ -1453,8 +1553,9 @@ Returns:
 <h2 id="version">version</h2>
 <pre><code class="text">Get lbry version information
 
-Args:
-    None
+Usage:
+    version
+
 Returns:
     (dict) Dictionary of lbry version information
     {
@@ -1474,10 +1575,12 @@ Returns:
 <h2 id="wallet_balance">wallet_balance</h2>
 <pre><code class="text">Return the balance of the wallet
 
-Args:
-    'address' (optional): If address is provided only that balance will be given
-    'include_unconfirmed' (optional): If set unconfirmed balance will be included in
-     the only takes effect when address is also provided.
+Usage:
+    wallet_balance [&lt;address&gt; | --address=&lt;address&gt;] [-u]
+
+Options:
+    &lt;address&gt;  :  If provided only the balance for this address will be given
+    -u         :  Include unconfirmed
 
 Returns:
     (float) amount of lbry credits in wallet
@@ -1486,8 +1589,9 @@ Returns:
 <h2 id="wallet_is_address_mine">wallet_is_address_mine</h2>
 <pre><code class="text">Checks if an address is associated with the current wallet.
 
-Args:
-    'address': (str) address to check in base58
+Usage:
+    wallet_is_address_mine (&lt;address&gt; | --address=&lt;address&gt;)
+
 Returns:
     (bool) true, if address is associated with current wallet
 </code></pre>
@@ -1495,8 +1599,9 @@ Returns:
 <h2 id="wallet_list">wallet_list</h2>
 <pre><code class="text">List wallet addresses
 
-Args:
-    None
+Usage:
+    wallet_list
+
 Returns:
     List of wallet addresses
 </code></pre>
@@ -1504,8 +1609,9 @@ Returns:
 <h2 id="wallet_new_address">wallet_new_address</h2>
 <pre><code class="text">Generate a new wallet address
 
-Args:
-    None
+Usage:
+    wallet_new_address
+
 Returns:
     (str) New wallet address in base58
 </code></pre>
@@ -1513,8 +1619,9 @@ Returns:
 <h2 id="wallet_public_key">wallet_public_key</h2>
 <pre><code class="text">Get public key from wallet address
 
-Args:
-    'address': (str) wallet address in base58
+Usage:
+    wallet_public_key (&lt;address&gt; | --address=&lt;address&gt;)
+
 Returns:
     (list) list of public keys associated with address.
         Could contain more than one public key if multisig.
@@ -1524,8 +1631,9 @@ Returns:
 <pre><code class="text">Return an address containing no balance, will create
 a new address if there is none.
 
-Args:
-    None
+Usage:
+    wallet_unused_address
+
 Returns:
     (str) Unused wallet address in base58
 </code></pre>
@@ -1547,20 +1655,20 @@ Returns:
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-        
-          <a href="cli/" title="CLI" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href=".." title="API" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
-                  Next
+                  Previous
                 </span>
-                CLI
+                API
               </span>
             </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
           </a>
+        
         
       </nav>
     </div>
@@ -1596,10 +1704,10 @@ Returns:
       
     </div>
     
-      <script src="./assets/javascripts/application-b30566c560.js"></script>
+      <script src="../assets/javascripts/application-b30566c560.js"></script>
       
       
-      <script>app.initialize({url:{base:"."}})</script>
+      <script>app.initialize({url:{base:".."}})</script>
       
     
     
