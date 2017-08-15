@@ -1,0 +1,21 @@
+*.pyc
+*.egg
+*.so
+*.iml
+*.log
+*.pem
+*.decTest
+*.prof
+.#*
+
+/build/build
+/build/dist
+/bulid/requirements_base.txt
+
+
+.idea/
+.coverage
+.DS_Store
+
+# temporary files from the twisted.trial test runner
+_trial_temp/
