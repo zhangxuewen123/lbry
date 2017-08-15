@@ -21,7 +21,7 @@ at anytime.
   *
 
 ### Changed
-  *
+  * Use `BytesIO` and `FileBodyProducer` instead of `tempfile.NamedTemporaryFile` and a threaded `shutil.move` to write a blob
   *
 
 ### Added
