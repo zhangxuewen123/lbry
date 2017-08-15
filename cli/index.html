@@ -225,6 +225,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#blob_announce" title="blob_announce" class="md-nav__link">
+    blob_announce
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#blob_announce_all" title="blob_announce_all" class="md-nav__link">
     blob_announce_all
   </a>
@@ -365,6 +372,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#file_reflect" title="file_reflect" class="md-nav__link">
+    file_reflect
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#file_set_status" title="file_set_status" class="md-nav__link">
     file_set_status
   </a>
@@ -407,13 +421,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reflect" title="reflect" class="md-nav__link">
-    reflect
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#report_bug" title="report_bug" class="md-nav__link">
     report_bug
   </a>
@@ -430,13 +437,6 @@
         <li class="md-nav__item">
   <a href="#resolve_name" title="resolve_name" class="md-nav__link">
     resolve_name
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#send_amount_to_address" title="send_amount_to_address" class="md-nav__link">
-    send_amount_to_address
   </a>
   
 </li>
@@ -521,6 +521,13 @@
         <li class="md-nav__item">
   <a href="#wallet_public_key" title="wallet_public_key" class="md-nav__link">
     wallet_public_key
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wallet_send" title="wallet_send" class="md-nav__link">
+    wallet_send
   </a>
   
 </li>
@@ -562,6 +569,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#blob_announce" title="blob_announce" class="md-nav__link">
+    blob_announce
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#blob_announce_all" title="blob_announce_all" class="md-nav__link">
     blob_announce_all
   </a>
@@ -702,6 +716,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#file_reflect" title="file_reflect" class="md-nav__link">
+    file_reflect
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#file_set_status" title="file_set_status" class="md-nav__link">
     file_set_status
   </a>
@@ -744,13 +765,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reflect" title="reflect" class="md-nav__link">
-    reflect
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#report_bug" title="report_bug" class="md-nav__link">
     report_bug
   </a>
@@ -767,13 +781,6 @@
         <li class="md-nav__item">
   <a href="#resolve_name" title="resolve_name" class="md-nav__link">
     resolve_name
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#send_amount_to_address" title="send_amount_to_address" class="md-nav__link">
-    send_amount_to_address
   </a>
   
 </li>
@@ -863,6 +870,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wallet_send" title="wallet_send" class="md-nav__link">
+    wallet_send
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wallet_unused_address" title="wallet_unused_address" class="md-nav__link">
     wallet_unused_address
   </a>
@@ -887,6 +901,26 @@
                 
                 
                 <h1 id="lbry-command-line-documentation">LBRY Command Line Documentation</h1>
+<h2 id="blob_announce">blob_announce</h2>
+<pre><code class="text">Announce blobs to the DHT
+
+Usage:
+    blob_announce [-a] [&lt;blob_hash&gt; | --blob_hash=&lt;blob_hash&gt;]
+                  [&lt;stream_hash&gt; | --stream_hash=&lt;stream_hash&gt;]
+                  [&lt;sd_hash&gt; | --sd_hash=&lt;sd_hash&gt;]
+
+Options:
+    -a                                          : announce all the blobs possessed by user
+    &lt;blob_hash&gt;, --blob_hash=&lt;blob_hash&gt;        : announce a blob, specified by blob_hash
+    &lt;stream_hash&gt;, --stream_hash=&lt;stream_hash&gt;  : announce all blobs associated with
+                                                    stream_hash
+    &lt;sd_hash&gt;, --sd_hash=&lt;sd_hash&gt;              : announce all blobs associated with
+                                                    sd_hash and the sd_hash itself
+
+Returns:
+    (bool) true if successful
+</code></pre>
+
 <h2 id="blob_announce_all">blob_announce_all</h2>
 <pre><code class="text">Announce all blobs to the DHT
 
@@ -932,14 +966,20 @@ Returns
 <h2 id="blob_list">blob_list</h2>
 <pre><code class="text">Returns blob hashes. If not given filters, returns all blobs known by the blob manager
 
-Args:
-    'uri' (optional): (str) filter by blobs in stream for winning claim
-    'stream_hash' (optional): (str) filter by blobs in given stream hash
-    'sd_hash' (optional): (str) filter by blobs in given sd hash
-    'needed' (optional): (bool) only return needed blobs
-    'finished' (optional): (bool) only return finished blobs
-    'page_size' (optional): (int) limit number of results returned
-    'page' (optional): (int) filter to page x of [page_size] results
+Usage:
+    blob_list [-n] [-f] [&lt;uri&gt; | --uri=&lt;uri&gt;] [&lt;stream_hash&gt; | --stream_hash=&lt;stream_hash&gt;]
+              [&lt;sd_hash&gt; | --sd_hash=&lt;sd_hash&gt;] [&lt;page_size&gt; | --page_size=&lt;page_size&gt;]
+              [&lt;page&gt; | --page=&lt;page&gt;]
+
+Options:
+    -n                                          : only return needed blobs
+    -f                                          : only return finished blobs
+    &lt;uri&gt;, --uri=&lt;uri&gt;                          : filter blobs by stream in a uri
+    &lt;stream_hash&gt;, --stream_hash=&lt;stream_hash&gt;  : filter blobs by stream hash
+    &lt;sd_hash&gt;, --sd_hash=&lt;sd_hash&gt;              : filter blobs by sd hash
+    &lt;page_size&gt;, --page_size=&lt;page_size&gt;        : results page size
+    &lt;page&gt;, --page=&lt;page&gt;                       : page of results to return
+
 Returns:
     (list) List of blob hashes
 </code></pre>
@@ -1000,7 +1040,8 @@ Returns:
 <pre><code class="text">Abandon a name and reclaim credits from the claim
 
 Usage:
-    claim_abandon (&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;)
+    claim_abandon [&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;]
+                  [&lt;txid&gt; | --txid=&lt;txid&gt;] [&lt;nout&gt; | --nout=&lt;nout&gt;]
 
 Return:
     (dict) Dictionary containing result of the claim
@@ -1056,7 +1097,7 @@ Returns:
             If there was an error:
             'error': (str) error message
 
-            'claims_in_channel_pages': total number of pages with &lt;page_size&gt; results,
+            'claims_in_channel': the total number of results for the channel,
 
             If a page of results was requested:
             'returned_page': page number returned,
@@ -1121,7 +1162,7 @@ Returns
 
 Usage:
     claim_new_support (&lt;name&gt; | --name=&lt;name&gt;) (&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;)
-                      (&lt;amount&gt; | --amount&lt;amount&gt;)
+                      (&lt;amount&gt; | --amount=&lt;amount&gt;)
 
 Return:
     (dict) Dictionary containing result of the claim
@@ -1146,20 +1187,21 @@ Options:
 </code></pre>
 
 <h2 id="claim_show">claim_show</h2>
-<pre><code class="text">Resolve claim info from a LBRY name
+<pre><code class="text">Resolve claim info from txid/nout or with claim ID
 
 Usage:
-    claim_show &lt;name&gt; [&lt;txid&gt; | --txid=&lt;txid&gt;] [&lt;nout&gt; | --nout=&lt;nout&gt;]
-                      [&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;]
+    claim_show [&lt;txid&gt; | --txid=&lt;txid&gt;] [&lt;nout&gt; | --nout=&lt;nout&gt;]
+               [&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;]
 
 Options:
-    &lt;txid&gt;, --txid=&lt;txid&gt;              : look for claim with this txid
-    &lt;nout&gt;, --nout=&lt;nout&gt;              : look for claim with this nout
+    &lt;txid&gt;, --txid=&lt;txid&gt;              : look for claim with this txid, nout must
+                                            also be specified
+    &lt;nout&gt;, --nout=&lt;nout&gt;              : look for claim with this nout, txid must
+                                            also be specified
     &lt;claim_id&gt;, --claim_id=&lt;claim_id&gt;  : look for claim with this claim id
 
 Returns:
-    (dict) Dictionary contaning claim info, (bool) false if claim is not
-        resolvable
+    (dict) Dictionary containing claim info as below,
 
     {
         'txid': (str) txid of claim
@@ -1169,6 +1211,12 @@ Returns:
         'height' : (int) height of claim takeover
         'claim_id': (str) claim ID of claim
         'supports': (list) list of supports associated with claim
+    }
+
+    if claim cannot be resolved, dictionary as below will be returned
+
+    {
+        'error': (str) reason for error
     }
 </code></pre>
 
@@ -1283,6 +1331,31 @@ Returns:
     ]
 </code></pre>
 
+<h2 id="file_reflect">file_reflect</h2>
+<pre><code class="text">Reflect all the blobs in a file matching the filter criteria
+
+Usage:
+    file_reflect [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;]
+                 [--stream_hash=&lt;stream_hash&gt;] [--claim_id=&lt;claim_id&gt;]
+                 [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;] [--name=&lt;name&gt;]
+                 [--reflector=&lt;reflector&gt;]
+
+Options:
+    --sd_hash=&lt;sd_hash&gt;          : get file with matching sd hash
+    --file_name=&lt;file_name&gt;      : get file with matching file name in the
+                                   downloads folder
+    --stream_hash=&lt;stream_hash&gt;  : get file with matching stream hash
+    --claim_id=&lt;claim_id&gt;        : get file with matching claim id
+    --outpoint=&lt;outpoint&gt;        : get file with matching claim outpoint
+    --rowid=&lt;rowid&gt;              : get file with matching row id
+    --name=&lt;name&gt;                : get file with matching associated name claim
+    --reflector=&lt;reflector&gt;      : reflector server, ip address or url
+                                   by default choose a server from the config
+
+Returns:
+    (list) list of blobs reflected
+</code></pre>
+
 <h2 id="file_set_status">file_set_status</h2>
 <pre><code class="text">Start or stop downloading a file
 
@@ -1311,7 +1384,7 @@ Returns:
 
 Usage:
     get &lt;uri&gt; [&lt;file_name&gt; | --file_name=&lt;file_name&gt;] [&lt;timeout&gt; | --timeout=&lt;timeout&gt;]
-              [&lt;download_directory&gt; | --download_directory=&lt;download_directory&gt;]
+
 
 Options:
     &lt;file_name&gt;           : specified name for the downloaded file
@@ -1450,16 +1523,6 @@ Returns:
     }
 </code></pre>
 
-<h2 id="reflect">reflect</h2>
-<pre><code class="text">Reflect a stream
-
-Usage:
-    reflect (&lt;sd_hash&gt; | --sd_hash=&lt;sd_hash&gt;)
-
-Returns:
-    (bool) true if successful
-</code></pre>
-
 <h2 id="report_bug">report_bug</h2>
 <pre><code class="text">Report a bug to slack
 
@@ -1544,16 +1607,6 @@ Returns:
             resolvable
 </code></pre>
 
-<h2 id="send_amount_to_address">send_amount_to_address</h2>
-<pre><code class="text">Queue a payment of credits to an address
-
-Usage:
-    send_amount_to_address (&lt;amount&gt; | --amount=&lt;amount&gt;) (&lt;address&gt; | --address=&lt;address&gt;)
-
-Returns:
-    (bool) true if payment successfully scheduled
-</code></pre>
-
 <h2 id="settings_get">settings_get</h2>
 <pre><code class="text">Get daemon settings
 
@@ -1568,16 +1621,45 @@ Returns:
 <h2 id="settings_set">settings_set</h2>
 <pre><code class="text">Set daemon settings
 
-Args:
-    'run_on_startup': (bool) currently not supported
-    'data_rate': (float) data rate,
-    'max_key_fee': (float) maximum key fee,
-    'download_directory': (str) path of where files are downloaded,
-    'max_upload': (float), currently not supported
-    'max_download': (float), currently not supported
-    'download_timeout': (int) download timeout in seconds
-    'search_timeout': (float) search timeout in seconds
-    'cache_time': (int) cache timeout in seconds
+Usage:
+    settings_set [&lt;download_directory&gt; | --download_directory=&lt;download_directory&gt;]
+                 [&lt;data_rate&gt; | --data_rate=&lt;data_rate&gt;]
+                 [&lt;download_timeout&gt; | --download_timeout=&lt;download_timeout&gt;]
+                 [&lt;peer_port&gt; | --peer_port=&lt;peer_port&gt;]
+                 [&lt;max_key_fee&gt; | --max_key_fee=&lt;max_key_fee&gt;]
+                 [&lt;disable_max_key_fee&gt; | --disable_max_key_fee=&lt;disable_max_key_fee&gt;]
+                 [&lt;use_upnp&gt; | --use_upnp=&lt;use_upnp&gt;]
+                 [&lt;run_reflector_server&gt; | --run_reflector_server=&lt;run_reflector_server&gt;]
+                 [&lt;cache_time&gt; | --cache_time=&lt;cache_time&gt;]
+                 [&lt;reflect_uploads&gt; | --reflect_uploads=&lt;reflect_uploads&gt;]
+                 [&lt;share_usage_data&gt; | --share_usage_data=&lt;share_usage_data&gt;]
+                 [&lt;peer_search_timeout&gt; | --peer_search_timeout=&lt;peer_search_timeout&gt;]
+                 [&lt;sd_download_timeout&gt; | --sd_download_timeout=&lt;sd_download_timeout&gt;]
+
+Options:
+    &lt;download_directory&gt;, --download_directory=&lt;download_directory&gt;  : (str)
+    &lt;data_rate&gt;, --data_rate=&lt;data_rate&gt;                             : (float), 0.0001
+    &lt;download_timeout&gt;, --download_timeout=&lt;download_timeout&gt;        : (int), 180
+    &lt;peer_port&gt;, --peer_port=&lt;peer_port&gt;                             : (int), 3333
+    &lt;max_key_fee&gt;, --max_key_fee=&lt;max_key_fee&gt;   : (dict) maximum key fee for downloads,
+                                                    in the format: {
+                                                        &quot;currency&quot;: &lt;currency_symbol&gt;,
+                                                        &quot;amount&quot;: &lt;amount&gt;
+                                                    }. In the CLI, it must be an escaped
+                                                    JSON string
+                                                    Supported currency symbols:
+                                                        LBC
+                                                        BTC
+                                                        USD
+    &lt;disable_max_key_fee&gt;, --disable_max_key_fee=&lt;disable_max_key_fee&gt; : (bool), False
+    &lt;use_upnp&gt;, --use_upnp=&lt;use_upnp&gt;            : (bool), True
+    &lt;run_reflector_server&gt;, --run_reflector_server=&lt;run_reflector_server&gt;  : (bool), False
+    &lt;cache_time&gt;, --cache_time=&lt;cache_time&gt;  : (int), 150
+    &lt;reflect_uploads&gt;, --reflect_uploads=&lt;reflect_uploads&gt;  : (bool), True
+    &lt;share_usage_data&gt;, --share_usage_data=&lt;share_usage_data&gt;  : (bool), True
+    &lt;peer_search_timeout&gt;, --peer_search_timeout=&lt;peer_search_timeout&gt;  : (int), 3
+    &lt;sd_download_timeout&gt;, --sd_download_timeout=&lt;sd_download_timeout&gt;  : (int), 3
+
 Returns:
     (dict) Updated dictionary of daemon settings
 </code></pre>
@@ -1743,6 +1825,28 @@ Usage:
 Returns:
     (list) list of public keys associated with address.
         Could contain more than one public key if multisig.
+</code></pre>
+
+<h2 id="wallet_send">wallet_send</h2>
+<pre><code class="text">Send credits. If given an address, send credits to it. If given a claim id, send a tip
+to the owner of a claim specified by uri. A tip is a claim support where the recipient
+of the support is the claim address for the claim being supported.
+
+Usage:
+    wallet_send (&lt;amount&gt; | --amount=&lt;amount&gt;)
+                ((&lt;address&gt; | --address=&lt;address&gt;) | (&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;))
+
+Return:
+    If sending to an address:
+    (bool) true if payment successfully scheduled
+
+    If sending a claim tip:
+    (dict) Dictionary containing the result of the support
+    {
+        txid : (str) txid of resulting support claim
+        nout : (int) nout of the resulting support claim
+        fee : (float) fee paid for the transaction
+    }
 </code></pre>
 
 <h2 id="wallet_unused_address">wallet_unused_address</h2>
