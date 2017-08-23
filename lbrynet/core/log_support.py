@@ -287,7 +287,7 @@ def configure_twisted():
     # I tried using the new logging api
     # https://twistedmatrix.com/documents/current/core/howto/logger.html#compatibility-with-standard-library-logging
     # and it simply didn't work
-    observer = twisted.python.log.PythonLoggingObserver()
+    observer = twisted.python.log.PythonLoggingObserver(loggerName="lbrynet")
     observer.start()
 
 
