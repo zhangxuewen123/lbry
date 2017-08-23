@@ -5,7 +5,6 @@ import random
 import socket
 import string
 import json
-
 import pkg_resources
 
 from lbryschema.claim import ClaimDict
@@ -127,3 +126,26 @@ def get_sd_hash(stream_info):
 
 def json_dumps_pretty(obj, **kwargs):
     return json.dumps(obj, sort_keys=True, indent=2, separators=(',', ': '), **kwargs)
+
+
+def timedCallbacks(method):
+    """
+    Show how long a method returning a deferred takes to callback or errback.
+    """
+
+    import time
+    from twisted.internet import defer
+
+    @defer.inlineCallbacks
+    def timed(*args, **kw):
+        ts = time.time()
+        try:
+            result = yield method(*args, **kw)
+            te = time.time()
+            log.info('%r %2.2f sec', method.__name__, te - ts)
+            defer.returnValue(result)
+        except Exception as err:
+            te = time.time()
+            log.error('%r %2.2f sec to error (%s)', method.__name__, te - ts, err)
+            raise err
+    return timed
