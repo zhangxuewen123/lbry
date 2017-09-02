@@ -112,3 +112,35 @@ class TestJsonRpc(unittest.TestCase):
         d = defer.maybeDeferred(self.test_daemon.jsonrpc_help, command='status')
         d.addCallback(lambda result: self.assertSubstring('daemon status', result['help']))
         # self.assertSubstring('daemon status', d.result)
+
+    def test_version(self):
+        d = defer.maybeDeferred(self.test_daemon.jsonrpc_version)
+        d.addCallback(lambda version: self.assertEquals(type(version), dict))
+
+    def test_settings_get(self):
+        d = defer.maybeDeferred(self.test_daemon.jsonrpc_settings_get)
+        d.addCallback(lambda settings: self.assertEquals(type(settings), dict))
+
+    def test_settings_set(self):
+        d = defer.maybeDeferred(self.test_daemon.jsonrpc_settings_set, download_directory="~/New_Downloads")
+        d.addCallback(lambda settings: self.assertDictContainsSubset({'download_directory': "~/New_Downloads"}, settings))
+
+    def test_commands(self):
+        d = defer.maybeDeferred(self.test_daemon.jsonrpc_commands)
+        d.addCallback(lambda commands: self.assertEquals(type(commands), list))
+
+    def test_wallet_balance(self):
+        d = defer.maybeDeferred(self.test_daemon.jsonrpc_wallet_balance)
+        d.addCallback(lambda balance: self.assertEquals(type(balance), float))
+
+    # def test_daemon_stop(self):
+    #     d = defer.maybeDeferred(self.test_daemon.jsonrpc_daemon_stop)
+    #     d.addCallback(lambda response: self.assertEquals(type(response), str))
+
+    # def test_file_list(self):
+    #     d = defer.maybedeferred(self.test_daemon.jsonrpc_file_list)
+    #     d.addcallback(lambda flist: self.assertequals(type(flist), list))
+
+    # def test_resolve_name(self):
+    #     d = defer.maybeDeferred(self.test_daemon.jsonrpc_resolve_name, name="What")
+    #     d.addCallback(lambda result: self.assertEquals(type(result), dict))
