@@ -481,9 +481,7 @@ class Wallet(object):
             self.next_manage_call.cancel()
             self.next_manage_call = None
 
-        d = self.manage(do_full=True)
-        d.addErrback(self.log_stop_error)
-        d.addCallback(lambda _: self._stop())
+        d = self._stop()
         d.addErrback(self.log_stop_error)
         return d
 
