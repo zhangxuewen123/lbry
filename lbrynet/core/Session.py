@@ -5,12 +5,10 @@ from lbrynet.dht import node
 from lbrynet.core.PeerManager import PeerManager
 from lbrynet.core.RateLimiter import RateLimiter
 from lbrynet.core.client.DHTPeerFinder import DHTPeerFinder
-from lbrynet.core.HashAnnouncer import DummyHashAnnouncer
 from lbrynet.core.server.DHTHashAnnouncer import DHTHashAnnouncer
-from lbrynet.core.utils import generate_id
 from lbrynet.core.PaymentRateManager import BasePaymentRateManager, NegotiatedPaymentRateManager
 from lbrynet.core.BlobAvailability import BlobAvailabilityTracker
-from twisted.internet import threads, defer
+from twisted.internet import threads, defer, reactor
 
 log = logging.getLogger(__name__)
 
@@ -36,13 +34,10 @@ class Session(object):
     peers can connect to this peer.
     """
 
-    def __init__(self, blob_data_payment_rate, db_dir=None,
-                 node_id=None, peer_manager=None, dht_node_port=None,
-                 known_dht_nodes=None, peer_finder=None,
-                 hash_announcer=None, blob_dir=None,
-                 blob_manager=None, peer_port=None, use_upnp=True,
-                 rate_limiter=None, wallet=None,
-                 dht_node_class=node.Node, blob_tracker_class=None,
+    def __init__(self, blob_data_payment_rate, db_dir=None, node_id=None, peer_manager=None,
+                 dht_node_port=None, known_dht_nodes=None, peer_finder=None, hash_announcer=None,
+                 blob_dir=None, blob_manager=None, peer_port=None, use_upnp=True,
+                 rate_limiter=None, wallet=None, dht_node_class=None, blob_tracker_class=None,
                  payment_rate_manager_class=None, is_generous=True, external_ip=None):
         """@param blob_data_payment_rate: The default payment rate for blob data
 
@@ -97,113 +92,97 @@ class Session(object):
             expected payments and which will pay peers.  If None, a
             wallet which uses the Point Trader system will be used,
             which is meant for testing only
-
         """
+
         self.db_dir = db_dir
-
         self.node_id = node_id
-
-        self.peer_manager = peer_manager
-
+        self.peer_manager = peer_manager or PeerManager()
         self.dht_node_port = dht_node_port
         self.known_dht_nodes = known_dht_nodes
         if self.known_dht_nodes is None:
             self.known_dht_nodes = []
-        self.peer_finder = peer_finder
-        self.hash_announcer = hash_announcer
-
         self.blob_dir = blob_dir
-        self.blob_manager = blob_manager
-
         self.blob_tracker = None
         self.blob_tracker_class = blob_tracker_class or BlobAvailabilityTracker
-
         self.peer_port = peer_port
-
         self.use_upnp = use_upnp
-
-        self.rate_limiter = rate_limiter
-
+        self.rate_limiter = rate_limiter or RateLimiter()
         self.external_ip = external_ip
-
         self.upnp_redirects = []
-
         self.wallet = wallet
-        self.dht_node_class = dht_node_class
-        self.dht_node = None
-
+        self.dht_node_class = dht_node_class or node.Node
+        self.dht_node = self.dht_node_class(
+            udpPort=self.dht_node_port,
+            node_id=self.node_id,
+            externalIP=self.external_ip
+        )
+        self.peer_finder = peer_finder or DHTPeerFinder(self.dht_node, self.peer_manager)
+        self.hash_announcer = hash_announcer or DHTHashAnnouncer(self.dht_node, self.peer_port)
+        self.blob_manager = blob_manager or DiskBlobManager(self.hash_announcer,
+                                                    self.blob_dir,
+                                                    self.db_dir)
+        self.blob_tracker = self.blob_tracker_class(self.blob_manager,
+                                                    self.peer_finder,
+                                                    self.dht_node)
         self.base_payment_rate_manager = BasePaymentRateManager(blob_data_payment_rate)
-        self.payment_rate_manager = None
+
         self.payment_rate_manager_class = payment_rate_manager_class or NegotiatedPaymentRateManager
         self.is_generous = is_generous
+        self.payment_rate_manager = self.payment_rate_manager_class(
+            self.base_payment_rate_manager,
+            self.blob_tracker,
+            self.is_generous)
 
+    @defer.inlineCallbacks
     def setup(self):
         """Create the blob directory and database if necessary, start all desired services"""
 
-        log.debug("Starting session.")
-
-        if self.node_id is None:
-            self.node_id = generate_id()
+        log.info("Starting session.")
 
         if self.wallet is None:
             from lbrynet.core.PTCWallet import PTCWallet
             self.wallet = PTCWallet(self.db_dir)
 
-        if self.peer_manager is None:
-            self.peer_manager = PeerManager()
-
         if self.use_upnp is True:
-            d = self._try_upnp()
-        else:
-            d = defer.succeed(True)
+            yield self._try_upnp()
 
-        if self.peer_finder is None:
-            d.addCallback(lambda _: self._setup_dht())
-        else:
-            if self.hash_announcer is None and self.peer_port is not None:
-                log.warning("The server has no way to advertise its available blobs.")
-                self.hash_announcer = DummyHashAnnouncer()
+        log.info("Starting DHT")
 
-        d.addCallback(lambda _: self._setup_other_components())
-        return d
+        hosts = []
+        for host, port in self.known_dht_nodes:
+            h = yield reactor.resolve(host)
+            hosts.append((h, port))
 
+        yield self.dht_node.joinNetwork(tuple(hosts))
+        self.peer_finder.run_manage_loop()
+        yield self.blob_manager.setup()
+        self.hash_announcer.run_manage_loop()
+
+        self.rate_limiter.start()
+        yield self.wallet.start()
+        yield self.blob_tracker.start()
+
+    @defer.inlineCallbacks
     def shut_down(self):
         """Stop all services"""
         log.info('Stopping session.')
-        ds = []
-        if self.blob_tracker is not None:
-            ds.append(defer.maybeDeferred(self.blob_tracker.stop))
-        if self.dht_node is not None:
-            ds.append(defer.maybeDeferred(self.dht_node.stop))
-        if self.rate_limiter is not None:
-            ds.append(defer.maybeDeferred(self.rate_limiter.stop))
-        if self.peer_finder is not None:
-            ds.append(defer.maybeDeferred(self.peer_finder.stop))
-        if self.hash_announcer is not None:
-            ds.append(defer.maybeDeferred(self.hash_announcer.stop))
-        if self.wallet is not None:
-            ds.append(defer.maybeDeferred(self.wallet.stop))
-        if self.blob_manager is not None:
-            ds.append(defer.maybeDeferred(self.blob_manager.stop))
-        if self.use_upnp is True:
-            ds.append(defer.maybeDeferred(self._unset_upnp))
-        return defer.DeferredList(ds)
+        yield self.blob_tracker.stop()
+        yield self.dht_node.stop()
+        yield self.rate_limiter.stop()
+        yield self.peer_finder.stop()
+        yield self.hash_announcer.stop()
+        yield self.wallet.stop()
+        yield self.blob_manager.stop()
+        yield self._unset_upnp()
 
     def _try_upnp(self):
-
         log.debug("In _try_upnp")
 
         def threaded_try_upnp():
-            if self.use_upnp is False:
-                log.debug("Not using upnp")
-                return False
             u = miniupnpc.UPnP()
             num_devices_found = u.discover()
             if num_devices_found > 0:
                 u.selectigd()
-                external_ip = u.externalipaddress()
-                if external_ip != '0.0.0.0':
-                    self.external_ip = external_ip
                 if self.peer_port is not None:
                     if u.getspecificportmapping(self.peer_port, 'TCP') is None:
                         u.addportmapping(
@@ -237,87 +216,17 @@ class Session(object):
                         log.warning("UPnP redirect already set for UDP port %d", self.dht_node_port)
                         self.upnp_redirects.append((self.dht_node_port, 'UDP'))
                 return True
-            return False
+            raise Exception("UPnP failed")
 
+        @defer.inlineCallbacks
         def upnp_failed(err):
             log.warning("UPnP failed. Reason: %s", err.getErrorMessage())
-            return False
+            yield self._get_external_ip()
+            defer.returnValue(False)
 
         d = threads.deferToThread(threaded_try_upnp)
         d.addErrback(upnp_failed)
         return d
-
-    def _setup_dht(self):
-
-        from twisted.internet import reactor
-
-        log.info("Starting DHT")
-
-        def join_resolved_addresses(result):
-            addresses = []
-            for success, value in result:
-                if success is True:
-                    addresses.append(value)
-            return addresses
-
-        def start_dht(addresses):
-            self.dht_node.joinNetwork(addresses)
-            self.peer_finder.run_manage_loop()
-            self.hash_announcer.run_manage_loop()
-            return True
-
-        ds = []
-        for host, port in self.known_dht_nodes:
-            d = reactor.resolve(host)
-            d.addCallback(lambda h: (h, port))  # match host to port
-            ds.append(d)
-
-        self.dht_node = self.dht_node_class(
-            udpPort=self.dht_node_port,
-            node_id=self.node_id,
-            externalIP=self.external_ip
-        )
-        self.peer_finder = DHTPeerFinder(self.dht_node, self.peer_manager)
-        if self.hash_announcer is None:
-            self.hash_announcer = DHTHashAnnouncer(self.dht_node, self.peer_port)
-
-        dl = defer.DeferredList(ds)
-        dl.addCallback(join_resolved_addresses)
-        dl.addCallback(start_dht)
-        return dl
-
-    def _setup_other_components(self):
-        log.debug("Setting up the rest of the components")
-
-        if self.rate_limiter is None:
-            self.rate_limiter = RateLimiter()
-
-        if self.blob_manager is None:
-            if self.blob_dir is None:
-                raise Exception(
-                    "TempBlobManager is no longer supported, specify BlobManager or db_dir")
-            else:
-                self.blob_manager = DiskBlobManager(self.hash_announcer,
-                                                    self.blob_dir,
-                                                    self.db_dir)
-
-        if self.blob_tracker is None:
-            self.blob_tracker = self.blob_tracker_class(self.blob_manager,
-                                                        self.peer_finder,
-                                                        self.dht_node)
-        if self.payment_rate_manager is None:
-            self.payment_rate_manager = self.payment_rate_manager_class(
-                self.base_payment_rate_manager,
-                self.blob_tracker,
-                self.is_generous)
-
-        self.rate_limiter.start()
-        d1 = self.blob_manager.setup()
-        d2 = self.wallet.start()
-
-        dl = defer.DeferredList([d1, d2], fireOnOneErrback=True, consumeErrors=True)
-        dl.addCallback(lambda _: self.blob_tracker.start())
-        return dl
 
     def _unset_upnp(self):
         log.info("Unsetting upnp for session")
