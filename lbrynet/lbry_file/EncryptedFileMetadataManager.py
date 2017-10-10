@@ -19,6 +19,9 @@ class DBEncryptedFileMetadataManager(object):
         self.stream_info_db = None
         self.stream_blob_db = None
         self.stream_desc_db = None
+        self.db_conn = adbapi.ConnectionPool("sqlite3",
+                                             (os.path.join(self.db_dir, "lbryfile_info.db")),
+                                             check_same_thread=False)
 
     def setup(self):
         return self._open_db()
@@ -101,10 +104,6 @@ class DBEncryptedFileMetadataManager(object):
         # to a bug in twisted, where the connection is closed by a different thread than the
         # one that opened it. The individual connections in the pool are not used in multiple
         # threads.
-        self.db_conn = adbapi.ConnectionPool(
-            "sqlite3",
-            (os.path.join(self.db_dir, "lbryfile_info.db")),
-            check_same_thread=False)
 
         def create_tables(transaction):
             transaction.execute("create table if not exists lbry_files (" +
