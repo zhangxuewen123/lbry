@@ -165,9 +165,10 @@ class Node(object):
         self._joinDeferred = self._iterativeFind(self.node_id, bootstrapContacts)
         #        #TODO: Refresh all k-buckets further away than this node's closest neighbour
         # Start refreshing k-buckets periodically, if necessary
-        self.refresh_node_lc.start(constants.checkRefreshInterval)
         self.hash_watcher.tick()
-        yield self._joinDeferred
+        result = yield self._joinDeferred
+        self.refresh_node_lc.start(constants.checkRefreshInterval)
+        defer.returnValue(result)
 
     @property
     def contacts(self):
