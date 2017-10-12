@@ -12,7 +12,7 @@ import operator
 import struct
 import time
 
-from twisted.internet import defer, error, reactor, threads, task
+from twisted.internet import defer, error, reactor, task
 
 import constants
 import routingtable
@@ -610,13 +610,14 @@ class Node(object):
         result = yield outerDf
         defer.returnValue(result)
 
+    @defer.inlineCallbacks
     def _refreshNode(self):
         """ Periodically called to perform k-bucket refreshes and data
         replication/republishing as necessary """
 
-        df = self._refreshRoutingTable()
-        df.addCallback(self._removeExpiredPeers)
-        return df
+        yield self._refreshRoutingTable()
+        self._dataStore.removeExpiredPeers()
+        defer.returnValue(None)
 
     @defer.inlineCallbacks
     def _refreshRoutingTable(self):
@@ -625,11 +626,6 @@ class Node(object):
             searchID = nodeIDs.pop()
             yield self.iterativeFindNode(searchID)
         defer.returnValue(None)
-
-    # args put here because _refreshRoutingTable does outerDF.callback(None)
-    def _removeExpiredPeers(self, *args):
-        df = threads.deferToThread(self._dataStore.removeExpiredPeers)
-        return df
 
 
 # This was originally a set of nested methods in _iterativeFind
