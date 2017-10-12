@@ -618,22 +618,13 @@ class Node(object):
         df.addCallback(self._removeExpiredPeers)
         return df
 
+    @defer.inlineCallbacks
     def _refreshRoutingTable(self):
         nodeIDs = self._routingTable.getRefreshList(0, False)
-        outerDf = defer.Deferred()
-
-        def searchForNextNodeID(dfResult=None):
-            if len(nodeIDs) > 0:
-                searchID = nodeIDs.pop()
-                df = self.iterativeFindNode(searchID)
-                df.addCallback(searchForNextNodeID)
-            else:
-                # If this is reached, we have finished refreshing the routing table
-                outerDf.callback(None)
-
-        # Start the refreshing cycle
-        searchForNextNodeID()
-        return outerDf
+        while nodeIDs:
+            searchID = nodeIDs.pop()
+            yield self.iterativeFindNode(searchID)
+        defer.returnValue(None)
 
     # args put here because _refreshRoutingTable does outerDF.callback(None)
     def _removeExpiredPeers(self, *args):
