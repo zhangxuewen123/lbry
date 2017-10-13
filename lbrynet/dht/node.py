@@ -263,7 +263,7 @@ class Node(object):
             result = responseMsg.response
             if 'token' in result:
                 value['token'] = result['token']
-                d = n.store(blob_hash, value, self.node_id, 0)
+                d = n.store(blob_hash, value, self.node_id)
                 d.addCallback(log_success)
                 d.addErrback(log_error, n)
             else:
