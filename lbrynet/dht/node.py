@@ -236,7 +236,7 @@ class Node(object):
 
         def log_error(err, n):
             if err.check(protocol.TimeoutError):
-                log.debug(
+                log.warning(
                     "Timeout while storing blob_hash %s at %s",
                     binascii.hexlify(blob_hash), n)
             else:
