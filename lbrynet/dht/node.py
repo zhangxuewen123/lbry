@@ -492,11 +492,29 @@ class Node(object):
         else:
             raise TypeError, 'No lbryid given'
 
-        now = int(time.time())
-        originallyPublished = now  # - age
-        self._dataStore.addPeerToBlob(key, compact_address, now, originallyPublished,
-                                      originalPublisherID)
-        return 'OK'
+        def _handle(result):
+            if result != 'pong':
+                raise Exception("Unknown ping response: %s" % result)
+            now = int(time.time())
+            originallyPublished = now  # - age
+            self._dataStore.addPeerToBlob(key, compact_address, now, originallyPublished,
+                                          originalPublisherID)
+            log.info("Stored %s to %s", key.encode('hex'), contact.address)
+            return "OK"
+
+        def _trap(err):
+            if err.trap(protocol.TimeoutError):
+                log.debug("Refusing to store %s for %s after host failed to reply to ping",
+                            key.encode('hex'), contact.address)
+            else:
+                log.exception("Refusing to store %s for %s after host returned unexpected error",
+                            key.encode('hex'), contact.address)
+            self.removeContact(contact.id)
+            return "NOT OK"
+
+        d = contact.ping()
+        d.addCallbacks(_handle, _trap)
+        return d
 
     @rpcmethod
     def findNode(self, key, **kwargs):
