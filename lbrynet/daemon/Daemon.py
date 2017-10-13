@@ -48,6 +48,8 @@ from lbrynet.core.server.ServerProtocol import ServerProtocolFactory
 from lbrynet.core.Error import InsufficientFundsError, UnknownNameError, NoSuchSDHash
 from lbrynet.core.Error import NoSuchStreamHash, DownloadDataTimeout, DownloadSDTimeout
 from lbrynet.core.Error import NullFundsError, NegativeFundsError
+from lbrynet.dht.error import TimeoutError
+from lbrynet.dht.contact import Contact
 
 log = logging.getLogger(__name__)
 
@@ -2657,6 +2659,32 @@ class Daemon(AuthJSONRPCServer):
         d.addCallback(reupload.reflect_blob_hashes, self.session.blob_manager)
         d.addCallback(lambda r: self._render_response(r))
         return d
+
+    @defer.inlineCallbacks
+    def jsonrpc_peer_ping(self, node_id):
+        """
+        Find a peer by node id
+
+        Usage:
+            peer_ping (<node_id> | --node_id=<node_id>)
+
+        Returns:
+            (str) pong
+        """
+
+        contact = None
+        try:
+            contact = yield self.session.dht_node.findContact(node_id.decode('hex'))
+        except TimeoutError:
+            result = {'error': 'timeout finding peer'}
+            defer.returnValue(result)
+        if not contact:
+            defer.returnValue({'error': 'peer not found'})
+        try:
+            result = yield contact.ping()
+        except TimeoutError:
+            result = {'error': 'ping timeout'}
+        defer.returnValue(result)
 
     def jsonrpc_routing_table_get(self):
         """
