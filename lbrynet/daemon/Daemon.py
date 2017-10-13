@@ -49,7 +49,6 @@ from lbrynet.core.Error import InsufficientFundsError, UnknownNameError, NoSuchS
 from lbrynet.core.Error import NoSuchStreamHash, DownloadDataTimeout, DownloadSDTimeout
 from lbrynet.core.Error import NullFundsError, NegativeFundsError
 from lbrynet.dht.error import TimeoutError
-from lbrynet.dht.contact import Contact
 
 log = logging.getLogger(__name__)
 
