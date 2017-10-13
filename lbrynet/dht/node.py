@@ -504,7 +504,7 @@ class Node(object):
 
         def _trap(err):
             if err.trap(protocol.TimeoutError):
-                log.debug("Refusing to store %s for %s after host failed to reply to ping",
+                log.warning("Refusing to store %s for %s after host failed to reply to ping",
                             key.encode('hex'), contact.address)
             else:
                 log.exception("Refusing to store %s for %s after host returned unexpected error",
