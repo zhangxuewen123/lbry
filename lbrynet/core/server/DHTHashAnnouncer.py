@@ -58,6 +58,9 @@ class DHTHashAnnouncer(object):
     def _announce_hashes(self, hashes, immediate=False):
         if not hashes:
             return
+        if not self.dht_node.can_store:
+            log.warning("Client only DHT node cannot store, skipping announce")
+            return
         log.debug('Announcing %s hashes', len(hashes))
         # TODO: add a timeit decorator
         start = time.time()

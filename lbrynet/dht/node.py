@@ -84,6 +84,7 @@ class Node(object):
         # network (add callbacks to this deferred if scheduling such
         # operations before the node has finished joining the network)
         self._joinDeferred = None
+        self._can_store = None
         self.change_token_lc = task.LoopingCall(self.change_token)
         self.refresh_node_lc = task.LoopingCall(self._refreshNode)
         # Create k-buckets (for storing contacts)
@@ -118,6 +119,10 @@ class Node(object):
     def __del__(self):
         if self._listeningPort is not None:
             self._listeningPort.stopListening()
+
+    @property
+    def can_store(self):
+        return self._can_store is True
 
     def stop(self):
         # stop LoopingCalls:
@@ -184,7 +189,7 @@ class Node(object):
 
         log.info("Checking DHT connectivity...")
 
-        connected = True
+        can_store = True
 
         for contact in real_bootstrap_contacts:
             try:
@@ -192,16 +197,18 @@ class Node(object):
                 if result != "pong":
                     raise ValueError("invalid pingback response: %s" % result)
             except (ValueError, protocol.TimeoutError):
-                connected = False
+                can_store = False
             except AttributeError:
                 log.warning("seed node %s:%i does not support pingback",
                             contact.address, contact.port)
 
-        if connected:
+        if can_store:
             log.info("Connected to DHT!")
         else:
             log.warning("Connected to DHT, but unable to store. "
                         "Check your network and firewall settings")
+
+        self._can_store = can_store
 
         self.refresh_node_lc.start(constants.checkRefreshInterval)
         defer.returnValue(result)
