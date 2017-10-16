@@ -155,6 +155,7 @@ class Node(object):
             for address, port in knownNodeAddresses:
                 contact = Contact(self._generateID(), address, port, self._protocol)
                 bootstrapContacts.append(contact)
+            log.info("Known contacts: %i", len(knownNodeAddresses))
         else:
             bootstrapContacts = None
 
@@ -163,10 +164,26 @@ class Node(object):
 
         # Initiate the Kademlia joining sequence - perform a search for this node's own ID
         self._joinDeferred = self._iterativeFind(self.node_id, bootstrapContacts)
+
         #        #TODO: Refresh all k-buckets further away than this node's closest neighbour
         # Start refreshing k-buckets periodically, if necessary
         self.hash_watcher.tick()
         result = yield self._joinDeferred
+
+        real_bootstrap_contacts = []
+        boostrap = knownNodeAddresses or []
+        for address, port in boostrap:
+            if address in [x.address for x in self.contacts]:
+                real_contact = [x for x in self.contacts
+                                    if x.address == address and x.port == port][0]
+                if real_contact not in real_bootstrap_contacts:
+                    real_bootstrap_contacts.append(real_contact)
+                    log.info("Found bootstrap contact: %s (%s:%i)",
+                             real_contact.id.encode('hex')[:8],
+                             real_contact.address, real_contact.port)
+
+        log.info("Connected to DHT!")
+
         self.refresh_node_lc.start(constants.checkRefreshInterval)
         defer.returnValue(result)
 
