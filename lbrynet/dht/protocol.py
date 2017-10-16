@@ -388,7 +388,9 @@ class KademliaProtocol(protocol.DatagramProtocol):
                 log.info("DHT RECV CALL %s %s:%i", method, senderContact.address,
                           senderContact.port)
             try:
-                if method != 'ping':
+                if method == 'pingback':
+                    df = defer.maybeDeferred(func, contact=senderContact)
+                elif method != 'ping':
                     kwargs = {'_rpcNodeID': senderContact.id, '_rpcNodeContact': senderContact}
                     df = defer.maybeDeferred(func, *args, **kwargs)
                 else:
