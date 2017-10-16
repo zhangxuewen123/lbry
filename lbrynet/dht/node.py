@@ -516,16 +516,16 @@ class Node(object):
             originallyPublished = now  # - age
             self._dataStore.addPeerToBlob(key, compact_address, now, originallyPublished,
                                           originalPublisherID)
-            log.info("Stored %s to %s", key.encode('hex'), contact.address)
+            log.info("Stored %s to %s", key.encode('hex')[:8], contact.address)
             return "OK"
 
         def _trap(err):
             if err.trap(protocol.TimeoutError):
                 log.warning("Refusing to store %s for %s after host failed to reply to ping",
-                            key.encode('hex'), contact.address)
+                            key.encode('hex')[:8], contact.address)
             else:
                 log.exception("Refusing to store %s for %s after host returned unexpected error",
-                            key.encode('hex'), contact.address)
+                            key.encode('hex')[:8], contact.address)
             self.removeContact(contact.id)
             return "NOT OK"
 

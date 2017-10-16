@@ -342,7 +342,8 @@ class KademliaProtocol(protocol.DatagramProtocol):
                 if err.errno == errno.EWOULDBLOCK:
                     # i'm scared this may swallow important errors, but i get a million of these
                     # on Linux and it doesnt seem to affect anything  -grin
-                    log.debug("Can't send data to dht: EWOULDBLOCK")
+                    log.warning("Can't send data to dht: EWOULDBLOCK (dropped %i bytes)",
+                                len(txData))
                 elif err.errno == errno.ENETUNREACH:
                     # this should probably try to retransmit when the network connection is back
                     log.error("Network is unreachable")
@@ -384,7 +385,7 @@ class KademliaProtocol(protocol.DatagramProtocol):
                 log.debug("DHT RECV CALL %s(%s) %s:%i", method, args[0].encode('hex'),
                           senderContact.address, senderContact.port)
             else:
-                log.debug("DHT RECV CALL %s %s:%i", method, senderContact.address,
+                log.info("DHT RECV CALL %s %s:%i", method, senderContact.address,
                           senderContact.port)
             try:
                 if method != 'ping':
