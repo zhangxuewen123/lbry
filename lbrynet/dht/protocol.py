@@ -260,6 +260,7 @@ class KademliaProtocol(protocol.DatagramProtocol):
                     old_ping_error = "ping() got an unexpected keyword argument '_rpcNodeContact'"
                     if isinstance(remoteException, TypeError) and \
                                     remoteException.message == old_ping_error:
+                        log.debug("old pong error")
                         df.callback('pong')
                     else:
                         log.error("Remote exception (%s): %s", address, remoteException)
@@ -385,7 +386,7 @@ class KademliaProtocol(protocol.DatagramProtocol):
                 log.debug("DHT RECV CALL %s(%s) %s:%i", method, args[0].encode('hex'),
                           senderContact.address, senderContact.port)
             else:
-                log.info("DHT RECV CALL %s %s:%i", method, senderContact.address,
+                log.debug("DHT RECV CALL %s %s:%i", method, senderContact.address,
                           senderContact.port)
             try:
                 if method == 'pingback':

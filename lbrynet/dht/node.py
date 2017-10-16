@@ -279,9 +279,8 @@ class Node(object):
 
         def log_error(err, n):
             if err.check(protocol.TimeoutError):
-                log.warning(
-                    "Timeout while storing blob_hash %s at %s",
-                    binascii.hexlify(blob_hash), n)
+                log.debug("Timeout while storing blob_hash %s at %s",
+                            binascii.hexlify(blob_hash), n)
             else:
                 log.error(
                     "Unexpected error while storing blob_hash %s at %s: %s",
@@ -310,6 +309,7 @@ class Node(object):
                 d.addCallback(log_success)
                 d.addErrback(log_error, n)
             else:
+                log.warning("missing token")
                 d = defer.succeed(False)
             return d
 
@@ -558,12 +558,12 @@ class Node(object):
             originallyPublished = now  # - age
             self._dataStore.addPeerToBlob(key, compact_address, now, originallyPublished,
                                           originalPublisherID)
-            log.info("Stored %s to %s", key.encode('hex')[:8], contact.address)
+            log.debug("Stored %s to %s", key.encode('hex')[:8], contact.address)
             return "OK"
 
         def _trap(err):
             if err.trap(protocol.TimeoutError):
-                log.warning("Refusing to store %s for %s after host failed to reply to ping",
+                log.debug("Refusing to store %s for %s after host failed to reply to ping",
                             key.encode('hex')[:8], contact.address)
             else:
                 log.exception("Refusing to store %s for %s after host returned unexpected error",
