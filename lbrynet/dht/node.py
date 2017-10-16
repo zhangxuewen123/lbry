@@ -182,7 +182,26 @@ class Node(object):
                              real_contact.id.encode('hex')[:8],
                              real_contact.address, real_contact.port)
 
-        log.info("Connected to DHT!")
+        log.info("Checking DHT connectivity...")
+
+        connected = True
+
+        for contact in real_bootstrap_contacts:
+            try:
+                result = yield contact.pingback()
+                if result != "pong":
+                    raise ValueError("invalid pingback response: %s" % result)
+            except (ValueError, protocol.TimeoutError):
+                connected = False
+            except AttributeError:
+                log.warning("seed node %s:%i does not support pingback",
+                            contact.address, contact.port)
+
+        if connected:
+            log.info("Connected to DHT!")
+        else:
+            log.warning("Connected to DHT, but unable to store. "
+                        "Check your network and firewall settings")
 
         self.refresh_node_lc.start(constants.checkRefreshInterval)
         defer.returnValue(result)
