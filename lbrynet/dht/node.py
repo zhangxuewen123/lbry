@@ -579,7 +579,10 @@ class Node(object):
             self.removeContact(contact.id)
             return "NOT OK"
 
-        d = contact.ping()
+        if not self_store:
+            d = contact.ping()
+        else:
+            d = defer.succeed("pong")
         d.addCallbacks(_handle, _trap)
         return d
 
