@@ -338,6 +338,8 @@ class Node(object):
                 except Exception as err:
                     log.error("Unexpected error while storing blob_hash %s at %s: %s",
                               binascii.hexlify(blob_hash), contact, err)
+            log.debug("Stored %s to %i of %i attempted peers", blob_hash.encode('hex')[:16],
+                     len(contacted), len(contacts))
 
         d = self.iterativeFindNode(blob_hash)
         d.addCallback(requestPeers)
@@ -566,7 +568,7 @@ class Node(object):
             originallyPublished = now  # - age
             self._dataStore.addPeerToBlob(key, compact_address, now, originallyPublished,
                                           originalPublisherID)
-            log.debug("Stored %s to %s", key.encode('hex')[:8], contact.address)
+
             return "OK"
 
         def _trap(err):
