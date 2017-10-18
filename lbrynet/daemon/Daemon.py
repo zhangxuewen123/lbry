@@ -2473,6 +2473,7 @@ class Daemon(AuthJSONRPCServer):
         response = yield self._render_response("Deleted %s" % blob_hash)
         defer.returnValue(response)
 
+    @defer.inlineCallbacks
     def jsonrpc_peer_list(self, blob_hash, timeout=None):
         """
         Get peers for blob hash
@@ -2484,15 +2485,22 @@ class Daemon(AuthJSONRPCServer):
             <timeout>, --timeout=<timeout>  : peer search timeout in seconds
 
         Returns:
-            (list) List of contacts
+            (list) List of peer infos
         """
 
         timeout = timeout or conf.settings['peer_search_timeout']
 
-        d = self.session.peer_finder.find_peers_for_blob(blob_hash, timeout=timeout)
-        d.addCallback(lambda r: [[c.host, c.port, c.is_available()] for c in r])
-        d.addCallback(lambda r: self._render_response(r))
-        return d
+        peers = yield self.session.peer_finder.find_peers_for_blob(blob_hash, timeout=timeout,
+                                                                   get_node_ids=True)
+        result = [
+            {
+                "host": c.host,
+                "port": c.port,
+                "node_id": n
+            }
+            for c, n in peers
+        ]
+        defer.returnValue(result)
 
     @defer.inlineCallbacks
     @AuthJSONRPCServer.flags(announce_all="-a")
