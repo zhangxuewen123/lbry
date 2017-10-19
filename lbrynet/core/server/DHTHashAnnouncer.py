@@ -10,10 +10,11 @@ log = logging.getLogger(__name__)
 
 
 class DHTHashAnnouncer(object):
-    ANNOUNCE_CHECK_INTERVAL = 60
-    CONCURRENT_ANNOUNCERS = 5
-
     """This class announces to the DHT that this peer has certain blobs"""
+
+    ANNOUNCE_CHECK_INTERVAL = 10
+    CONCURRENT_ANNOUNCERS = 100
+
     def __init__(self, dht_node, peer_port):
         self.dht_node = dht_node
         self.peer_port = peer_port
