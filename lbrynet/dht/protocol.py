@@ -169,7 +169,8 @@ class KademliaProtocol(protocol.DatagramProtocol):
             df._rpcRawResponse = True
 
         # Set the RPC timeout timer
-        timeoutCall = reactor.callLater(constants.rpcTimeout, self._msgTimeout, msg.id)
+        timeoutCall = reactor.callLater(constants.rpcTimeout if method != 'store'
+                                        else constants.rpcTimeout * 2, self._msgTimeout, msg.id)
         # Transmit the data
         self._send(encodedMsg, msg.id, (contact.address, contact.port))
         self._sentMessages[msg.id] = (contact.id, df, timeoutCall, method, args)
