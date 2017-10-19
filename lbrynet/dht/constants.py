@@ -22,7 +22,7 @@ alpha = 3
 k = 8
 
 #: Maximum number of contacts stored in the replacement cache
-replacementCacheSize = 8
+replacementCacheSize = k
 
 #: Timeout for network operations (in seconds)
 rpcTimeout = 3
