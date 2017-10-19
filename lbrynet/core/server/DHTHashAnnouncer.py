@@ -28,6 +28,7 @@ class DHTHashAnnouncer(object):
         self._lock = utils.DeferredLockContextManager(defer.DeferredLock())
         self._last_checked = time.time(), self.CONCURRENT_ANNOUNCERS
         self._retries = {}
+        self._total = None
 
     def run_manage_loop(self):
         log.info("Starting hash announcer")
@@ -45,9 +46,13 @@ class DHTHashAnnouncer(object):
                 remaining = str(datetime.timedelta(seconds=estimated_time_remaining))
             else:
                 remaining = "unknown"
-            log.info("Announcing blobs: %i blobs left to announce (est time remaining %s)",
-                      hashes, remaining)
+            log.info("Announcing blobs: %i blobs left to announce, %i%s complete, "
+                     "est time remaining: %s", hashes,
+                     100 - int(100.0 * float(hashes) / float(self._total)), "%",
+                     remaining)
             self._last_checked = t + last_time, hashes
+        else:
+            self._total = 0
         if self.peer_port is not None:
             return self._announce_available_hashes()
 
@@ -87,14 +92,15 @@ class DHTHashAnnouncer(object):
         start = time.time()
 
         ds = []
-
-        for h in hashes:
-            with self._lock:
-                announce_deferred = defer.Deferred()
-                if immediate:
-                    self.hash_queue.appendleft((h, announce_deferred))
-                else:
-                    self.hash_queue.append((h, announce_deferred))
+        with self._lock:
+            for h in hashes:
+                    announce_deferred = defer.Deferred()
+                    if immediate:
+                        self.hash_queue.appendleft((h, announce_deferred))
+                    else:
+                        self.hash_queue.append((h, announce_deferred))
+            if not self._total:
+                self._total = len(hashes)
 
         log.debug('There are now %s hashes remaining to be announced', self.hash_queue_size())
 
