@@ -46,7 +46,8 @@ class DictDataStore(UserDict.DictMixin):
             return [val[0] for val in self._dict[key]]
 
     def removePeer(self, value):
-        for key in self._dict:
+        keys = self._dict.keys()
+        for key in keys:
             self._dict[key] = [val for val in self._dict[key] if val[0] != value]
             if not self._dict[key]:
                 del self._dict[key]
