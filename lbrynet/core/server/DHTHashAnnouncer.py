@@ -54,53 +54,71 @@ class DHTHashAnnouncer(object):
     def hash_queue_size(self):
         return len(self.hash_queue)
 
+    @defer.inlineCallbacks
     def _announce_available_hashes(self):
         log.debug('Announcing available hashes')
-        ds = []
         for supplier in self.suppliers:
-            d = supplier.hashes_to_announce()
-            d.addCallback(self._announce_hashes)
-            ds.append(d)
-        dl = defer.DeferredList(ds)
-        return dl
+            hashes = yield supplier.hashes_to_announce()
+            yield self._announce_hashes(hashes)
 
+    @defer.inlineCallbacks
     def _announce_hashes(self, hashes, immediate=False):
         if not hashes:
-            return
+            defer.returnValue(None)
         if not self.dht_node.can_store:
             log.warning("Client only DHT node cannot store, skipping announce")
-            return
-        log.debug('Announcing %s hashes', len(hashes))
+            defer.returnValue(None)
+        log.info('Announcing %s hashes', len(hashes))
         # TODO: add a timeit decorator
         start = time.time()
+
         ds = []
 
         for h in hashes:
-            announce_deferred = defer.Deferred()
-            ds.append(announce_deferred)
-            if immediate:
-                self.hash_queue.appendleft((h, announce_deferred))
-            else:
-                self.hash_queue.append((h, announce_deferred))
+            with self._lock:
+                announce_deferred = defer.Deferred()
+                if immediate:
+                    self.hash_queue.appendleft((h, announce_deferred))
+                else:
+                    self.hash_queue.append((h, announce_deferred))
+
         log.debug('There are now %s hashes remaining to be announced', self.hash_queue_size())
 
+        @defer.inlineCallbacks
+        def do_store(blob_hash, announce_d):
+            if announce_d.called:
+                defer.returnValue(announce_deferred.result)
+            try:
+                store_nodes = yield self.dht_node.announceHaveBlob(binascii.unhexlify(blob_hash),
+                                                                   self.peer_port)
+                if not store_nodes:
+                    log.warning("No nodes stored %s, retrying", blob_hash)
+                    result = yield do_store(blob_hash, announce_d)
+                else:
+                    result = store_nodes
+                announce_d.callback(result)
+                defer.returnValue(result)
+            except Exception as err:
+                announce_d.errback(err)
+                raise err
+
+        @defer.inlineCallbacks
         def announce():
             if len(self.hash_queue):
-                h, announce_deferred = self.hash_queue.popleft()
-                log.debug('Announcing blob %s to dht', h)
-                d = self.dht_node.announceHaveBlob(binascii.unhexlify(h), self.peer_port)
-                d.chainDeferred(announce_deferred)
-                d.addBoth(lambda _: utils.call_later(0, announce))
+                with self._lock:
+                    h, announce_deferred = self.hash_queue.popleft()
+                log.debug('Announcing blob %s to dht', h[:16])
+                yield do_store(h, announce_deferred)
+                yield announce()
             else:
-                self._concurrent_announcers -= 1
+                with self._lock:
+                    self._concurrent_announcers -= 1
 
         for i in range(self._concurrent_announcers, self.CONCURRENT_ANNOUNCERS):
             self._concurrent_announcers += 1
-            announce()
-        d = defer.DeferredList(ds)
-        d.addCallback(lambda _: log.debug('Took %s seconds to announce %s hashes',
-                                          time.time() - start, len(hashes)))
-        return d
+            ds.append(announce())
+        yield defer.DeferredList(ds)
+        log.info('Took %s seconds to announce %s hashes', time.time() - start, len(hashes))
 
 
 class DHTHashSupplier(object):
