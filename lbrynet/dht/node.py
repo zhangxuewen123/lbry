@@ -334,7 +334,7 @@ class Node(object):
                 try:
                     response = yield rpcMethod(blob_hash, rawResponse=True)
                     yield announce_to_peer(response)
-                    contacted.append(contact.address)
+                    contacted.append(contact)
                 except protocol.TimeoutError:
                     log.debug("Timeout while storing blob_hash %s at %s",
                               binascii.hexlify(blob_hash), contact)
@@ -343,6 +343,9 @@ class Node(object):
                               binascii.hexlify(blob_hash), contact, err)
             log.debug("Stored %s to %i of %i attempted peers", blob_hash.encode('hex')[:16],
                      len(contacted), len(contacts))
+
+            contacted_node_ids = [c.id.encode('hex') for c in contacts]
+            defer.returnValue(contacted_node_ids)
 
         d = self.iterativeFindNode(blob_hash)
         d.addCallback(requestPeers)
