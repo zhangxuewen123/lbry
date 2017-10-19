@@ -2,6 +2,7 @@ import curses
 import time
 from jsonrpc.proxy import JSONRPCProxy
 import logging
+from lbrynet.dht.node import Distance
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.FileHandler("dht contacts.log"))
@@ -52,7 +53,7 @@ def refresh(last_contacts, last_blobs):
     for i in sorted(buckets.keys()):
         stdscr.addstr(y, 0, "bucket %s" % i)
         y += 1
-        for h in sorted(buckets[i], key=lambda x: x['node_id'].decode('hex')):
+        for h in sorted(buckets[i], key=lambda x: Distance(x['node_id'])(node_id.decode('hex'))):
             stdscr.addstr(y, 0, '%s (%s) - %i blobs' % (h['node_id'], h['address'],
                                                         len(h['blobs'])))
             y += 1
