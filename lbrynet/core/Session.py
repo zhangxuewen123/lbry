@@ -260,7 +260,7 @@ class Session(object):
                     addresses.append(value)
             return addresses
 
-        def start_dht():
+        def start_dht(*_):
             self.peer_finder.run_manage_loop()
             self.hash_announcer.run_manage_loop()
             return True
