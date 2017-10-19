@@ -41,9 +41,9 @@ KB = 2 ** 10
 MB = 2 ** 20
 
 DEFAULT_DHT_NODES = [
-    ('lbrynet1.lbry.io', 4444),
-    ('lbrynet2.lbry.io', 4444),
-    ('lbrynet3.lbry.io', 4444)
+    ('jack.lbry.tech', 4444),
+    # ('lbrynet2.lbry.io', 4444),
+    # ('lbrynet3.lbry.io', 4444)
 ]
 
 settings_decoders = {
