@@ -14,7 +14,7 @@ class DHTHashAnnouncer(object):
     """This class announces to the DHT that this peer has certain blobs"""
 
     ANNOUNCE_CHECK_INTERVAL = 1
-    CONCURRENT_ANNOUNCERS = 200
+    CONCURRENT_ANNOUNCERS = 1000
 
     def __init__(self, dht_node, peer_port):
         self.dht_node = dht_node
@@ -108,10 +108,12 @@ class DHTHashAnnouncer(object):
                     result = yield do_store(blob_hash, announce_d)
                 else:
                     result = store_nodes
-                announce_d.callback(result)
+                if not announce_d.called:
+                    announce_d.callback(result)
                 defer.returnValue(result)
             except Exception as err:
-                announce_d.errback(err)
+                if not announce_d.called:
+                    announce_d.errback(err)
                 raise err
 
         @defer.inlineCallbacks
