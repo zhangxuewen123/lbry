@@ -3,7 +3,7 @@ import collections
 import logging
 import time
 
-from twisted.internet import defer
+from twisted.internet import defer, task
 from lbrynet.core import utils
 
 log = logging.getLogger(__name__)
@@ -21,17 +21,26 @@ class DHTHashAnnouncer(object):
         self.next_manage_call = None
         self.hash_queue = collections.deque()
         self._concurrent_announcers = 0
+        self._manage_call_lc = task.LoopingCall(self.manage_lc)
+        self._lock = utils.DeferredLockContextManager(defer.DeferredLock())
 
     def run_manage_loop(self):
+        log.info("Starting hash announcer")
+        if not self._manage_call_lc.running:
+            self._manage_call_lc.start(self.ANNOUNCE_CHECK_INTERVAL)
+
+    def manage_lc(self):
+        hashes = len(self.hash_queue)
+        if hashes:
+            log.debug("Running %s announcers (%s blobs left to announce)",
+                      self._concurrent_announcers, hashes)
         if self.peer_port is not None:
-            self._announce_available_hashes()
-        self.next_manage_call = utils.call_later(self.ANNOUNCE_CHECK_INTERVAL, self.run_manage_loop)
+            return self._announce_available_hashes()
 
     def stop(self):
         log.info("Stopping DHT hash announcer.")
-        if self.next_manage_call is not None:
-            self.next_manage_call.cancel()
-            self.next_manage_call = None
+        if self._manage_call_lc.running:
+            self._manage_call_lc.stop()
 
     def add_supplier(self, supplier):
         self.suppliers.append(supplier)
