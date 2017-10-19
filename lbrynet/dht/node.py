@@ -294,19 +294,22 @@ class Node(object):
             n = known_nodes[responseMsg.nodeID]
 
             result = responseMsg.response
+            announced = False
             if 'token' in result:
                 value['token'] = result['token']
                 try:
                     res = yield n.store(blob_hash, value, self.node_id)
                     log.debug("Response to store request: %s", str(res))
+                    announced = True
                 except protocol.TimeoutError:
                     log.debug("Timeout while storing blob_hash %s at %s",
-                                blob_hash.encode('hex')[:16], n)
+                                blob_hash.encode('hex')[:16], n.id.encode('hex'))
                 except Exception as err:
                     log.error("Unexpected error while storing blob_hash %s at %s: %s",
-                              blob_hash.encode('hex')[:16], n, err)
+                              blob_hash.encode('hex')[:16], n.id.encode('hex'), err)
             else:
                 log.warning("missing token")
+            defer.returnValue(announced)
 
         @defer.inlineCallbacks
         def requestPeers(contacts):
@@ -333,8 +336,9 @@ class Node(object):
                 rpcMethod = getattr(contact, "findValue")
                 try:
                     response = yield rpcMethod(blob_hash, rawResponse=True)
-                    yield announce_to_peer(response)
-                    contacted.append(contact)
+                    stored = yield announce_to_peer(response)
+                    if stored:
+                        contacted.append(contact)
                 except protocol.TimeoutError:
                     log.debug("Timeout while storing blob_hash %s at %s",
                               binascii.hexlify(blob_hash), contact)
