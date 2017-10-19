@@ -15,6 +15,7 @@ class DHTHashAnnouncer(object):
 
     ANNOUNCE_CHECK_INTERVAL = 1
     CONCURRENT_ANNOUNCERS = 1000
+    STORE_RETRIES = 3
 
     def __init__(self, dht_node, peer_port):
         self.dht_node = dht_node
@@ -26,6 +27,7 @@ class DHTHashAnnouncer(object):
         self._manage_call_lc = task.LoopingCall(self.manage_lc)
         self._lock = utils.DeferredLockContextManager(defer.DeferredLock())
         self._last_checked = time.time(), self.CONCURRENT_ANNOUNCERS
+        self._retries = {}
 
     def run_manage_loop(self):
         log.info("Starting hash announcer")
@@ -104,8 +106,14 @@ class DHTHashAnnouncer(object):
                 store_nodes = yield self.dht_node.announceHaveBlob(binascii.unhexlify(blob_hash),
                                                                    self.peer_port)
                 if not store_nodes:
-                    log.warning("No nodes stored %s, retrying", blob_hash)
-                    result = yield do_store(blob_hash, announce_d)
+                    retries = self._retries.get(blob_hash, 0)
+                    retries += 1
+                    self._retries[blob_hash] = retries
+                    if retries <= self.STORE_RETRIES:
+                        log.debug("No nodes stored %s, retrying", blob_hash)
+                        result = yield do_store(blob_hash, announce_d)
+                    else:
+                        log.warning("No nodes stored %s", blob_hash)
                 else:
                     result = store_nodes
                 if not announce_d.called:
@@ -150,7 +158,6 @@ class DHTHashSupplier(object):
 
     def hashes_to_announce(self):
         pass
-
 
     def get_next_announce_time(self, num_hashes_to_announce=1):
         """
