@@ -2,6 +2,7 @@ import binascii
 import collections
 import logging
 import time
+import datetime
 
 from twisted.internet import defer, task
 from lbrynet.core import utils
@@ -24,6 +25,7 @@ class DHTHashAnnouncer(object):
         self._concurrent_announcers = 0
         self._manage_call_lc = task.LoopingCall(self.manage_lc)
         self._lock = utils.DeferredLockContextManager(defer.DeferredLock())
+        self._last_checked = time.time(), self.CONCURRENT_ANNOUNCERS
 
     def run_manage_loop(self):
         log.info("Starting hash announcer")
@@ -31,10 +33,19 @@ class DHTHashAnnouncer(object):
             self._manage_call_lc.start(self.ANNOUNCE_CHECK_INTERVAL)
 
     def manage_lc(self):
+        last_time, last_hashes = self._last_checked
         hashes = len(self.hash_queue)
         if hashes:
-            log.debug("Running %s announcers (%s blobs left to announce)",
-                      self._concurrent_announcers, hashes)
+            t, h = time.time() - last_time, last_hashes - hashes
+            blobs_per_second = float(h) / float(t)
+            if blobs_per_second > 0:
+                estimated_time_remaining = int(float(hashes) / blobs_per_second)
+                remaining = str(datetime.timedelta(seconds=estimated_time_remaining))
+            else:
+                remaining = "unknown"
+            log.info("Announcing blobs: %i blobs left to announce (est time remaining %s)",
+                      hashes, remaining)
+            self._last_checked = t + last_time, hashes
         if self.peer_port is not None:
             return self._announce_available_hashes()
 
