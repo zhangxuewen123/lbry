@@ -519,6 +519,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wallet_prefill_addresses" title="wallet_prefill_addresses" class="md-nav__link">
+    wallet_prefill_addresses
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wallet_public_key" title="wallet_public_key" class="md-nav__link">
     wallet_public_key
   </a>
@@ -858,6 +865,13 @@
         <li class="md-nav__item">
   <a href="#wallet_new_address" title="wallet_new_address" class="md-nav__link">
     wallet_new_address
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wallet_prefill_addresses" title="wallet_prefill_addresses" class="md-nav__link">
+    wallet_prefill_addresses
   </a>
   
 </li>
@@ -1860,6 +1874,18 @@ Usage:
 
 Returns:
     (str) New wallet address in base58
+</code></pre>
+
+<h2 id="wallet_prefill_addresses">wallet_prefill_addresses</h2>
+<pre><code class="text">Create new addresses, each containing `amount` credits
+
+Usage:
+    wallet_prefill_addresses [--no_broadcast]
+                             (&lt;num_addresses&gt; | --num_addresses=&lt;num_addresses&gt;)
+                             (&lt;amount&gt; | --amount=&lt;amount&gt;)
+
+Returns:
+    (dict) the resulting transaction
 </code></pre>
 
 <h2 id="wallet_public_key">wallet_public_key</h2>
