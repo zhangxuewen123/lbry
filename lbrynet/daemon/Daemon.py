@@ -596,8 +596,8 @@ class Daemon(AuthJSONRPCServer):
         Download a blob
 
         :param blob_hash (str): blob hash
-        :param rate_manager (PaymentRateManager), optional: the payment rate manager to use,
-                                                         defaults to session.payment_rate_manager
+        :param rate_manager (PaymentRateManager): optional, the payment rate manager to use,
+                                                  defaults to session.payment_rate_manager
         :param timeout (int): blob timeout
         :return: BlobFile
         """
@@ -745,7 +745,7 @@ class Daemon(AuthJSONRPCServer):
                 downloader.cancel()
 
         d = defer.succeed(None)
-        reactor.callLater(self.search_timeout, _check_est, d)
+        reactor.callLater(conf.settings['sd_download_timeout'], _check_est, d)
         d.addCallback(
             lambda _: download_sd_blob(
                 self.session, sd_hash, self.session.payment_rate_manager))

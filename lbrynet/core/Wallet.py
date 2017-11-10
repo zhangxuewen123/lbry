@@ -1026,7 +1026,6 @@ class Wallet(object):
         dl = defer.DeferredList(ds)
 
         def handle_checks(results):
-            from future_builtins import zip
             for balance, (success, result) in zip(balances_to_check, results):
                 peer = balance[0]
                 if success is True:
@@ -1132,7 +1131,19 @@ class Wallet(object):
     def _get_values_for_uris(self, page, page_size, *uris):
         return defer.fail(NotImplementedError())
 
+    def _get_transaction(self, txid):
+        return defer.fail(NotImplementedError())
+
+    def _get_blockhash(self, height):
+        return defer.fail(NotImplementedError())
+
     def send_claim_to_address(self, claim_id, destination, amount):
+        return defer.fail(NotImplementedError())
+
+    def get_unused_address(self):
+        return defer.fail(NotImplementedError())
+
+    def get_least_used_address(self):
         return defer.fail(NotImplementedError())
 
     def _start(self):
