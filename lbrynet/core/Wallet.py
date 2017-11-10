@@ -20,8 +20,9 @@ from lbryum.commands import known_commands, Commands
 
 from lbryschema.uri import parse_lbry_uri
 from lbryschema.claim import ClaimDict
-from lbryschema.error import DecodeError
+from lbryschema.error import DecodeError, InvalidAddress
 from lbryschema.decode import smart_decode
+from lbryschema.address import decode_address
 
 from lbrynet import conf
 from lbrynet.core.sqlite_helpers import rerun_if_locked
@@ -29,6 +30,7 @@ from lbrynet.interfaces import IRequestCreator, IQueryHandlerFactory, IQueryHand
 from lbrynet.core.client.ClientRequest import ClientRequest
 from lbrynet.core.Error import RequestCanceledError, InsufficientFundsError, UnknownNameError
 from lbrynet.core.Error import UnknownClaimID, UnknownURI, NegativeFundsError, UnknownOutpoint
+from lbrynet.core.Error import ConnectionClosedBeforeResponseError
 
 log = logging.getLogger(__name__)
 
@@ -1525,11 +1527,17 @@ class LBRYcrdAddressRequester(object):
     # ======== internal calls ======== #
 
     def _handle_address_response(self, response_dict, peer, request, protocol):
+        log.debug("handle wallet info response from %s : %s", peer.host, response_dict)
         if request.response_identifier not in response_dict:
-            raise ValueError(
-                "Expected {} in response but did not get it".format(request.response_identifier))
+            raise ValueError("Expected {} in response "
+                             "but did not get it".format(request.response_identifier))
         assert protocol in self._protocols, "Responding protocol is not in our list of protocols"
         address = response_dict[request.response_identifier]
+        try:
+            decode_address(address)
+        except InvalidAddress:
+            raise ValueError("Invalid address given by peer %s : %s", peer.host, address)
+        log.debug("update peer address: %s to %s", peer.host, address)
         self.wallet.update_peer_address(peer, address)
 
     def _request_failed(self, err, peer):
