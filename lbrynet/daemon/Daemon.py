@@ -228,24 +228,10 @@ class Daemon(AuthJSONRPCServer):
         reactor.addSystemEventTrigger('before', 'shutdown', self._shutdown)
 
         configure_loggly_handler()
-
-        @defer.inlineCallbacks
-        def _announce_startup():
-            def _announce():
-                self.announced_startup = True
-                self.startup_status = STARTUP_STAGES[5]
-                log.info("Started lbrynet-daemon")
-                log.info("%i blobs in manager", len(self.session.blob_manager.blobs))
-
-            yield self.session.blob_manager.get_all_verified_blobs()
-            yield _announce()
-
         log.info("Starting lbrynet-daemon")
-
         self.looping_call_manager.start(Checker.INTERNET_CONNECTION, 3600)
         self.looping_call_manager.start(Checker.CONNECTION_STATUS, 30)
         self.exchange_rate_manager.start()
-
         yield self._initial_setup()
         yield threads.deferToThread(self._setup_data_directory)
         yield self._check_db_migration()
@@ -256,8 +242,14 @@ class Daemon(AuthJSONRPCServer):
         yield self._setup_lbry_file_manager()
         yield self._setup_query_handlers()
         yield self._setup_server()
-        log.info("Starting balance: " + str(self.session.wallet.get_balance()))
-        yield _announce_startup()
+        addresses = yield self.session.wallet.list_addresses()
+        yield self.session.blob_manager.get_all_verified_blobs()
+        self.announced_startup = True
+        self.startup_status = STARTUP_STAGES[5]
+        log.info("Started lbrynet-daemon")
+        log.info("balance: %s", self.session.wallet.get_balance())
+        log.info("%i blobs in manager", len(self.session.blob_manager.blobs))
+        log.info("%i addresses in wallet", len(addresses))
 
     def _get_platform(self):
         if self.platform is None:
