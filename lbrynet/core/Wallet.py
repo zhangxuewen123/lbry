@@ -1198,7 +1198,6 @@ class LBRYumWallet(Wallet):
 
         d = setup_network()
         d.addCallback(lambda _: self._load_wallet())
-        d.addCallback(self._save_wallet)
         d.addCallback(lambda _: self._start_check.start(.1))
         d.addCallback(lambda _: network_start_d)
         d.addCallback(lambda _: self._load_blockchain())
@@ -1320,7 +1319,6 @@ class LBRYumWallet(Wallet):
     @defer.inlineCallbacks
     def get_new_address(self):
         addr = self.wallet.create_new_address(account=None)
-        yield self._save_wallet()
         defer.returnValue(addr)
 
     # Get the balance of a given address.
@@ -1341,7 +1339,6 @@ class LBRYumWallet(Wallet):
             for i in range(len(addresses), num_addresses):
                 address = self.wallet.create_new_address(account=None)
                 addresses.append(address)
-            yield self._save_wallet()
 
         outputs = [[address, amount] for address in addresses]
         tx = yield self._run_cmd_as_defer_succeed('paytomany', outputs)
@@ -1351,13 +1348,12 @@ class LBRYumWallet(Wallet):
 
     # Return an address with no balance in it, if
     # there is none, create a brand new address
-    @defer.inlineCallbacks
     def get_unused_address(self):
         addr = self.wallet.get_unused_address(account=None)
         if addr is None:
             addr = self.wallet.create_new_address()
-        yield self._save_wallet()
-        defer.returnValue(addr)
+        return defer.succeed(addr)
+
 
     def get_block(self, blockhash):
         return self._run_cmd_as_defer_to_thread('getblock', blockhash)
@@ -1505,12 +1501,6 @@ class LBRYumWallet(Wallet):
     def send_claim_to_address(self, claim_id, destination, amount):
         return self._run_cmd_as_defer_succeed('sendclaimtoaddress', claim_id, destination, amount)
 
-    # TODO: get rid of this function. lbryum should take care of it
-    def _save_wallet(self, val=None):
-        self.wallet.storage.write()
-        return defer.succeed(val)
-
-
 class LBRYcrdAddressRequester(object):
     implements([IRequestCreator])
 
@@ -1584,7 +1574,6 @@ class LBRYcrdAddressQueryHandler(object):
         request_handler.register_query_handler(self, self.query_identifiers)
 
     def handle_queries(self, queries):
-
         def create_response(address):
             self.address = address
             fields = {'lbrycrd_address': address}
