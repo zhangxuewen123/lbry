@@ -434,7 +434,8 @@ class Wallet(object):
         self.next_manage_call = None
         self.wallet_balance = Decimal(0.0)
         self.total_reserved_points = Decimal(0.0)
-        self.peer_addresses = {}  # {Peer: string}
+        self.peer_addresses = {}  # {(ip, port): address (string)}
+        self.pending_peer_addresses = set()
         self.queued_payments = defaultdict(Decimal)  # {address(string): amount(Decimal)}
         self.expected_balances = defaultdict(Decimal)  # {address(string): amount(Decimal)}
         self.current_address_given_to_peer = {}  # {Peer: address(string)}
@@ -448,6 +449,11 @@ class Wallet(object):
         self._manage_count = 0
         self._balance_refresh_time = 3
         self._batch_count = 20
+
+        def _get_wallet():
+            return self
+
+        self.info_exchanger = LBRYcrdAddressRequester(_get_wallet)
 
     def start(self):
         log.info("Starting wallet.")
@@ -564,7 +570,7 @@ class Wallet(object):
         self.wallet_balance = balance
 
     def get_info_exchanger(self):
-        return LBRYcrdAddressRequester(self)
+        return self.info_exchanger
 
     def get_wallet_info_query_handler_factory(self):
         return LBRYcrdAddressQueryHandlerFactory(self)
@@ -612,12 +618,13 @@ class Wallet(object):
         rounded_amount = Decimal(str(round(amount, 8)))
         peer = reserved_points.identifier
         assert rounded_amount <= reserved_points.amount
-        assert peer in self.peer_addresses
-        self.queued_payments[self.peer_addresses[peer]] += rounded_amount
+        host_str = "%s:%i" % (peer.host, peer.port)
+        assert host_str in self.peer_addresses
+        self.queued_payments[self.peer_addresses[host_str]] += rounded_amount
         # make any unused points available
         self.total_reserved_points -= (reserved_points.amount - rounded_amount)
         log.debug("ordering that %s points be sent to %s", str(rounded_amount),
-                  str(self.peer_addresses[peer]))
+                  str(self.peer_addresses[host_str]))
         peer.update_stats('points_sent', amount)
         return defer.succeed(True)
 
@@ -644,8 +651,8 @@ class Wallet(object):
     def add_expected_payment(self, peer, amount):
         """Increase the number of points expected to be paid by a peer"""
         rounded_amount = Decimal(str(round(amount, 8)))
-        assert peer in self.current_address_given_to_peer
-        address = self.current_address_given_to_peer[peer]
+        assert "%s:%i" % (peer.host, peer.port) in self.current_address_given_to_peer
+        address = self.current_address_given_to_peer["%s:%i" % (peer.host, peer.port)]
         log.debug("expecting a payment at address %s in the amount of %s",
                   str(address), str(rounded_amount))
         self.expected_balances[address] += rounded_amount
@@ -656,16 +663,19 @@ class Wallet(object):
         peer.update_stats('expected_points', amount)
 
     def update_peer_address(self, peer, address):
-        self.peer_addresses[peer] = address
+        host_str = "%s:%i" % (peer.host, peer.port)
+        if host_str in self.pending_peer_addresses:
+            self.pending_peer_addresses.remove(host_str)
+            self.peer_addresses[host_str] = address
 
+    @defer.inlineCallbacks
     def get_unused_address_for_peer(self, peer):
-        def set_address_for_peer(address):
-            self.current_address_given_to_peer[peer] = address
-            return address
-
-        d = self.get_unused_address()
-        d.addCallback(set_address_for_peer)
-        return d
+        if "%s:%i" % (peer.host, peer.port) in self.current_address_given_to_peer:
+            address = self.current_address_given_to_peer["%s:%i" % (peer.host, peer.port)]
+        else:
+            address = yield self.get_least_used_address()
+            self.current_address_given_to_peer["%s:%i" % (peer.host, peer.port)] = address
+        defer.returnValue(address)
 
     def _send_payments(self):
         payments_to_send = {}
@@ -1506,21 +1516,27 @@ class LBRYumWallet(Wallet):
     def send_claim_to_address(self, claim_id, destination, amount):
         return self._run_cmd_as_defer_succeed('sendclaimtoaddress', claim_id, destination, amount)
 
+
 class LBRYcrdAddressRequester(object):
     implements([IRequestCreator])
 
-    def __init__(self, wallet):
-        self.wallet = wallet
+    def __init__(self, wallet_getter):
+        self.wallet_getter = wallet_getter
         self._protocols = []
 
     # ======== IRequestCreator ======== #
 
     def send_next_request(self, peer, protocol):
-
+        _wallet = self.wallet_getter()
+        host_str = "%s:%i" % (peer.host, peer.port)
+        if host_str in _wallet.pending_peer_addresses or host_str in _wallet.peer_addresses:
+            return defer.succeed(False)
         if not protocol in self._protocols:
+            log.debug("send wallet info request --> %s:%i", peer.host, peer.port)
+            _wallet.pending_peer_addresses.add(host_str)
             r = ClientRequest({'lbrycrd_address': True}, 'lbrycrd_address')
             d = protocol.add_request(r)
-            d.addCallback(self._handle_address_response, peer, r, protocol)
+            d.addCallback(self._handle_address_response, peer, r, protocol, _wallet)
             d.addErrback(self._request_failed, peer)
             self._protocols.append(protocol)
             return defer.succeed(True)
@@ -1529,7 +1545,7 @@ class LBRYcrdAddressRequester(object):
 
     # ======== internal calls ======== #
 
-    def _handle_address_response(self, response_dict, peer, request, protocol):
+    def _handle_address_response(self, response_dict, peer, request, protocol, wallet):
         log.debug("handle wallet info response from %s : %s", peer.host, response_dict)
         if request.response_identifier not in response_dict:
             raise ValueError("Expected {} in response "
@@ -1541,7 +1557,8 @@ class LBRYcrdAddressRequester(object):
         except InvalidAddress:
             raise ValueError("Invalid address given by peer %s : %s", peer.host, address)
         log.debug("update peer address: %s to %s", peer.host, address)
-        self.wallet.update_peer_address(peer, address)
+        wallet.update_peer_address(peer, address)
+        return False
 
     def _request_failed(self, err, peer):
         log.debug("wallet info request failed <-- %s", peer.host)
@@ -1589,6 +1606,7 @@ class LBRYcrdAddressQueryHandler(object):
 
     def handle_queries(self, queries):
         def create_response(address):
+            log.debug("respond to address request from %s", self.peer.host)
             self.address = address
             fields = {'lbrycrd_address': address}
             return fields
