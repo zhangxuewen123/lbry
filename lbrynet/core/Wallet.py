@@ -1544,10 +1544,13 @@ class LBRYcrdAddressRequester(object):
         self.wallet.update_peer_address(peer, address)
 
     def _request_failed(self, err, peer):
-        if not err.check(RequestCanceledError):
-            log.warning("A peer failed to send a valid public key response. Error: %s, peer: %s",
-                        err.getErrorMessage(), str(peer))
+        log.debug("wallet info request failed <-- %s", peer.host)
+        if not err.check(RequestCanceledError, ConnectionClosedBeforeResponseError):
+            log.warning("A peer failed to send a valid address response. Error: %s, peer: %s", err,
+                        peer.host)
             return err
+        log.debug("wallet info request to %s failed", peer.host)
+
 
 
 class LBRYcrdAddressQueryHandlerFactory(object):
