@@ -1356,6 +1356,9 @@ class LBRYumWallet(Wallet):
             addr = self.wallet.create_new_address()
         return defer.succeed(addr)
 
+    def get_least_used_address(self, for_change=False):
+        addr = self.wallet.get_least_used_address(account=None, for_change=for_change)
+        return defer.succeed(addr)
 
     def get_block(self, blockhash):
         return self._run_cmd_as_defer_to_thread('getblock', blockhash)
