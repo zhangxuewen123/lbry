@@ -5,14 +5,13 @@
     
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
       
       
         <link rel="shortcut icon" href="../assets/images/favicon.png">
       
-      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.1">
+      <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.7.3">
     
     
       
@@ -20,12 +19,12 @@
       
     
     
-      <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
+      <script src="../assets/javascripts/modernizr-1df76c4e58.js"></script>
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application-a20f419c8e.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-acc56dad49.css">
       
-        <link rel="stylesheet" href="../assets/stylesheets/application-23f75ab9c7.palette.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-8817cfa535.palette.css">
       
     
     
@@ -63,13 +62,11 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="LBRY" class="md-header-nav__button md-logo">
-          
-            
-              <img src="../images/lbry-white.svg" width="24" height="24">
-            
-          
-        </a>
+        
+          <a href=".." title="LBRY" class="md-logo md-header-nav__button">
+            <img src="../images/lbry-white.svg" width="24" height="24">
+          </a>
+        
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
         <label class="md-icon md-icon--menu md-header-nav__button" for="drawer"></label>
@@ -88,17 +85,17 @@
         
           <label class="md-icon md-icon--search md-header-nav__button" for="search"></label>
           
-<div class="md-search" data-md-component="search" role="dialog">
+<div class="md-search" data-md-component="search">
   <label class="md-search__overlay" for="search"></label>
   <div class="md-search__inner">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" required placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
+      <input type="text" class="md-search__input" name="query" required placeholder="Search" accesskey="s" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query">
       <label class="md-icon md-search__icon" for="search"></label>
-      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">&#xE5CD;</button>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset">close</button>
     </form>
     <div class="md-search__output">
       <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="result" data-md-lang-search="" data-md-lang-tokenizer="[\s\-]+">
+        <div class="md-search-result" data-md-component="result" data-md-lang-search="">
           <div class="md-search-result__meta" data-md-lang-result-none="No matching documents" data-md-lang-result-one="1 matching document" data-md-lang-result-other="# matching documents">
             Type to start searching
           </div>
@@ -151,13 +148,11 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
-    <div class="md-nav__button md-logo">
-      
-        
-          <img src="../images/lbry-white.svg">
-        
-      
-    </div>
+    
+      <i class="md-logo md-nav__button">
+        <img src="../images/lbry-white.svg">
+      </i>
+    
     LBRY
   </label>
   
@@ -272,8 +267,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#channel_list_mine" title="channel_list_mine" class="md-nav__link">
-    channel_list_mine
+  <a href="#channel_export" title="channel_export" class="md-nav__link">
+    channel_export
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel_import" title="channel_import" class="md-nav__link">
+    channel_import
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel_list" title="channel_list" class="md-nav__link">
+    channel_list
   </a>
   
 </li>
@@ -484,6 +493,13 @@
         <li class="md-nav__item">
   <a href="#transaction_show" title="transaction_show" class="md-nav__link">
     transaction_show
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utxo_list" title="utxo_list" class="md-nav__link">
+    utxo_list
   </a>
   
 </li>
@@ -623,8 +639,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#channel_list_mine" title="channel_list_mine" class="md-nav__link">
-    channel_list_mine
+  <a href="#channel_export" title="channel_export" class="md-nav__link">
+    channel_export
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel_import" title="channel_import" class="md-nav__link">
+    channel_import
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#channel_list" title="channel_list" class="md-nav__link">
+    channel_list
   </a>
   
 </li>
@@ -840,6 +870,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#utxo_list" title="utxo_list" class="md-nav__link">
+    utxo_list
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#version" title="version" class="md-nav__link">
     version
   </a>
@@ -916,7 +953,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/lbryio/lbry/edit/master/docs/cli.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/lbryio/lbry/edit/master/docs/cli.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
                 <h1 id="lbry-command-line-documentation">LBRY Command Line Documentation</h1>
@@ -1017,14 +1054,36 @@ Returns:
     (dict) Requested block
 </code></pre>
 
-<h2 id="channel_list_mine">channel_list_mine</h2>
-<pre><code class="text">Get my channels
+<h2 id="channel_export">channel_export</h2>
+<pre><code class="text">Export serialized channel signing information for a given certificate claim id
 
 Usage:
-    channel_list_mine
+    channel_export (&lt;claim_id&gt; | --claim_id=&lt;claim_id&gt;)
 
 Returns:
-    (list) ClaimDict
+    (str) Serialized certificate information
+</code></pre>
+
+<h2 id="channel_import">channel_import</h2>
+<pre><code class="text">Import serialized channel signing information (to allow signing new claims to the channel)
+
+Usage:
+    channel_import (&lt;serialized_certificate_info&gt; |
+                    --serialized_certificate_info=&lt;serialized_certificate_info&gt;)
+
+Returns:
+    (dict) Result dictionary
+</code></pre>
+
+<h2 id="channel_list">channel_list</h2>
+<pre><code class="text">Get certificate claim infos for channels that can be published to
+
+Usage:
+    channel_list
+
+Returns:
+    (list) ClaimDict, includes 'is_mine' field to indicate if the certificate claim
+    is in the wallet.
 </code></pre>
 
 <h2 id="channel_new">channel_new</h2>
@@ -1270,9 +1329,7 @@ Returns:
 
 Usage:
     file_delete [-f] [--delete_all] [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;]
-                [--stream_hash=&lt;stream_hash&gt;] [--claim_id=&lt;claim_id&gt;]
-                [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;]
-                [--name=&lt;name&gt;]
+                [--stream_hash=&lt;stream_hash&gt;] [--rowid=&lt;rowid&gt;]
 
 Options:
     -f, --delete_from_download_dir  : delete file from download directory,
@@ -1283,10 +1340,7 @@ Options:
     --sd_hash=&lt;sd_hash&gt;             : delete by file sd hash
     --file_name&lt;file_name&gt;          : delete by file name in downloads folder
     --stream_hash=&lt;stream_hash&gt;     : delete by file stream hash
-    --claim_id=&lt;claim_id&gt;           : delete by file claim id
-    --outpoint=&lt;outpoint&gt;           : delete by file claim outpoint
     --rowid=&lt;rowid&gt;                 : delete by file row id
-    --name=&lt;name&gt;                   : delete by associated name claim of file
 
 Returns:
     (bool) true if deletion was successful
@@ -1297,8 +1351,7 @@ Returns:
 
 Usage:
     file_list [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;] [--stream_hash=&lt;stream_hash&gt;]
-              [--claim_id=&lt;claim_id&gt;] [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;]
-              [--name=&lt;name&gt;]
+              [--rowid=&lt;rowid&gt;]
               [-f]
 
 Options:
@@ -1306,10 +1359,7 @@ Options:
     --file_name=&lt;file_name&gt;      : get file with matching file name in the
                                    downloads folder
     --stream_hash=&lt;stream_hash&gt;  : get file with matching stream hash
-    --claim_id=&lt;claim_id&gt;        : get file with matching claim id
-    --outpoint=&lt;outpoint&gt;        : get file with matching claim outpoint
     --rowid=&lt;rowid&gt;              : get file with matching row id
-    --name=&lt;name&gt;                : get file with matching associated name claim
     -f                           : full status, populate the 'message' and 'size' fields
 
 Returns:
@@ -1326,16 +1376,12 @@ Returns:
             'stream_name': (str) stream name ,
             'suggested_file_name': (str) suggested file name,
             'sd_hash': (str) sd hash of file,
-            'name': (str) name claim attached to file
-            'outpoint': (str) claim outpoint attached to file
-            'claim_id': (str) claim ID attached to file,
             'download_path': (str) download path of file,
             'mime_type': (str) mime type of file,
             'key': (str) key attached to file,
             'total_bytes': (int) file size in bytes, None if full_status is false
             'written_bytes': (int) written size in bytes
             'message': (str), None if full_status is false
-            'metadata': (dict) Metadata dictionary
         },
     ]
 </code></pre>
@@ -1345,8 +1391,7 @@ Returns:
 
 Usage:
     file_reflect [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;]
-                 [--stream_hash=&lt;stream_hash&gt;] [--claim_id=&lt;claim_id&gt;]
-                 [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;] [--name=&lt;name&gt;]
+                 [--stream_hash=&lt;stream_hash&gt;] [--rowid=&lt;rowid&gt;]
                  [--reflector=&lt;reflector&gt;]
 
 Options:
@@ -1354,10 +1399,7 @@ Options:
     --file_name=&lt;file_name&gt;      : get file with matching file name in the
                                    downloads folder
     --stream_hash=&lt;stream_hash&gt;  : get file with matching stream hash
-    --claim_id=&lt;claim_id&gt;        : get file with matching claim id
-    --outpoint=&lt;outpoint&gt;        : get file with matching claim outpoint
     --rowid=&lt;rowid&gt;              : get file with matching row id
-    --name=&lt;name&gt;                : get file with matching associated name claim
     --reflector=&lt;reflector&gt;      : reflector server, ip address or url
                                    by default choose a server from the config
 
@@ -1370,19 +1412,14 @@ Returns:
 
 Usage:
     file_set_status &lt;status&gt; [--sd_hash=&lt;sd_hash&gt;] [--file_name=&lt;file_name&gt;]
-              [--stream_hash=&lt;stream_hash&gt;] [--claim_id=&lt;claim_id&gt;]
-              [--outpoint=&lt;outpoint&gt;] [--rowid=&lt;rowid&gt;]
-              [--name=&lt;name&gt;]
+              [--stream_hash=&lt;stream_hash&gt;] [--rowid=&lt;rowid&gt;]
 
 Options:
     --sd_hash=&lt;sd_hash&gt;          : set status of file with matching sd hash
     --file_name=&lt;file_name&gt;      : set status of file with matching file name in the
                                    downloads folder
     --stream_hash=&lt;stream_hash&gt;  : set status of file with matching stream hash
-    --claim_id=&lt;claim_id&gt;        : set status of file with matching claim id
-    --outpoint=&lt;outpoint&gt;        : set status of file with matching claim outpoint
     --rowid=&lt;rowid&gt;              : set status of file with matching row id
-    --name=&lt;name&gt;                : set status of file with matching associated name claim
 
 Returns:
     (str) Confirmation message
@@ -1492,8 +1529,9 @@ Options:
     --metadata=&lt;metadata&gt;          : ClaimDict to associate with the claim.
     --file_path=&lt;file_path&gt;        : path to file to be associated with name. If provided,
                                      a lbry stream of this file will be used in 'sources'.
-                                     If no path is given but a metadata dict is provided,
-                                     the source from the given metadata will be used.
+                                     If no path is given but a sources dict is provided,
+                                     it will be used. If neither are provided, an
+                                     error is raised.
     --fee=&lt;fee&gt;                    : Dictionary representing key fee to download content:
                                       {
                                         'currency': currency_symbol,
@@ -1815,6 +1853,30 @@ Returns:
     (dict) JSON formatted transaction
 </code></pre>
 
+<h2 id="utxo_list">utxo_list</h2>
+<pre><code class="text">List unspent transaction outputs
+
+Usage:
+    utxo_list
+
+Returns:
+    (list) List of unspent transaction outputs (UTXOs)
+    [
+        {
+            &quot;address&quot;: (str) the output address
+            &quot;amount&quot;: (float) unspent amount
+            &quot;height&quot;: (int) block height
+            &quot;is_claim&quot;: (bool) is the tx a claim
+            &quot;is_coinbase&quot;: (bool) is the tx a coinbase tx
+            &quot;is_support&quot;: (bool) is the tx a support
+            &quot;is_update&quot;: (bool) is the tx an update
+            &quot;nout&quot;: (int) nout of the output
+            &quot;txid&quot;: (str) txid of the output
+        },
+        ...
+    ]
+</code></pre>
+
 <h2 id="version">version</h2>
 <pre><code class="text">Get lbry version information
 
@@ -2003,7 +2065,7 @@ Returns:
       
     </div>
     
-      <script src="../assets/javascripts/application-f3ab9e5ff8.js"></script>
+      <script src="../assets/javascripts/application-b30566c560.js"></script>
       
       
       <script>app.initialize({url:{base:".."}})</script>
