@@ -330,6 +330,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#claim_renew" title="claim_renew" class="md-nav__link">
+    claim_renew
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#claim_send_to_address" title="claim_send_to_address" class="md-nav__link">
     claim_send_to_address
   </a>
@@ -697,6 +704,13 @@
         <li class="md-nav__item">
   <a href="#claim_new_support" title="claim_new_support" class="md-nav__link">
     claim_new_support
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#claim_renew" title="claim_renew" class="md-nav__link">
+    claim_renew
   </a>
   
 </li>
@@ -1241,6 +1255,27 @@ Return:
     }
 </code></pre>
 
+<h2 id="claim_renew">claim_renew</h2>
+<pre><code class="text">Renew claim(s) or support(s)
+
+Usage:
+    claim_renew (&lt;outpoint&gt; | --outpoint=&lt;outpoint&gt;) | (&lt;height&gt; | --height=&lt;height&gt;)
+
+Return:
+    (dict) Dictionary where key is the the original claim's outpoint and
+    value is the result of the renewal
+    {
+        outpoint:{
+
+            'tx' : (str) hex encoded transaction
+            'txid' : (str) txid of resulting claim
+            'nout' : (int) nout of the resulting claim
+            'fee' : (float) fee paid for the claim transaction
+            'claim_id' : (str) claim ID of the resulting claim
+        },
+    }
+</code></pre>
+
 <h2 id="claim_send_to_address">claim_send_to_address</h2>
 <pre><code class="text">Send a name claim to an address
 
@@ -1709,6 +1744,8 @@ Usage:
                  [&lt;share_usage_data&gt; | --share_usage_data=&lt;share_usage_data&gt;]
                  [&lt;peer_search_timeout&gt; | --peer_search_timeout=&lt;peer_search_timeout&gt;]
                  [&lt;sd_download_timeout&gt; | --sd_download_timeout=&lt;sd_download_timeout&gt;]
+                 [&lt;auto_renew_claim_height_delta&gt;
+                    | --auto_renew_claim_height_delta=&lt;auto_renew_claim_height_delta]
 
 Options:
     &lt;download_directory&gt;, --download_directory=&lt;download_directory&gt;  : (str)
@@ -1733,6 +1770,12 @@ Options:
     &lt;share_usage_data&gt;, --share_usage_data=&lt;share_usage_data&gt;  : (bool), True
     &lt;peer_search_timeout&gt;, --peer_search_timeout=&lt;peer_search_timeout&gt;  : (int), 3
     &lt;sd_download_timeout&gt;, --sd_download_timeout=&lt;sd_download_timeout&gt;  : (int), 3
+    &lt;auto_renew_claim_height_delta&gt;,
+        --auto_renew_claim_height_delta=&lt;auto_renew_claim_height_delta&gt; : (int), 0
+        claims set to expire within this many blocks will be
+        automatically renewed after startup (if set to 0, renews
+        will not be made automatically)
+
 
 Returns:
     (dict) Updated dictionary of daemon settings
