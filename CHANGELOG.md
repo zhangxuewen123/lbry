@@ -9,7 +9,7 @@ at anytime.
 
 ## [Unreleased]
 ### Security
-  *
+  * Updated lbryum version, see the [lbryum changelog](https://github.com/lbryio/lbryum/blob/master/CHANGELOG.md#security)
   *
 
 ### Fixed
