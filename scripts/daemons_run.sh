@@ -32,6 +32,8 @@
 NODES_NUM=10
 KNOWN_NUM=3
 
+VERBOSE_CLI=0
+
 TMP_FOLDER=daemons_run_tmp
 
 function check_folder_() {
@@ -159,16 +161,16 @@ function kill1() {
 function cli1() {
     N=${1}
     if [ -z "${N}" ]; then
-        echo "no daemon specified!"
+        echo "no daemon specified!" >&2
         exit 1
     fi
 
     check_folder_ ${N}
     shift
 
-    echo "Executing CLI command on daemon ${N}: $@"
+    [ ${VERBOSE_CLI} -gt 0 ] && echo "Executing CLI command on daemon ${N}: $@"
     CMD="lbrynet-cli --conf ${TMP_FOLDER}/${N}.json $@"
-    echo "Daemon ${N}, running: ${CMD}"
+    [ ${VERBOSE_CLI} -gt 0 ] && echo "Daemon ${N}, running: ${CMD}"
     ${CMD}
 }
 
@@ -176,6 +178,7 @@ function cli() {
     echo "EXECUTING CLI COMMAND: $@"
 
     for i in $(seq 1 ${NODES_NUM}); do
+        echo "Daemon ${i}:"
         cli1 ${i} $@
     done
 }
