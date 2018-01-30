@@ -22,6 +22,7 @@ at anytime.
   * Fixed handling decryption error for blobs encrypted with an invalid key
   * Fixed handling stream with no data blob (https://github.com/lbryio/lbry/issues/905)
   * Fixed fetching the external ip
+  * Fixed win32api import error (https://github.com/lbryio/lbry/issues/1087)
 
 ### Deprecated
   * `channel_list_mine`, replaced with `channel_list`
