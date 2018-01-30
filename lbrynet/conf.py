@@ -9,16 +9,6 @@ import envparse
 from appdirs import user_data_dir, user_config_dir
 from lbrynet.core import utils
 from lbrynet.core.Error import InvalidCurrencyError
-from lbrynet.androidhelpers.paths import (
-    android_internal_storage_dir,
-    android_app_internal_storage_dir
-)
-
-try:
-    from lbrynet.winhelpers.knownpaths import get_path, FOLDERID, UserHandle
-except (ImportError, ValueError, NameError):
-    # Android platform: NameError: name 'c_wchar' is not defined
-    pass
 
 log = logging.getLogger(__name__)
 
@@ -79,6 +69,7 @@ def _win_path_to_bytes(path):
 def _get_old_directories(platform_type):
     directories = {}
     if platform_type == WINDOWS:
+        from lbrynet.os_helpers.windows import get_path, FOLDERID, UserHandle
         appdata = get_path(FOLDERID.RoamingAppData, UserHandle.current)
         directories['data'] = os.path.join(appdata, 'lbrynet')
         directories['lbryum'] = os.path.join(appdata, 'lbryum')
@@ -99,10 +90,12 @@ def _get_old_directories(platform_type):
 def _get_new_directories(platform_type):
     directories = {}
     if platform_type == ANDROID:
-        directories['data'] = '%s/lbrynet' % android_app_internal_storage_dir()
-        directories['lbryum'] = '%s/lbryum' % android_app_internal_storage_dir()
-        directories['download'] = '%s/Download' % android_internal_storage_dir()
+        from lbrynet.os_helpers import android
+        directories['data'] = '%s/lbrynet' % android.android_app_internal_storage_dir()
+        directories['lbryum'] = '%s/lbryum' % android.android_app_internal_storage_dir()
+        directories['download'] = '%s/Download' % android.android_internal_storage_dir()
     elif platform_type == WINDOWS:
+        from lbrynet.os_helpers.windows import get_path, FOLDERID, UserHandle
         directories['data'] = user_data_dir('lbrynet', 'lbry')
         directories['lbryum'] = user_data_dir('lbryum', 'lbry')
         directories['download'] = get_path(FOLDERID.Downloads, UserHandle.current)

@@ -4,6 +4,7 @@ import ctypes
 from ctypes import windll, wintypes
 from uuid import UUID
 
+
 # http://msdn.microsoft.com/en-us/library/windows/desktop/aa373931.aspx
 class GUID(ctypes.Structure):
     _fields_ = [
