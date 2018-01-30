@@ -183,6 +183,44 @@ function cli() {
     done
 }
 
+function check_blob() {
+    BLOB=${1}
+    if [ -z "${BLOB}" ]; then
+        echo "missing blob hash"
+        exit 1
+    fi
+
+    # pick a random daemon that will announce the blob
+    SRC="$(( (RANDOM % ${NODES_NUM}) + 1 ))"
+
+    echo "Injecting blob ${BLOB} on daemon ${SRC}..."
+    cli1 ${SRC} blob_announce ${BLOB}
+    echo "done"
+
+    echo "Waiting 5 seconds..."
+    sleep 5
+
+    echo "Checking peer_list on every daemon..."
+    T=.tmp_test1
+    rm -Rf ${T}
+    mkdir -p ${T}
+    for i in $(seq 1 ${NODES_NUM}); do
+        echo -n "${i}."
+        cli1 ${i} peer_list ${BLOB} >${T}/${i}.list
+    done
+    echo "done"
+
+    echo "Comparing files"
+    diff -u --from-file ${T}/${SRC}.list ${T}/*.list
+    if [ $? -ne 0 ]; then
+        echo "peer lists differs!"
+        exit 1
+    else
+        echo "all peer lists consistent"
+        exit 0
+    fi
+}
+
 if [ x"$(type -t ${1})" != x"function" ]; then
     echo "Invalid command"
     echo "Usage $0 <start|stop|kill|cli <cmd ...>|cli1 <n> <cmd ...>>"
