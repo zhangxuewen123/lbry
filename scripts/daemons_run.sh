@@ -32,6 +32,12 @@
 NODES_NUM=10
 KNOWN_NUM=3
 
+# leave empty for external self-detection
+EXTERNAL_IP=127.0.0.1
+
+# should the daemon use upnp to open port? true|false
+USE_UPNP=false
+
 VERBOSE_CLI=0
 
 TMP_FOLDER=daemons_run_tmp
@@ -57,16 +63,24 @@ function start1() {
     API_PORT=$(( 5200 + ${N} ))
 
     unset KNOWN_NODES
+    if [ -n "${EXTERNAL_IP}" ]; then
+        KNOWN_IP="${EXTERNAL_IP}"
+    else
+        KNOWN_IP="127.0.0.1"
+    fi
+
     for j in $(seq 1 ${KNOWN_NUM}); do
         P=$((3300 + $(( (RANDOM % ${NODES_NUM}) + 1 )) ))
         [ x"${KNOWN_NODES}" != x ] && KNOWN_NODES="${KNOWN_NODES}, "
-        KNOWN_NODES="${KNOWN_NODES}\"127.0.0.1:${P}\""
+        KNOWN_NODES="${KNOWN_NODES}\"${KNOWN_IP}:${P}\""
     done
+
+    [ -n "${EXTERNAL_IP}" ] && EXTERNAL_IP_="\"external_ip\" : \"${EXTERNAL_IP}\","
 
 cat > ${TMP_FOLDER}/${N}.json << EOF
 {
-    "use_upnp" : false,
-    "external_ip" : "127.0.0.1",
+    "use_upnp" : ${USE_UPNP},
+    ${EXTERNAL_IP_}
     "peer_port" : ${PEER_PORT},
     "dht_node_port" : ${DHT_PORT},
     "data_dir" : "$(pwd)/${TMP_FOLDER}/${i}/data",
