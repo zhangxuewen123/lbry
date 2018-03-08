@@ -1,11 +1,14 @@
 import logging
 import os
+import json
 from sqlite3 import IntegrityError
-from twisted.internet import threads, defer, reactor
+from twisted.internet import threads, defer, reactor, task
 from lbrynet import conf
 from lbrynet.blob.blob_file import BlobFile
 from lbrynet.blob.creator import BlobFileCreator
 from lbrynet.core.server.DHTHashAnnouncer import DHTHashSupplier
+from lbrynet.core.utils import get_lbry_hash_obj
+from lbrynet.core.StreamDescriptor import save_sd_info
 
 log = logging.getLogger(__name__)
 
@@ -29,11 +32,84 @@ class DiskBlobManager(DHTHashSupplier):
         self.blobs = {}
         self.blob_hashes_to_delete = {}  # {blob_hash: being_deleted (True/False)}
 
+        self.scan_blobfiles_lc = None
+        if conf.settings['run_reflector_server']:
+            self.scan_blobfiles_lc = task.LoopingCall(self.find_missing_blobs)
+
     def setup(self):
-        return defer.succeed(True)
+        if self.scan_blobfiles_lc and not self.scan_blobfiles_lc.running:
+            self.scan_blobfiles_lc.start(60*60*24)  # scan the blob files directory daily
+        return defer.succeed(None)
 
     def stop(self):
+        if self.scan_blobfiles_lc and self.scan_blobfiles_lc.running:
+            self.scan_blobfiles_lc.stop()
         return defer.succeed(True)
+
+    @defer.inlineCallbacks
+    def find_missing_blobs(self):
+        file_names = yield threads.deferToThread(os.listdir, self.blob_dir)
+        blob_hashes = yield self.storage.run_and_return_list("select blob_hash from blob")
+        diff = set(file_names).difference(set(blob_hashes))
+        blobs_to_check = []
+        blobs_to_add = []
+        discovered_stream_descriptors = {}
+
+        for potential_blob_hash in diff:
+            if len(potential_blob_hash) != 96:
+                continue
+            try:
+                potential_blob_hash.decode('hex')
+            except:
+                continue
+            else:
+                blobs_to_check.append(potential_blob_hash)
+
+        def inspect_blob(file_name):
+            digest = get_lbry_hash_obj()
+            with open(os.path.join(self.blob_dir, file_name), "r") as blob_handle:
+                data = blob_handle.read()
+                decoded = None
+                try:
+                    decoded = json.loads(data)
+                except (ValueError, TypeError):
+                    pass
+                digest.update(data)
+            return digest.hexdigest(), len(data), decoded
+
+        @defer.inlineCallbacks
+        def verify_blob(file_name):
+            (calculated_blob_hash, length, decoded) = yield threads.deferToThread(inspect_blob, file_name)
+            if calculated_blob_hash == file_name:
+                blobs_to_add.append((calculated_blob_hash, length))
+                if decoded:
+                    if not (yield self.storage.get_stream_hash_for_sd_hash(calculated_blob_hash)):
+                        log.info("detected sd blob: %s", calculated_blob_hash)
+                        discovered_stream_descriptors[calculated_blob_hash] = decoded
+                else:
+                    log.info("detected blob: %s", calculated_blob_hash)
+
+        yield defer.DeferredList([verify_blob(blob_hash) for blob_hash in blobs_to_check])
+
+        yield defer.DeferredList(
+            [self.storage.add_completed_blob(blob_hash, length, 0, 0) for (blob_hash, length) in blobs_to_add]
+        )
+
+        yield defer.DeferredList([
+            save_sd_info(self, sd_hash, stream_info)
+            for (sd_hash, stream_info) in discovered_stream_descriptors.iteritems()
+        ])
+
+        # fix should_announce for imported head and sd blobs
+        yield self.storage.db.runOperation(
+            "update blob set should_announce=1 "
+            "where should_announce=0 and "
+            "blob.blob_hash in "
+            "  (select b.blob_hash from blob b inner join stream s ON b.blob_hash=s.sd_hash) or "
+            "blob.blob_hash in "
+            " (select b.blob_hash from blob b "
+            "  inner join stream_blob s2 ON b.blob_hash=s2.blob_hash and s2.position=0)"
+        )
 
     def get_blob(self, blob_hash, length=None):
         """Return a blob identified by blob_hash, which may be a new blob or a
