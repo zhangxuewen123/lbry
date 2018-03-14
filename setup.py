@@ -21,6 +21,7 @@ requires = [
     'envparse',
     'jsonrpc',
     'jsonschema',
+    'protobuf==3.2.0',
     'lbryum==3.2.0rc19',
     'lbryschema==0.0.15rc3',
     'miniupnpc',
