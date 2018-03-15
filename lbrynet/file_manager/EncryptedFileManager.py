@@ -98,15 +98,9 @@ class EncryptedFileManager(object):
 
     @defer.inlineCallbacks
     def _start_lbry_files(self):
-        files = yield self.session.storage.get_all_lbry_files()
-        b_prm = self.session.base_payment_rate_manager
-        payment_rate_manager = NegotiatedPaymentRateManager(b_prm, self.session.blob_tracker)
 
-        log.info("Trying to start %i files", len(files))
-        for i, file_info in enumerate(files):
-            if len(files) > 500 and i % 500 == 0:
-                log.info("Started %i/%i files", i, len(files))
-
+        @defer.inlineCallbacks
+        def start_file(file_info, payment_rate_manager):
             lbry_file = self._get_lbry_file(
                 file_info['row_id'], file_info['stream_hash'], payment_rate_manager, file_info['sd_hash'],
                 file_info['key'], file_info['stream_name'], file_info['file_name'], file_info['download_directory'],
@@ -131,6 +125,18 @@ class EncryptedFileManager(object):
                     self.lbry_files.append(lbry_file)
                 except Exception:
                     log.warning("Failed to start %i", file_info.get('rowid'))
+
+        files = yield self.session.storage.get_all_lbry_files()
+        b_prm = self.session.base_payment_rate_manager
+        prm = NegotiatedPaymentRateManager(b_prm, self.session.blob_tracker)
+
+        log.info("Trying to start %i files", len(files))
+
+        dl = []
+        for i, file_info in enumerate(files):
+            dl.append(start_file(file_info, prm))
+        yield defer.DeferredList(dl)
+
         log.info("Started %i lbry files", len(self.lbry_files))
         if self.auto_re_reflect is True:
             safe_start_looping_call(self.lbry_file_reflector, self.auto_re_reflect_interval)
