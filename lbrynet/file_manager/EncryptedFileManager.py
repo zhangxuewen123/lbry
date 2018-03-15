@@ -123,6 +123,8 @@ class EncryptedFileManager(object):
                     lbry_file.restore(file_info['status'])
                     self.storage.content_claim_callbacks[lbry_file.stream_hash] = lbry_file.get_claim_info
                     self.lbry_files.append(lbry_file)
+                    if len(self.lbry_files) % 100 == 0:
+                        log.info("Started %i lbry files", len(self.lbry_files))
                 except Exception:
                     log.warning("Failed to start %i", file_info.get('rowid'))
 
