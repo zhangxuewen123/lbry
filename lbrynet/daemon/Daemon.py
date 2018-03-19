@@ -2979,6 +2979,30 @@ class Daemon(AuthJSONRPCServer):
         return self.jsonrpc_blob_announce(announce_all=True)
 
     @defer.inlineCallbacks
+    def jsonrpc_stream_reflect(self, stream_hash, reflector):
+        """
+        Reflect all the blobs in a stream
+
+        Usage:
+            file_reflect (--stream_hash=<stream_hash>) (--reflector=<reflector>)
+
+        Options:
+            --stream_hash=<stream_hash>  : (str) get file with matching stream hash
+            --reflector=<reflector>      : (str) reflector server, ip address or url
+                                           by default choose a server from the config
+
+        Returns:
+            (list) list of blobs reflected
+        """
+
+        stream_blobs = yield self.storage.get_blobs_for_stream(stream_hash, only_completed=True)
+        stream_blob_hashes = [b.blob_hash for b in stream_blobs if b.blob_hash]
+        sd_hash = yield self.storage.get_sd_blob_hash_for_stream(stream_hash)
+        to_reflect = [sd_hash] + stream_blob_hashes
+        results = yield reupload.reflect_blob_hashes(to_reflect, self.session.blob_manager, reflector_server=reflector)
+        defer.returnValue(results)
+
+    @defer.inlineCallbacks
     def jsonrpc_file_reflect(self, **kwargs):
         """
         Reflect all the blobs in a file matching the filter criteria
@@ -3009,7 +3033,6 @@ class Daemon(AuthJSONRPCServer):
         elif not lbry_files:
             raise Exception('No file found')
         lbry_file = lbry_files[0]
-
         results = yield reupload.reflect_stream(lbry_file, reflector_server=reflector_server)
         defer.returnValue(results)
 
