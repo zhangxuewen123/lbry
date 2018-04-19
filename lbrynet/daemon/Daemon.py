@@ -48,6 +48,7 @@ from lbrynet.core.server.ServerProtocol import ServerProtocolFactory
 from lbrynet.core.Error import InsufficientFundsError, UnknownNameError
 from lbrynet.core.Error import DownloadDataTimeout, DownloadSDTimeout
 from lbrynet.core.Error import NullFundsError, NegativeFundsError
+from lbrynet.core.call_later_manager import CallLaterManager
 from lbrynet.dht.error import TimeoutError
 from lbrynet.core.Peer import Peer
 from lbrynet.core.SinglePeerDownloader import SinglePeerDownloader
@@ -223,11 +224,12 @@ class Daemon(AuthJSONRPCServer):
         self.looping_call_manager = LoopingCallManager(calls)
         self.sd_identifier = StreamDescriptorIdentifier()
         self.lbry_file_manager = None
+        self.call_later_tracker = LoopingCall(CallLaterManager.show_pending_call_laters)
 
     @defer.inlineCallbacks
     def setup(self):
         reactor.addSystemEventTrigger('before', 'shutdown', self._shutdown)
-
+        self.call_later_tracker.start(30)
         configure_loggly_handler()
 
         log.info("Starting lbrynet-daemon")
@@ -412,7 +414,7 @@ class Daemon(AuthJSONRPCServer):
         log.info("Status at time of shutdown: " + self.startup_status[0])
 
         self._stop_streams()
-
+        self.call_later_tracker.stop()
         self.looping_call_manager.shutdown()
         if self.analytics_manager:
             self.analytics_manager.shutdown()

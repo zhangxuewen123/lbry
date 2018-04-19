@@ -1,6 +1,16 @@
+import logging
+
+log = logging.getLogger()
+
+
 class CallLaterManager(object):
     _callLater = None
     _pendingCallLaters = []
+
+    @classmethod
+    def show_pending_call_laters(cls):
+        cls._pendingCallLaters = [cl for cl in cls._pendingCallLaters if cl.active()]
+        log.info("%i pending call laters", len(cls._pendingCallLaters))
 
     @classmethod
     def _cancel(cls, call_later):
