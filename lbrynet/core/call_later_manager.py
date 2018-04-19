@@ -24,10 +24,6 @@ class CallLaterManager(object):
         return cls._delay
 
     @classmethod
-    def show_pending_call_laters(cls):
-        log.info("%i pending call laters", len(cls._pendingCallLaters))
-
-    @classmethod
     def _cancel(cls, call_later):
         """
         :param call_later: DelayedCall
