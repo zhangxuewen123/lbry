@@ -21,9 +21,9 @@ python set_build.py
 pip install -r requirements.txt
 pip install ..\.
 
-pyinstaller -y daemon.onefile.spec
-pyinstaller -y cli.onefile.spec
-pyinstaller -y console.onefile.spec
+pyinstaller -D -y daemon.onefile.spec
+pyinstaller -D -y cli.onefile.spec
+pyinstaller -D -y console.onefile.spec
 
 nuget install secure-file -ExcludeVersion
 secure-file\tools\secure-file -decrypt .\lbry2.pfx.enc -secret "$env:pfx_key"
