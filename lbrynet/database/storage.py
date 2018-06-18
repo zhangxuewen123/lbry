@@ -860,6 +860,38 @@ class SQLiteStorage(object):
             self.clock.seconds() - conf.settings['auto_re_reflect_interval']
         )
 
+    # # # # # # # # # dht datastore functions # # # # # # # # #
+
+    def add_node_contact(self, contact):
+        def _add_node_contact(transaction):
+            failures = contact.failures
+            if not failures:
+                last_fail = second_last_fail = None
+            elif len(failures) == 1:
+                last_fail = failures[0]
+                second_last_fail = None
+            else:
+                last_fail, second_last_fail = failures[-1], failures[-2]
+            transaction.executescript(
+                """
+                insert into node_contact_host_port values (null, ?, ?);
+                insert into node_contact_triple values (
+                    null, ?, (select id from node_contact_host_port where host=? and port=?)  
+                );
+                insert into node_contact values (
+                    ?, (select id from node_contact_host_port where host=? and port=?), 
+                    (select rowid from node_contact_triple where node_id=? and 
+                        host_port=(select id from node_contact_host_port where host=?and port=?)), 
+                    ?, ?, ?, ?
+                );
+                """, (
+                        contact.address, contact.port, contact.id.encode('hex'), contact.address, contact.port,
+                        contact.id.encode('hex'), contact.address, contact.port, contact.id.encode('hex'),
+                        contact.address, contact.port, contact.lastRequested, contact.lastReceived, last_fail,
+                        second_last_fail
+                    )
+            )
+        return self.db.runInteraction(_add_node_contact)
 
 # Helper functions
 def _format_claim_response(outpoint, claim_id, name, amount, height, serialized, channel_id, address, claim_sequence):
