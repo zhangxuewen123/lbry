@@ -54,7 +54,7 @@ def rerun_if_locked(f):
 
     def rerun(err, rerun_count, *args, **kwargs):
         connection = args[0]
-        reactor = connection.reactor
+        reactor = connection._reactor
         log.debug("Failed to execute (%s): %s", err, args)
         if err.check(sqlite3.OperationalError) and err.value.message == "database is locked":
             log.warning("database was locked. rerunning %s with args %s, kwargs %s",
@@ -82,16 +82,12 @@ def rerun_if_locked(f):
 
 
 class SqliteConnection(adbapi.ConnectionPool):
-    def __init__(self, db_path):
-        adbapi.ConnectionPool.__init__(self, 'sqlite3', db_path, check_same_thread=False)
+    def __init__(self, db_path, cp_reactor):
+        adbapi.ConnectionPool.__init__(self, 'sqlite3', db_path, check_same_thread=False, cp_reactor=cp_reactor)
 
     @rerun_if_locked
     def runInteraction(self, interaction, *args, **kw):
         return adbapi.ConnectionPool.runInteraction(self, interaction, *args, **kw)
-
-    @classmethod
-    def set_reactor(cls, reactor):
-        cls.reactor = reactor
 
 
 class SQLiteStorage(object):
@@ -172,8 +168,7 @@ class SQLiteStorage(object):
         self.db_dir = db_dir
         self._db_path = os.path.join(db_dir, "lbrynet.sqlite")
         log.info("connecting to database: %s", self._db_path)
-        self.db = SqliteConnection(self._db_path)
-        self.db.set_reactor(reactor)
+        self.db = SqliteConnection(self._db_path, reactor)
         self.clock = reactor
 
         # used to refresh the claim attributes on a ManagedEncryptedFileDownloader when a
