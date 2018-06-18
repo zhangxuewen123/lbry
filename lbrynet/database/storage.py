@@ -92,74 +92,124 @@ class SqliteConnection(adbapi.ConnectionPool):
 
 class SQLiteStorage(object):
     CREATE_TABLES_QUERY = """
-            pragma foreign_keys=on;
-            pragma journal_mode=WAL;
+    pragma foreign_keys = on;
+    pragma journal_mode = WAL;
     
-            create table if not exists blob (
-                blob_hash char(96) primary key not null,
-                blob_length integer not null,
-                next_announce_time integer not null,
-                should_announce integer not null default 0,
-                status text not null,
-                last_announced_time integer,
-                single_announce integer
-            );
-            
-            create table if not exists stream (
-                stream_hash char(96) not null primary key,
-                sd_hash char(96) not null references blob,
-                stream_key text not null,
-                stream_name text not null,
-                suggested_filename text not null
-            );
-            
-            create table if not exists stream_blob (
-                stream_hash char(96) not null references stream,
-                blob_hash char(96) references blob,
-                position integer not null,
-                iv char(32) not null,
-                primary key (stream_hash, blob_hash)
-            );
-            
-            create table if not exists claim (
-                claim_outpoint text not null primary key,
-                claim_id char(40) not null,
-                claim_name text not null,
-                amount integer not null,
-                height integer not null,
-                serialized_metadata blob not null,
-                channel_claim_id text,
-                address text not null,
-                claim_sequence integer not null
-            );
-
-            create table if not exists file (
-                stream_hash text primary key not null references stream,
-                file_name text not null,
-                download_directory text not null,
-                blob_data_rate real not null,
-                status text not null
-            );
-            
-            create table if not exists content_claim (
-                stream_hash text unique not null references file,
-                claim_outpoint text not null references claim,
-                primary key (stream_hash, claim_outpoint)
-            );
-            
-            create table if not exists support (
-                support_outpoint text not null primary key,
-                claim_id text not null,
-                amount integer not null,
-                address text not null
-            );
-            
-            create table if not exists reflected_stream (
-                sd_hash text not null,
-                reflector_address text not null,
-                timestamp integer,
-                primary key (sd_hash, reflector_address)
-            );
+    create table if not exists blob (
+      blob_hash           char(96) primary key not null,
+      blob_length         integer              not null,
+      next_announce_time  integer              not null,
+      should_announce     integer              not null default 0,
+      status              text                 not null,
+      last_announced_time integer,
+      single_announce     integer
+    );
+    
+    create table if not exists stream (
+      stream_hash        char(96) not null primary key,
+      sd_hash            char(96) not null references blob,
+      stream_key         text     not null,
+      stream_name        text     not null,
+      suggested_filename text     not null
+    );
+    
+    create table if not exists stream_blob (
+      stream_hash char(96) not null references stream,
+      blob_hash   char(96) references blob,
+      position    integer  not null,
+      iv          char(32) not null,
+      primary key (stream_hash, blob_hash)
+    );
+    
+    create table if not exists claim (
+      claim_outpoint      text     not null primary key,
+      claim_id            char(40) not null,
+      claim_name          text     not null,
+      amount              integer  not null,
+      height              integer  not null,
+      serialized_metadata blob     not null,
+      channel_claim_id    text,
+      address             text     not null,
+      claim_sequence      integer  not null
+    );
+    
+    create table if not exists file (
+      stream_hash        text primary key not null references stream,
+      file_name          text             not null,
+      download_directory text             not null,
+      blob_data_rate     real             not null,
+      status             text             not null
+    );
+    
+    create table if not exists content_claim (
+      stream_hash    text unique not null references file,
+      claim_outpoint text        not null references claim,
+      primary key (stream_hash, claim_outpoint)
+    );
+    
+    create table if not exists support (
+      support_outpoint text    not null primary key,
+      claim_id         text    not null,
+      amount           integer not null,
+      address          text    not null
+    );
+    
+    create table if not exists reflected_stream (
+      sd_hash           text not null,
+      reflector_address text not null,
+      timestamp         integer,
+      primary key (sd_hash, reflector_address)
+    );
+    
+    create table if not exists node_contact_host_port (
+      id   integer primary key autoincrement,
+      host text    not null,
+      port integer not null check (0 < port and port < 65536),
+      constraint pair unique (host, port)
+        on conflict ignore
+    );
+    
+    create table if not exists node_contact_triple (
+      id        integer primary key autoincrement,
+      node_id   char(96) not null,
+      host_port integer  not null references node_contact_host_port,
+      constraint pair unique (node_id, host_port)
+        on conflict ignore
+    );
+    
+    create table if not exists node_contact (
+      node_id            char(96)       not null primary key,
+      host_port          integer        not null references node_contact_host_port,
+      contact_triple     integer unique not null references node_contact_triple,
+      last_requested     integer,
+      last_received      integer,
+      last_failed        integer,
+      second_last_failed integer,
+      constraint unique_host_port unique (host_port)
+        on conflict replace
+    );
+    
+    create table if not exists node_hash_store (
+      blob_hash               char(96) not null,
+      node_id                 char(96) not null references node_contact
+        on delete cascade,
+      timestamp               integer  not null,
+      originally_published    integer  not null,
+      originally_published_by char(96) not null references node_contact
+        on delete cascade,
+      primary key (blob_hash, node_id)
+    );
+    
+    create table if not exists node_routing_bucket (
+      bucket_index integer not null primary key,
+      range_min    integer not null,
+      range_max    integer not null
+    );
+    
+    create table if not exists node_routing_table (
+      node_id char(96) not null primary key references node_contact,
+      bucket  integer  not null references node_routing_bucket
+    );
     """
 
     def __init__(self, db_dir, reactor=None):
