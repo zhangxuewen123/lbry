@@ -1708,40 +1708,40 @@ fee, title, description, author, language, license, license_url, thumbnail, prev
 or sources. Individual arguments will overwrite the fields specified in metadata argument.
 
 Args:
-    'name' (required)  :  (str)    name of the content
-    'bid' (required)   :  (float)  amount to back the claim
-    'metadata'         :  (dict)   ClaimDict to associate with the claim.
-    'file_path'        :  (str)    path to file to be associated with name. If provided,
-                                   a lbry stream of this file will be used in 'sources'.
-                                   If no path is given but a sources dict is provided,
-                                   it will be used. If neither are provided, an
-                                   error is raised.
-    'fee'              :  (dict)   Dictionary representing key fee to download content:
-                                   {
-                                   'currency': currency_symbol,
-                                   'amount': float,
-                                   'address': str, optional
-                                   }
-                                   supported currencies: LBC, USD, BTC
-                                   If an address is not provided a new one will be
-                                   automatically generated. Default fee is zero.
-    'title'            :  (str)    title of the publication
-    'description'      :  (str)    description of the publication
-    'author'           :  (str)    author of the publication
-    'language'         :  (str)    language of the publication
-    'license'          :  (str)    publication license
-    'license_url'      :  (str)    publication license url
-    'thumbnail'        :  (str)    thumbnail url
-    'preview'          :  (str)    preview url
-    'nsfw'             :  (bool)   title of the publication
-    'sources'          :  (str)    {'lbry_sd_hash': sd_hash} specifies sd hash of file
-    'channel_name'     :  (str)    name of the publisher channel name in the wallet
-    'channel_id'       :  (str)    claim id of the publisher channel, does not check
-                                   for channel claim being in the wallet. This allows
-                                   publishing to a channel where only the certificate
-                                   private key is in the wallet.
-    'claim_address'    :  (str)    address where the claim is sent to, if not specified
-                                   new address wil automatically be created
+    'name' (required)  :  (str)      name of the content
+    'bid' (required)   :  (decimal)  amount to back the claim
+    'metadata'         :  (dict)     ClaimDict to associate with the claim.
+    'file_path'        :  (str)      path to file to be associated with name. If provided,
+                                     a lbry stream of this file will be used in 'sources'.
+                                     If no path is given but a sources dict is provided,
+                                     it will be used. If neither are provided, an
+                                     error is raised.
+    'fee'              :  (dict)     Dictionary representing key fee to download content:
+                                     {
+                                     'currency': currency_symbol,
+                                     'amount': decimal,
+                                     'address': str, optional
+                                     }
+                                     supported currencies: LBC, USD, BTC
+                                     If an address is not provided a new one will be
+                                     automatically generated. Default fee is zero.
+    'title'            :  (str)      title of the publication
+    'description'      :  (str)      description of the publication
+    'author'           :  (str)      author of the publication
+    'language'         :  (str)      language of the publication
+    'license'          :  (str)      publication license
+    'license_url'      :  (str)      publication license url
+    'thumbnail'        :  (str)      thumbnail url
+    'preview'          :  (str)      preview url
+    'nsfw'             :  (bool)     title of the publication
+    'sources'          :  (str)      {'lbry_sd_hash': sd_hash} specifies sd hash of file
+    'channel_name'     :  (str)      name of the publisher channel name in the wallet
+    'channel_id'       :  (str)      claim id of the publisher channel, does not check
+                                     for channel claim being in the wallet. This allows
+                                     publishing to a channel where only the certificate
+                                     private key is in the wallet.
+    'claim_address'    :  (str)      address where the claim is sent to, if not specified
+                                     new address wil automatically be created
 
 Returns:
     (dict) Dictionary containing result of the claim
@@ -1749,7 +1749,7 @@ Returns:
         'tx' : (str) hex encoded transaction
         'txid' : (str) txid of resulting claim
         'nout' : (int) nout of the resulting claim
-        'fee' : (float) fee paid for the claim transaction
+        'fee' : (decimal) fee paid for the claim transaction
         'claim_id' : (str) claim ID of the resulting claim
     }
 </code></pre>
