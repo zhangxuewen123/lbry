@@ -23,7 +23,6 @@ requires = [
     'jsonrpc',
     'lbryschema==0.0.16',
     'lbryum==3.2.3',
-    'miniupnpc',
     'pyyaml',
     'requests',
     'txJSON-RPC',

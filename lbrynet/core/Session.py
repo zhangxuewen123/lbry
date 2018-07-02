@@ -1,5 +1,8 @@
 import logging
-import miniupnpc
+try:
+    import miniupnpc
+except ImportError:
+    miniupnpc = None
 from twisted.internet import threads, defer
 from lbrynet.core.BlobManager import DiskBlobManager
 from lbrynet.dht import node, hashannouncer
@@ -186,7 +189,7 @@ class Session(object):
             return port
 
         def threaded_try_upnp():
-            if self.use_upnp is False:
+            if not miniupnpc or self.use_upnp is False:
                 log.debug("Not using upnp")
                 return False
             u = miniupnpc.UPnP()
