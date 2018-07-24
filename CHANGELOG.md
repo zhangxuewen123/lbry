@@ -27,16 +27,20 @@ at anytime.
   *
 
 ### Changed
-  *
-  *
+  * all JSONRPC API commands are now registered asynchronously and are available to be called as soon as they are ready
+  * the way to run reflector. Now, to run reflector server, `components_to_skip` has to be overridden in the daemon config(with an empty list or None if everything else is to be kept default)
 
 ### Added
-  *
+  * Component Manager for managing the dependencies, startup and stopping of components 
+  * `requires` decorator to register the components required by a `jsonrpc_` command, to facilitate commands registering asynchronously
+  * added unittests for Component Manager
   *
 
 ### Removed
-  *
-  *
+  * `STARTUP_STAGES` from `status` API and CLI call, it instead returns a dictionary of components along with their running status(this is a **potentially breaking change** if `STARTUP_STAGES` is relied upon)
+  * all component startup code from `Daemon.py`
+  * wallet, upnp and dht startup code from `session.py`, the code now resides in `Components.py`
+  * `run_reflector_server` config option
 
 
 ## [0.20.4] - 2018-07-18
