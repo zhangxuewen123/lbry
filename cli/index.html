@@ -2112,11 +2112,11 @@ Returns:
 <pre><code class="text">Get daemon status
 
 Usage:
-    status [--session_status]
+    status
 
 
 Options:
-    --session_status  :  (bool)  include session status in results
+          None
 
 Returns:
     (dict) lbrynet-daemon status
@@ -2133,6 +2133,8 @@ Returns:
             'hash_announcer': (bool),
             'stream_identifier': (bool),
             'file_manager': (bool),
+            'blob_manager': (bool),
+            'blockchain_headers': (bool),
             'peer_protocol_server': (bool),
             'reflector': (bool),
             'upnp': (bool),
@@ -2142,23 +2144,29 @@ Returns:
             'code': (str) connection status code,
             'message': (str) connection status message
         },
-        'blockchain_status': {
+        'blockchain_headers': {
+            'downloading_headers': (bool),
+            'download_progress': (float) 0-100.0
+        },
+        'wallet': {
             'blocks': (int) local blockchain height,
             'blocks_behind': (int) remote_height - local_height,
             'best_blockhash': (str) block hash of most recent block,
+            'is_encrypted': (bool)
         },
-        'dht_node_status': {
+        'dht': {
             'node_id': (str) lbry dht node id - hex encoded,
             'peers_in_routing_table': (int) the number of peers in the routing table,
         },
-        'wallet_is_encrypted': (bool),
-        If given the session status option:
-            'session_status': {
-                'managed_blobs': (int) count of blobs in the blob manager,
-                'managed_streams': (int) count of streams in the file manager,
-                'announce_queue_size': (int) number of blobs currently queued to be announced,
-                'should_announce_blobs': (int) number of blobs that should be announced,
-            }
+        'blob_manager': {
+            'finished_blobs': (int) number of finished blobs in the blob manager,
+        },
+        'hash_announcer': {
+            'announce_queue_size': (int) number of blobs currently queued to be announced
+        },
+        'file_manager': {
+            'managed_files': (int) count of files in the file manager,
+        }
     }
 </code></pre>
 
