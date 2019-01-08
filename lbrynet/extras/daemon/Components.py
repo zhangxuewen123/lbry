@@ -25,7 +25,6 @@ from lbrynet.extras.daemon.ExchangeRateManager import ExchangeRateManager
 from lbrynet.storage import SQLiteStorage
 from lbrynet.extras.wallet import LbryWalletManager
 from lbrynet.extras.wallet import Network
-from lbrynet.utils import DeferredDict, generate_id
 
 
 log = logging.getLogger(__name__)
@@ -147,8 +146,7 @@ class HeadersComponent(Component):
             'download_progress': self._headers_progress_percent
         }
 
-    @defer.inlineCallbacks
-    def fetch_headers_from_s3(self):
+    async def fetch_headers_from_s3(self):
         def collector(data, h_file):
             h_file.write(data)
             local_size = float(h_file.tell())
@@ -157,29 +155,31 @@ class HeadersComponent(Component):
 
         local_header_size = self.local_header_file_size()
         resume_header = {"Range": f"bytes={local_header_size}-"}
-        response = yield treq.get(HEADERS_URL, headers=resume_header)
-        got_406 = response.code == 406  # our file is bigger
-        final_size_after_download = response.length + local_header_size
-        if got_406:
-            log.warning("s3 is more out of date than we are")
-        # should have something to download and a final length divisible by the header size
-        elif final_size_after_download and not final_size_after_download % HEADER_SIZE:
-            s3_height = (final_size_after_download / HEADER_SIZE) - 1
-            local_height = self.local_header_file_height()
-            if s3_height > local_height:
-                if local_header_size:
-                    log.info("Resuming download of %i bytes from s3", response.length)
-                    with open(self.headers_file, "a+b") as headers_file:
-                        yield treq.collect(response, lambda d: collector(d, headers_file))
-                else:
-                    with open(self.headers_file, "wb") as headers_file:
-                        yield treq.collect(response, lambda d: collector(d, headers_file))
-                log.info("fetched headers from s3 (s3 height: %i), now verifying integrity after download.", s3_height)
-                self._check_header_file_integrity()
-            else:
+        async with aiohttp.request('get', HEADERS_URL, headers=resume_header) as response:
+            got_406 = response.status == 406  # our file is bigger
+            final_size_after_download = response.content_length + local_header_size
+            if got_406:
                 log.warning("s3 is more out of date than we are")
-        else:
-            log.error("invalid size for headers from s3")
+            # should have something to download and a final length divisible by the header size
+            elif final_size_after_download and not final_size_after_download % HEADER_SIZE:
+                s3_height = (final_size_after_download / HEADER_SIZE) - 1
+                local_height = self.local_header_file_height()
+                if s3_height > local_height:
+                    data = await response.read()
+
+                    if local_header_size:
+                        log.info("Resuming download of %i bytes from s3", response.content_length)
+                        with open(self.headers_file, "a+b") as headers_file:
+                            collector(data, headers_file)
+                    else:
+                        with open(self.headers_file, "wb") as headers_file:
+                            collector(data, headers_file)
+                    log.info("fetched headers from s3 (s3 height: %i), now verifying integrity after download.", s3_height)
+                    self._check_header_file_integrity()
+                else:
+                    log.warning("s3 is more out of date than we are")
+            else:
+                log.error("invalid size for headers from s3")
 
     def local_header_file_height(self):
         return max((self.local_header_file_size() / HEADER_SIZE) - 1, 0)
@@ -249,7 +249,7 @@ class HeadersComponent(Component):
         self._downloading_headers = await self.should_download_headers_from_s3()
         if self._downloading_headers:
             try:
-                await d2f(self.fetch_headers_from_s3())
+                await self.fetch_headers_from_s3()
             except Exception as err:
                 log.error("failed to fetch headers from s3: %s", err)
             finally:
@@ -310,7 +310,7 @@ class BlobComponent(Component):
     def component(self) -> typing.Optional[BlobFileManager]:
         return self.blob_manager
 
-    def start(self):
+    async def start(self):
         storage = self.component_manager.get_component(DATABASE_COMPONENT)
         data_store = None
         if DHT_COMPONENT not in self.component_manager.skip_components:
@@ -319,15 +319,15 @@ class BlobComponent(Component):
                 data_store = dht_node.protocol.data_store
         self.blob_manager = BlobFileManager(self.loop, os.path.join(conf.settings.data_dir, "blobfiles"),
                                             storage, data_store)
-        return defer.Deferred.fromFuture(asyncio.ensure_future(self.blob_manager.setup(), loop=self.loop))
+        return await self.blob_manager.setup()
 
     def stop(self):
-        return defer.succeed(None)
+        pass
 
     async def get_status(self):
         count = 0
         if self.blob_manager:
-            count = await self.blob_manager.storage.count_finished_blobs()
+            count = len(self.blob_manager.completed_blob_hashes)
         return {'finished_blobs': count}
 
 
@@ -358,8 +358,6 @@ class DHTComponent(Component):
         self.external_peer_port = self.upnp_component.upnp_redirects.get("TCP", conf.settings["peer_port"])
         self.external_udp_port = self.upnp_component.upnp_redirects.get("UDP", conf.settings["dht_node_port"])
         node_id = conf.settings.get_node_id()
-        if node_id is None:
-            node_id = generate_id()
         external_ip = self.upnp_component.external_ip
         if not external_ip:
             log.warning("UPnP component failed to get external ip")
@@ -397,7 +395,7 @@ class HashAnnouncerComponent(Component):
     def component(self) -> typing.Optional[BlobAnnouncer]:
         return self.hash_announcer
 
-    def start(self):
+    async def start(self):
         storage = self.component_manager.get_component(DATABASE_COMPONENT)
         dht_node = self.component_manager.get_component(DHT_COMPONENT)
         self.hash_announcer = BlobAnnouncer(self.loop, dht_node, storage)
@@ -408,7 +406,7 @@ class HashAnnouncerComponent(Component):
         # self.hash_announcer.stop()
         log.info("Stopped blob announcer")
 
-    def get_status(self):
+    async def get_status(self):
         return {
             'announce_queue_size': 0 if not self.hash_announcer else len(self.hash_announcer.announce_queue)
         }
@@ -480,7 +478,7 @@ class PeerProtocolServerComponent(Component):
     def component(self) -> typing.Optional[BlobServer]:
         return self.blob_server
 
-    def start(self):
+    async def start(self):
         log.info("start blob server")
         upnp = self.component_manager.get_component(UPNP_COMPONENT)
         blob_manager: BlobFileManager = self.component_manager.get_component(BLOB_COMPONENT)
@@ -603,7 +601,8 @@ class UPnPComponent(Component):
                     log.debug("set up upnp port redirects for gateway: %s", self.upnp.gateway.manufacturer_string)
         else:
             log.error("failed to setup upnp")
-        self.component_manager.analytics_manager.send_upnp_setup_success_fail(success, await self.get_status())
+        if self.component_manager.analytics_manager:
+            self.component_manager.analytics_manager.send_upnp_setup_success_fail(success, await self.get_status())
         self._maintain_redirects_task = asyncio.create_task(self._repeatedly_maintain_redirects(now=False))
 
     async def stop(self):
